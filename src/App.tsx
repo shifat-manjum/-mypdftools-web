@@ -1,0 +1,299 @@
+import React, { useState, useEffect, useMemo } from 'react';
+import { Navbar } from './components/Navbar';
+import { Hero } from './components/Hero';
+import { CategoryFilters } from './components/CategoryFilters';
+import { ToolCard } from './components/ToolCard';
+import { ToolPage } from './components/ToolPage';
+import { PrivacyModal } from './components/PrivacyModal';
+import { AboutModal } from './components/AboutModal';
+import { AdBanner } from './components/AdBanner';
+import { TOOLS } from './data/tools';
+import { ToolCategory, ToolItem } from './types';
+import { Language, TRANSLATIONS } from './i18n/translations';
+import { ShieldCheck, Zap, Lock, WifiOff, ArrowUpRight } from 'lucide-react';
+
+export const App: React.FC = () => {
+  // Italian is the default language as requested
+  const [currentLang, setCurrentLang] = useState<Language>('it');
+  const [activeCategory, setActiveCategory] = useState<ToolCategory>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentToolId, setCurrentToolId] = useState<string | null>(null);
+  const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
+  const [aboutModalOpen, setAboutModalOpen] = useState(false);
+
+  const t = TRANSLATIONS[currentLang] || TRANSLATIONS.it;
+
+  // Dynamic document title update based on active language
+  useEffect(() => {
+    if (currentLang === 'it') {
+      document.title = 'MyPdfTools — Strumenti PDF 100% Gratuiti e Privati (Zero Upload)';
+    } else if (currentLang === 'de') {
+      document.title = 'MyPdfTools — 100% Kostenlose & Private PDF-Tools (Kein Upload)';
+    } else {
+      document.title = 'MyPdfTools — 100% Free & Private In-Browser PDF Suite';
+    }
+  }, [currentLang]);
+
+  // Hash-based routing to support direct URLs like www.mypdftools.it/#/jpg-to-pdf
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace(/^#\/?/, '');
+      if (hash && TOOLS.some((tool) => tool.id === hash)) {
+        setCurrentToolId(hash);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        setCurrentToolId(null);
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  const navigateToTool = (toolId: string) => {
+    window.location.hash = `#/${toolId}`;
+  };
+
+  const navigateHome = () => {
+    window.location.hash = '';
+    setCurrentToolId(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const activeTool = useMemo(() => {
+    return TOOLS.find((tool) => tool.id === currentToolId) || null;
+  }, [currentToolId]);
+
+  const filteredTools = useMemo(() => {
+    return TOOLS.filter((tool) => {
+      const matchesCategory =
+        activeCategory === 'all' ||
+        tool.category === activeCategory ||
+        (activeCategory === 'workflows' && tool.badge);
+
+      const localized = t.tools[tool.id];
+      const titleToSearch = (localized?.title || tool.title).toLowerCase();
+      const descToSearch = (localized?.description || tool.description).toLowerCase();
+      const query = searchQuery.toLowerCase().trim();
+
+      const matchesSearch =
+        query === '' ||
+        titleToSearch.includes(query) ||
+        descToSearch.includes(query) ||
+        tool.id.includes(query);
+
+      return matchesCategory && matchesSearch;
+    });
+  }, [activeCategory, searchQuery, t]);
+
+  return (
+    <div className="relative min-h-screen flex flex-col bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9]/70 via-[#ecfdf5]/30 to-[#eff6ff]/40 overflow-x-hidden">
+      {/* Ambient background glowing orbs */}
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-emerald-200/25 to-teal-200/20 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse duration-1000" />
+      <div className="absolute top-60 right-10 w-[450px] h-[450px] bg-gradient-to-br from-indigo-200/20 to-sky-200/20 rounded-full blur-3xl pointer-events-none -z-10" />
+
+      {/* Top Navigation Bar with Language Switcher */}
+      <Navbar
+        currentLang={currentLang}
+        onLanguageChange={setCurrentLang}
+        onSelectTool={navigateToTool}
+        onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
+        onOpenAboutModal={() => setAboutModalOpen(true)}
+        onGoHome={navigateHome}
+      />
+
+      {/* Main Content: Tool View or Catalog */}
+      <main className="flex-1 pb-20 relative z-10">
+        {activeTool ? (
+          <ToolPage
+            tool={activeTool}
+            currentLang={currentLang}
+            onBackToHome={navigateHome}
+            onSelectOtherTool={navigateToTool}
+            onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
+          />
+        ) : (
+          <div>
+            <Hero
+              currentLang={currentLang}
+              onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
+            />
+
+            {/* Top Leaderboard Ad Slot */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+              <AdBanner format="horizontal" />
+            </div>
+
+            <CategoryFilters
+              currentLang={currentLang}
+              activeCategory={activeCategory}
+              onSelectCategory={setActiveCategory}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+            />
+
+            {/* Tools Grid with Zentixx Box Shadows */}
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              {filteredTools.length === 0 ? (
+                <div className="text-center py-16 bg-white/90 backdrop-blur-md rounded-3xl border border-slate-200 shadow-sm">
+                  <p className="text-sm font-bold text-slate-500">
+                    {t.noToolsFound} "{searchQuery}"
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSearchQuery('');
+                      setActiveCategory('all');
+                    }}
+                    className="mt-3 text-xs font-black text-emerald-600 hover:underline cursor-pointer"
+                  >
+                    {t.clearFilters}
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                  {filteredTools.map((tool) => (
+                    <div key={tool.id} className="min-h-[170px]">
+                      <ToolCard
+                        tool={tool}
+                        currentLang={currentLang}
+                        onClick={() => navigateToTool(tool.id)}
+                      />
+                    </div>
+                  ))}
+
+                  {/* "Create a workflow" Banner Card */}
+                  {(activeCategory === 'all' || activeCategory === 'workflows') && (
+                    <div className="bg-gradient-to-br from-white/90 via-emerald-50/50 to-teal-50/70 backdrop-blur-md rounded-2xl p-5 border border-emerald-200/80 shadow-[0_10px_30px_-5px_rgba(0,0,0,0.07)] hover:shadow-[0_20px_40px_-10px_rgba(16,185,129,0.2)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between text-left group ring-1 ring-emerald-500/10">
+                      <div>
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white mb-3 shadow-sm">
+                          <Zap className="w-5 h-5" />
+                        </div>
+                        <h3 className="text-sm font-black text-slate-900 leading-snug">
+                          {t.createWorkflowTitle}
+                        </h3>
+                        <p className="mt-2 text-xs text-slate-600 leading-relaxed font-medium">
+                          {t.createWorkflowDesc}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => navigateToTool('merge-pdf')}
+                        className="mt-4 inline-flex items-center gap-1.5 text-xs font-black text-emerald-700 group-hover:text-emerald-900 transition-colors cursor-pointer"
+                      >
+                        <span>{t.createWorkflowBtn}</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </section>
+
+            {/* Bottom Content Ad Slot */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+              <AdBanner format="horizontal" />
+            </div>
+
+            {/* Privacy & Trust Proof Section */}
+            <section className="max-w-5xl mx-auto mt-16 px-4">
+              <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white rounded-3xl p-8 sm:p-12 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3)] border border-slate-700/60 ring-1 ring-white/10 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="max-w-2xl mx-auto text-center space-y-3 relative z-10">
+                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-black shadow-xs">
+                    <ShieldCheck className="w-4 h-4" />
+                    <span>{t.trustSection.badge}</span>
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                    {t.trustSection.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                    {t.trustSection.desc}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 text-center relative z-10">
+                  <div className="p-6 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors">
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3.5 shadow-sm">
+                      <Lock className="w-6 h-6" />
+                    </div>
+                    <h4 className="text-sm font-black text-white">{t.trustSection.zeroUploadsTitle}</h4>
+                    <p className="text-xs text-slate-300 mt-2 font-medium leading-relaxed">
+                      {t.trustSection.zeroUploadsDesc}
+                    </p>
+                  </div>
+
+                  <div className="p-6 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors">
+                    <div className="w-12 h-12 rounded-2xl bg-teal-500/20 text-teal-400 flex items-center justify-center mx-auto mb-3.5 shadow-sm">
+                      <Zap className="w-6 h-6" />
+                    </div>
+                    <h4 className="text-sm font-black text-white">{t.trustSection.instantSpeedTitle}</h4>
+                    <p className="text-xs text-slate-300 mt-2 font-medium leading-relaxed">
+                      {t.trustSection.instantSpeedDesc}
+                    </p>
+                  </div>
+
+                  <div className="p-6 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-md hover:bg-white/10 transition-colors">
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3.5 shadow-sm">
+                      <WifiOff className="w-6 h-6" />
+                    </div>
+                    <h4 className="text-sm font-black text-white">{t.trustSection.offlineReadyTitle}</h4>
+                    <p className="text-xs text-slate-300 mt-2 font-medium leading-relaxed">
+                      {t.trustSection.offlineReadyDesc}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-9 text-center relative z-10">
+                  <button
+                    onClick={() => setPrivacyModalOpen(true)}
+                    className="px-7 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-xs font-black rounded-xl shadow-lg shadow-emerald-500/30 transition-all transform hover:scale-105 cursor-pointer"
+                  >
+                    {t.trustSection.readGuaranteeBtn} &rarr;
+                  </button>
+                </div>
+              </div>
+            </section>
+          </div>
+        )}
+      </main>
+
+      {/* Footer with Language Options */}
+      <footer className="bg-white/90 backdrop-blur-xl border-t border-slate-200/80 py-10 text-center text-xs text-slate-500 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-xs text-slate-500 font-medium">
+              © {new Date().getFullYear()} MyPdfTools (mypdftools.it • mypdftools.de). {t.footer.rights}
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-bold text-slate-600">
+              <button onClick={() => navigateToTool('jpg-to-pdf')} className="hover:text-emerald-600 cursor-pointer">{t.tools['jpg-to-pdf']?.title || 'JPG to PDF'}</button>
+              <button onClick={() => navigateToTool('pdf-to-jpg')} className="hover:text-emerald-600 cursor-pointer">{t.tools['pdf-to-jpg']?.title || 'PDF to JPG'}</button>
+              <button onClick={() => navigateToTool('merge-pdf')} className="hover:text-emerald-600 cursor-pointer">{t.tools['merge-pdf']?.title || 'Merge PDF'}</button>
+              <button onClick={() => navigateToTool('split-pdf')} className="hover:text-emerald-600 cursor-pointer">{t.tools['split-pdf']?.title || 'Split PDF'}</button>
+              <button onClick={() => navigateToTool('sign-pdf')} className="hover:text-emerald-600 cursor-pointer">{t.tools['sign-pdf']?.title || 'Sign PDF'}</button>
+              <button onClick={() => setPrivacyModalOpen(true)} className="text-emerald-600 font-black hover:underline cursor-pointer">{t.footer.privacyGuarantee}</button>
+              <button onClick={() => setAboutModalOpen(true)} className="text-slate-800 font-black hover:text-emerald-600 cursor-pointer">{currentLang === 'it' ? 'Chi Siamo (Founder)' : currentLang === 'de' ? 'Über uns (Gründer)' : 'About (Founder)'}</button>
+            </div>
+          </div>
+          <p className="text-[11px] text-slate-400 max-w-2xl mx-auto font-medium">
+            {t.footer.disclaimer}
+          </p>
+        </div>
+      </footer>
+
+      {/* Privacy Guarantee Modal */}
+      <PrivacyModal
+        isOpen={privacyModalOpen}
+        currentLang={currentLang}
+        onClose={() => setPrivacyModalOpen(false)}
+      />
+
+      {/* About & Founder Spotlight Modal */}
+      <AboutModal
+        isOpen={aboutModalOpen}
+        currentLang={currentLang}
+        onClose={() => setAboutModalOpen(false)}
+      />
+    </div>
+  );
+};
