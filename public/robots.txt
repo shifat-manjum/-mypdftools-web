@@ -4,3 +4,4 @@ Allow: /
 # Host & Sitemap definition for Google Search Console & Bing Webmaster
 Host: https://www.mypdftools.it
 Sitemap: https://www.mypdftools.it/sitemap.xml
+
