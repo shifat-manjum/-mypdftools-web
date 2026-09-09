@@ -10,6 +10,7 @@ interface NavbarProps {
   onSelectTool: (toolId: string) => void;
   onOpenPrivacyModal: () => void;
   onOpenAboutModal: () => void;
+  onOpenAuthNotice: () => void;
   onGoHome: () => void;
 }
 
@@ -19,6 +20,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSelectTool,
   onOpenPrivacyModal,
   onOpenAboutModal,
+  onOpenAuthNotice,
   onGoHome,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -150,10 +152,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="md:hidden">{t.nav.privateShort}</span>
             </button>
 
-            <button className="hidden sm:inline-block text-xs font-bold text-slate-700 hover:text-slate-900 px-3 py-2">
+            <button
+              onClick={onOpenAuthNotice}
+              className="hidden sm:inline-block text-xs font-bold text-slate-700 hover:text-slate-900 px-3 py-2 cursor-pointer"
+            >
               {t.nav.login}
             </button>
-            <button className="text-xs font-extrabold bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white px-4 py-2 rounded-xl shadow-md shadow-emerald-600/20 transition-all transform active:scale-95">
+            <button
+              onClick={onOpenAuthNotice}
+              className="text-xs font-extrabold bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white px-4 py-2 rounded-xl shadow-md shadow-emerald-600/20 transition-all transform active:scale-95 cursor-pointer"
+            >
               {t.nav.signUp}
             </button>
 
@@ -221,6 +229,20 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             ✨ {currentLang === 'it' ? 'Chi Siamo (MyPdfTools & Founder)' : currentLang === 'de' ? 'Über uns & Gründer' : 'About MyPdfTools & Founder'}
           </button>
+          <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
+            <button
+              onClick={() => { onOpenAuthNotice(); setMobileMenuOpen(false); }}
+              className="flex-1 py-2 text-xs font-bold text-slate-700 bg-slate-100 rounded-xl text-center cursor-pointer"
+            >
+              {t.nav.login}
+            </button>
+            <button
+              onClick={() => { onOpenAuthNotice(); setMobileMenuOpen(false); }}
+              className="flex-1 py-2 text-xs font-black text-white bg-gradient-to-r from-emerald-600 to-teal-700 rounded-xl text-center shadow-xs cursor-pointer"
+            >
+              {t.nav.signUp}
+            </button>
+          </div>
         </div>
       )}
     </header>

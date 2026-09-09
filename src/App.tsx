@@ -6,6 +6,7 @@ import { ToolCard } from './components/ToolCard';
 import { ToolPage } from './components/ToolPage';
 import { PrivacyModal } from './components/PrivacyModal';
 import { AboutModal } from './components/AboutModal';
+import { AuthNoticeModal } from './components/AuthNoticeModal';
 import { AdBanner } from './components/AdBanner';
 import { TOOLS } from './data/tools';
 import { ToolCategory, ToolItem } from './types';
@@ -20,6 +21,7 @@ export const App: React.FC = () => {
   const [currentToolId, setCurrentToolId] = useState<string | null>(null);
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
   const [aboutModalOpen, setAboutModalOpen] = useState(false);
+  const [authNoticeOpen, setAuthNoticeOpen] = useState(false);
 
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.it;
 
@@ -100,6 +102,7 @@ export const App: React.FC = () => {
         onSelectTool={navigateToTool}
         onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
         onOpenAboutModal={() => setAboutModalOpen(true)}
+        onOpenAuthNotice={() => setAuthNoticeOpen(true)}
         onGoHome={navigateHome}
       />
 
@@ -293,6 +296,13 @@ export const App: React.FC = () => {
         isOpen={aboutModalOpen}
         currentLang={currentLang}
         onClose={() => setAboutModalOpen(false)}
+      />
+
+      {/* 100% Free Access Notice Modal */}
+      <AuthNoticeModal
+        isOpen={authNoticeOpen}
+        currentLang={currentLang}
+        onClose={() => setAuthNoticeOpen(false)}
       />
     </div>
   );
