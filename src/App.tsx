@@ -13,9 +13,35 @@ import { ToolCategory, ToolItem } from './types';
 import { Language, TRANSLATIONS } from './i18n/translations';
 import { ShieldCheck, Zap, Lock, WifiOff, ArrowUpRight } from 'lucide-react';
 
+// Automatically detect initial language based on domain or saved preference
+const getInitialLanguage = (): Language => {
+  try {
+    const saved = localStorage.getItem('mypdftools_lang');
+    if (saved === 'it' || saved === 'de' || saved === 'en') {
+      return saved as Language;
+    }
+  } catch {
+    // Ignore storage restrictions
+  }
+
+  if (typeof window !== 'undefined' && window.location) {
+    const host = window.location.hostname.toLowerCase();
+    // Default to German for mypdftools.de or any .de domain
+    if (host.endsWith('.de') || host.includes('mypdftools.de')) {
+      return 'de';
+    }
+    // Default to Italian for mypdftools.it or any .it domain
+    if (host.endsWith('.it') || host.includes('mypdftools.it')) {
+      return 'it';
+    }
+  }
+
+  return 'it';
+};
+
 export const App: React.FC = () => {
-  // Italian is the default language as requested
-  const [currentLang, setCurrentLang] = useState<Language>('it');
+  // Domain-based default: German on mypdftools.de, Italian on mypdftools.it
+  const [currentLang, setCurrentLang] = useState<Language>(getInitialLanguage);
   const [activeCategory, setActiveCategory] = useState<ToolCategory>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentToolId, setCurrentToolId] = useState<string | null>(null);
@@ -25,8 +51,18 @@ export const App: React.FC = () => {
 
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.it;
 
-  // Dynamic document title update based on active language
+  const handleLanguageChange = (lang: Language) => {
+    setCurrentLang(lang);
+    try {
+      localStorage.setItem('mypdftools_lang', lang);
+    } catch {
+      // Ignore in restricted environments
+    }
+  };
+
+  // Dynamic document title & HTML lang update based on active language
   useEffect(() => {
+    document.documentElement.lang = currentLang;
     if (currentLang === 'it') {
       document.title = 'MyPdfTools — Strumenti PDF 100% Gratuiti e Privati (Zero Upload)';
     } else if (currentLang === 'de') {
@@ -98,7 +134,7 @@ export const App: React.FC = () => {
       {/* Top Navigation Bar with Language Switcher */}
       <Navbar
         currentLang={currentLang}
-        onLanguageChange={setCurrentLang}
+        onLanguageChange={handleLanguageChange}
         onSelectTool={navigateToTool}
         onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
         onOpenAboutModal={() => setAboutModalOpen(true)}
