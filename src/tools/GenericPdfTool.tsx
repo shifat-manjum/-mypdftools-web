@@ -6,17 +6,60 @@ import { toPdfBlob } from '../utils/pdfUtils';
 import { PDFDocument } from 'pdf-lib';
 import { saveAs } from 'file-saver';
 import confetti from 'canvas-confetti';
+import { Language } from '../i18n/translations';
 import { Sparkles, Download, Loader2, CheckCircle2 } from 'lucide-react';
 
 interface GenericPdfToolProps {
   tool: ToolItem;
+  currentLang?: Language;
 }
 
-export const GenericPdfTool: React.FC<GenericPdfToolProps> = ({ tool }) => {
+export const GenericPdfTool: React.FC<GenericPdfToolProps> = ({ tool, currentLang = 'it' }) => {
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [summaryResult, setSummaryResult] = useState<string | null>(null);
   const [compressedBlob, setCompressedBlob] = useState<{ blob: Blob; oldSize: number; newSize: number } | null>(null);
+
+  const selectLabel =
+    currentLang === 'it'
+      ? `Seleziona file PDF`
+      : currentLang === 'de'
+      ? `PDF-Datei auswählen`
+      : `Select PDF file`;
+
+  const helperLabel =
+    currentLang === 'it'
+      ? 'o trascina il tuo PDF qui'
+      : currentLang === 'de'
+      ? 'oder PDF hierher ziehen'
+      : 'or drop your PDF here';
+
+  const changeFileLabel =
+    currentLang === 'it' ? 'Cambia file' : currentLang === 'de' ? 'Datei ändern' : 'Change file';
+
+  const readyLabel =
+    currentLang === 'it' ? 'Pronto' : currentLang === 'de' ? 'Bereit' : 'Ready';
+
+  const processBtnLabel =
+    currentLang === 'it'
+      ? `Elabora con ${tool.title}`
+      : currentLang === 'de'
+      ? `Mit ${tool.title} verarbeiten`
+      : `Process with ${tool.title}`;
+
+  const processingLabel =
+    currentLang === 'it'
+      ? 'Elaborazione del documento in corso...'
+      : currentLang === 'de'
+      ? 'Dokument wird verarbeitet...'
+      : 'Processing document...';
+
+  const downloadBtnLabel =
+    currentLang === 'it'
+      ? 'SCARICA PDF ELABORATO'
+      : currentLang === 'de'
+      ? 'VERARBEITETES PDF HERUNTERLADEN'
+      : 'DOWNLOAD PROCESSED PDF';
 
   const handleAction = async () => {
     if (files.length === 0) return;
@@ -40,22 +83,20 @@ export const GenericPdfTool: React.FC<GenericPdfToolProps> = ({ tool }) => {
         confetti({ particleCount: 70, spread: 60 });
       } else if (tool.id === 'ai-summarizer') {
         const { plainText } = await extractTextFromPdf(file);
-        // Generate high quality summary
         const paragraphs = plainText.split('\n\n').filter((p) => p.trim().length > 30);
-        const topPoints = paragraphs.slice(0, 5).map((p, idx) => `• Key Point ${idx + 1}: ${p.trim().slice(0, 200)}...`);
+        const topPoints = paragraphs.slice(0, 5).map((p, idx) => `• Punto Chiave ${idx + 1}: ${p.trim().slice(0, 200)}...`);
 
         setSummaryResult(
-          `## Executive Summary for ${file.name}\n\n` +
-          `Document analyzed successfully. Here are the core highlights:\n\n` +
-          (topPoints.length > 0 ? topPoints.join('\n\n') : '• Document content parsed and indexed.') +
-          `\n\n**Conclusion**: Document structured cleanly with high readability.`
+          `## Riepilogo per ${file.name}\n\n` +
+          `Documento analizzato localmente nella RAM del browser:\n\n` +
+          (topPoints.length > 0 ? topPoints.join('\n\n') : '• Contenuto del documento indicizzato e strutturato.') +
+          `\n\n**Conclusione**: File pronto e memorizzato in modo conforme alla privacy.`
         );
         confetti({ particleCount: 70, spread: 60 });
       } else {
-        // Fallback generic handler: extract text and download as formatted document
         const { plainText } = await extractTextFromPdf(file);
         const textBlob = new Blob([plainText], { type: 'text/plain;charset=utf-8' });
-        saveAs(textBlob, `${file.name.replace(/\.[^/.]+$/, '')}_converted.txt`);
+        saveAs(textBlob, `mypdftools_${file.name.replace(/\.[^/.]+$/, '')}_converted.txt`);
       }
     } catch (err: any) {
       console.error(err);
@@ -70,8 +111,8 @@ export const GenericPdfTool: React.FC<GenericPdfToolProps> = ({ tool }) => {
       <Dropzone
         accept="application/pdf"
         multiple={false}
-        buttonLabel={`Select PDF for ${tool.title}`}
-        helperText="or drop your PDF here"
+        buttonLabel={selectLabel}
+        helperText={helperLabel}
         files={files}
         onFilesChange={(newFiles) => {
           setFiles(newFiles);
@@ -83,11 +124,11 @@ export const GenericPdfTool: React.FC<GenericPdfToolProps> = ({ tool }) => {
 
       {files.length > 0 && (
         <div className="space-y-6">
-          <div className="bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between shadow-sm">
+          <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 flex items-center justify-between shadow-xs">
             <div>
-              <h4 className="text-xs font-bold text-gray-900 truncate">{files[0].name}</h4>
-              <p className="text-[11px] text-gray-500">
-                {(files[0].size / (1024 * 1024)).toFixed(2)} MB • Ready
+              <h4 className="text-sm font-black text-slate-800 truncate">{files[0].name}</h4>
+              <p className="text-xs text-slate-500 mt-0.5 font-medium">
+                {(files[0].size / (1024 * 1024)).toFixed(2)} MB • {readyLabel}
               </p>
             </div>
             <button
@@ -96,40 +137,40 @@ export const GenericPdfTool: React.FC<GenericPdfToolProps> = ({ tool }) => {
                 setSummaryResult(null);
                 setCompressedBlob(null);
               }}
-              className="text-xs font-semibold text-gray-400 hover:text-red-500"
+              className="text-xs font-bold text-slate-400 hover:text-red-600 px-3 py-1 cursor-pointer"
             >
-              Change file
+              {changeFileLabel}
             </button>
           </div>
 
           {compressedBlob && (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-center justify-between">
+            <div className="bg-gradient-to-br from-emerald-500 via-teal-600 to-emerald-700 rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-emerald-600/20 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in zoom-in-95 duration-200">
               <div>
-                <h4 className="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  PDF Compressed successfully!
+                <h4 className="text-xl sm:text-2xl font-black flex items-center gap-2">
+                  <CheckCircle2 className="w-6 h-6 text-emerald-200" />
+                  PDF compresso con successo!
                 </h4>
-                <p className="text-xs text-emerald-700 mt-1">
-                  Original: {(compressedBlob.oldSize / 1024).toFixed(1)} KB &rarr; Optimized:{' '}
-                  {(compressedBlob.newSize / 1024).toFixed(1)} KB
+                <p className="text-xs text-emerald-100 mt-1">
+                  Originale: {(compressedBlob.oldSize / 1024).toFixed(1)} KB &rarr; Ottimizzato:{' '}
+                  {(compressedBlob.newSize / 1024).toFixed(1)} KB (Risparmio: {Math.round((1 - compressedBlob.newSize / compressedBlob.oldSize) * 100)}%)
                 </p>
               </div>
               <button
-                onClick={() => saveAs(compressedBlob.blob, 'compressed_document.pdf')}
-                className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md flex items-center gap-1.5 transition-all"
+                onClick={() => saveAs(compressedBlob.blob, 'mypdftools_compressed.pdf')}
+                className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-emerald-50 text-emerald-900 font-black text-sm rounded-2xl shadow-xl flex items-center justify-center gap-2.5 transition-all transform hover:scale-105 active:scale-95 cursor-pointer"
               >
-                <Download className="w-4 h-4" />
-                <span>Download PDF</span>
+                <Download className="w-5 h-5 text-emerald-600" />
+                <span>{downloadBtnLabel}</span>
               </button>
             </div>
           )}
 
           {summaryResult && (
-            <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-2">
-              <h4 className="text-xs font-bold uppercase text-gray-500 tracking-wider">
-                Generated Summary
+            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-3">
+              <h4 className="text-xs font-black uppercase text-slate-400 tracking-wider">
+                Riepilogo Generato
               </h4>
-              <div className="text-xs text-gray-800 whitespace-pre-wrap bg-gray-50 p-4 rounded-lg border border-gray-100">
+              <div className="text-xs text-slate-700 whitespace-pre-wrap bg-slate-50 p-4 rounded-xl border border-slate-200/80 leading-relaxed font-mono">
                 {summaryResult}
               </div>
             </div>
@@ -140,17 +181,17 @@ export const GenericPdfTool: React.FC<GenericPdfToolProps> = ({ tool }) => {
               <button
                 disabled={isProcessing}
                 onClick={handleAction}
-                className="w-full sm:w-auto px-8 py-3.5 bg-[#e5322d] hover:bg-[#c92520] text-white font-bold rounded-xl shadow-lg shadow-red-500/25 flex items-center justify-center gap-2 transition-all transform active:scale-95 disabled:opacity-50"
+                className="w-full sm:w-auto px-9 py-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-black text-sm rounded-2xl shadow-lg shadow-red-500/25 flex items-center justify-center gap-2.5 transition-all transform active:scale-95 disabled:opacity-50 cursor-pointer"
               >
                 {isProcessing ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    <span>Processing document...</span>
+                    <span>{processingLabel}</span>
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-5 h-5" />
-                    <span>Process {tool.title}</span>
+                    <Sparkles className="w-5 h-5 text-amber-300" />
+                    <span>{processBtnLabel}</span>
                   </>
                 )}
               </button>

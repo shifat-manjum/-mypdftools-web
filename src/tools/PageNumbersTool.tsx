@@ -5,8 +5,13 @@ import { addPageNumbersToPdf, toPdfBlob } from '../utils/pdfUtils';
 import { saveAs } from 'file-saver';
 import confetti from 'canvas-confetti';
 import { Hash, Download, Loader2, Sparkles } from 'lucide-react';
+import { Language } from '../i18n/translations';
 
-export const PageNumbersTool: React.FC = () => {
+interface PageNumbersToolProps {
+  currentLang?: Language;
+}
+
+export const PageNumbersTool: React.FC<PageNumbersToolProps> = () => {
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [position, setPosition] = useState<'bottom-center' | 'bottom-right' | 'top-right'>('bottom-center');
   const [format, setFormat] = useState<'of-total' | 'number'>('of-total');

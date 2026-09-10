@@ -6,9 +6,11 @@ import { PDFDocument } from 'pdf-lib';
 import { saveAs } from 'file-saver';
 import confetti from 'canvas-confetti';
 import { ShieldCheck, Unlock, Download, Loader2, Lock } from 'lucide-react';
+import { Language } from '../i18n/translations';
 
 interface ProtectPdfToolProps {
   mode?: 'protect' | 'unlock';
+  currentLang?: Language;
 }
 
 export const ProtectPdfTool: React.FC<ProtectPdfToolProps> = ({ mode = 'protect' }) => {

@@ -81,31 +81,31 @@ export const ToolPage: React.FC<ToolPageProps> = ({
   const renderToolBody = () => {
     switch (tool.id) {
       case 'jpg-to-pdf':
-        return <JpgToPdfTool />;
+        return <JpgToPdfTool currentLang={currentLang} />;
       case 'pdf-to-jpg':
-        return <PdfToJpgTool />;
+        return <PdfToJpgTool currentLang={currentLang} />;
       case 'merge-pdf':
-        return <MergePdfTool />;
+        return <MergePdfTool currentLang={currentLang} />;
       case 'split-pdf':
-        return <SplitPdfTool />;
+        return <SplitPdfTool currentLang={currentLang} />;
       case 'rotate-pdf':
-        return <RotatePdfTool />;
+        return <RotatePdfTool currentLang={currentLang} />;
       case 'organize-pdf':
-        return <OrganizePdfTool />;
+        return <OrganizePdfTool currentLang={currentLang} />;
       case 'watermark':
-        return <WatermarkPdfTool />;
+        return <WatermarkPdfTool currentLang={currentLang} />;
       case 'page-numbers':
-        return <PageNumbersTool />;
+        return <PageNumbersTool currentLang={currentLang} />;
       case 'protect-pdf':
-        return <ProtectPdfTool mode="protect" />;
+        return <ProtectPdfTool mode="protect" currentLang={currentLang} />;
       case 'unlock-pdf':
-        return <ProtectPdfTool mode="unlock" />;
+        return <ProtectPdfTool mode="unlock" currentLang={currentLang} />;
       case 'sign-pdf':
-        return <SignPdfTool />;
+        return <SignPdfTool currentLang={currentLang} />;
       case 'pdf-to-markdown':
-        return <PdfToMarkdownTool />;
+        return <PdfToMarkdownTool currentLang={currentLang} />;
       default:
-        return <GenericPdfTool tool={tool} />;
+        return <GenericPdfTool tool={tool} currentLang={currentLang} />;
     }
   };
 

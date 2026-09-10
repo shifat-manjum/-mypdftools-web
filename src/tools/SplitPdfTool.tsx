@@ -8,8 +8,13 @@ import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import confetti from 'canvas-confetti';
 import { Scissors, Download, Loader2, Sparkles } from 'lucide-react';
+import { Language } from '../i18n/translations';
 
-export const SplitPdfTool: React.FC = () => {
+interface SplitPdfToolProps {
+  currentLang?: Language;
+}
+
+export const SplitPdfTool: React.FC<SplitPdfToolProps> = () => {
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [pageCount, setPageCount] = useState<number | null>(null);
   const [splitMode, setSplitMode] = useState<'range' | 'all'>('range');

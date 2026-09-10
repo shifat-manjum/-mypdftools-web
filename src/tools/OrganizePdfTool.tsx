@@ -7,12 +7,18 @@ import { saveAs } from 'file-saver';
 import confetti from 'canvas-confetti';
 import { ArrowLeft, ArrowRight, Trash2, Copy, Download, Loader2, Sparkles, ArrowDownUp } from 'lucide-react';
 
+import { Language } from '../i18n/translations';
+
 interface PageItem {
   originalIndex: number;
   dataUrl: string;
 }
 
-export const OrganizePdfTool: React.FC = () => {
+interface OrganizePdfToolProps {
+  currentLang?: Language;
+}
+
+export const OrganizePdfTool: React.FC<OrganizePdfToolProps> = () => {
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [pageItems, setPageItems] = useState<PageItem[]>([]);
   const [isRendering, setIsRendering] = useState(false);

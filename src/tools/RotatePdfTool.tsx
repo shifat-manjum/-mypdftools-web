@@ -6,8 +6,13 @@ import { convertPdfToImages, RenderedPageImage } from '../utils/pdfRenderUtils';
 import { saveAs } from 'file-saver';
 import confetti from 'canvas-confetti';
 import { RotateCw, RotateCcw, Download, Loader2, Sparkles } from 'lucide-react';
+import { Language } from '../i18n/translations';
 
-export const RotatePdfTool: React.FC = () => {
+interface RotatePdfToolProps {
+  currentLang?: Language;
+}
+
+export const RotatePdfTool: React.FC<RotatePdfToolProps> = () => {
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [pages, setPages] = useState<RenderedPageImage[]>([]);
   const [rotations, setRotations] = useState<{ [pageIndex: number]: number }>({});

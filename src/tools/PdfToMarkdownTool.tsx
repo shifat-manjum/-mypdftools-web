@@ -5,8 +5,13 @@ import { extractTextFromPdf } from '../utils/pdfRenderUtils';
 import { saveAs } from 'file-saver';
 import confetti from 'canvas-confetti';
 import { FileCode, Download, Loader2, Copy, Check } from 'lucide-react';
+import { Language } from '../i18n/translations';
 
-export const PdfToMarkdownTool: React.FC = () => {
+interface PdfToMarkdownToolProps {
+  currentLang?: Language;
+}
+
+export const PdfToMarkdownTool: React.FC<PdfToMarkdownToolProps> = () => {
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [markdown, setMarkdown] = useState<string>('');
   const [isProcessing, setIsProcessing] = useState(false);

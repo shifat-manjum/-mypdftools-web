@@ -9,7 +9,7 @@ interface LanguageSwitcherProps {
 
 const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'it', label: 'IT' },
-  { code: 'en', label: 'EN' },
+  { code: 'en', label: 'ENG' },
   { code: 'de', label: 'DE' },
 ];
 

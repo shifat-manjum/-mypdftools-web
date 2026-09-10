@@ -6,8 +6,13 @@ import { convertPdfToImages, RenderedPageImage } from '../utils/pdfRenderUtils';
 import { saveAs } from 'file-saver';
 import confetti from 'canvas-confetti';
 import { PenSquare, Download, Loader2, Eraser, Check } from 'lucide-react';
+import { Language } from '../i18n/translations';
 
-export const SignPdfTool: React.FC = () => {
+interface SignPdfToolProps {
+  currentLang?: Language;
+}
+
+export const SignPdfTool: React.FC<SignPdfToolProps> = () => {
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [pages, setPages] = useState<RenderedPageImage[]>([]);
   const [selectedPage, setSelectedPage] = useState<number>(0);

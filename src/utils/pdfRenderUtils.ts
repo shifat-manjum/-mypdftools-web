@@ -1,7 +1,16 @@
 import * as pdfjsLib from 'pdfjs-dist';
+// @ts-ignore
+import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.js?url';
 
-// Set worker source to local public worker or cdn fallback
-pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+// Configure worker source with Vite bundled worker or public fallback
+if (typeof window !== 'undefined') {
+  try {
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      pdfWorkerUrl || '/pdf.worker.min.js';
+  } catch {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+  }
+}
 
 export interface RenderedPageImage {
   pageNumber: number;
@@ -33,6 +42,20 @@ export async function getPdfPageCount(file: File): Promise<number> {
 }
 
 /**
+ * Converts dataURL to Blob synchronously and safely across all browsers
+ */
+function dataUrlToBlob(dataUrl: string, mimeType: string): Blob {
+  const parts = dataUrl.split(',');
+  const byteString = atob(parts[1] || '');
+  const arrayBuffer = new ArrayBuffer(byteString.length);
+  const uint8Array = new Uint8Array(arrayBuffer);
+  for (let i = 0; i < byteString.length; i++) {
+    uint8Array[i] = byteString.charCodeAt(i);
+  }
+  return new Blob([uint8Array], { type: mimeType });
+}
+
+/**
  * Renders a specific page of a PDF file onto an HTML5 Canvas
  */
 export async function renderPdfPageToCanvas(
@@ -44,11 +67,11 @@ export async function renderPdfPageToCanvas(
   const viewport = page.getViewport({ scale });
 
   const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
+  const context = canvas.getContext('2d', { willReadFrequently: true });
   if (!context) throw new Error('Canvas context not available');
 
-  canvas.width = viewport.width;
-  canvas.height = viewport.height;
+  canvas.width = Math.floor(viewport.width);
+  canvas.height = Math.floor(viewport.height);
 
   await page.render({
     canvasContext: context,
@@ -70,18 +93,12 @@ export async function convertPdfToImages(
   const pdf = await loadPdfDocument(file);
   const totalPages = pdf.numPages;
   const results: RenderedPageImage[] = [];
+  const mime = format === 'image/png' ? 'image/png' : 'image/jpeg';
 
   for (let i = 1; i <= totalPages; i++) {
     const canvas = await renderPdfPageToCanvas(pdf, i, scale);
-    const dataUrl = canvas.toDataURL(format, 0.92);
-
-    const blob = await new Promise<Blob>((resolve, reject) => {
-      canvas.toBlob(
-        (b) => (b ? resolve(b) : reject(new Error('Blob conversion failed'))),
-        format,
-        0.92
-      );
-    });
+    const dataUrl = canvas.toDataURL(mime, 0.92);
+    const blob = dataUrlToBlob(dataUrl, mime);
 
     results.push({
       pageNumber: i,
@@ -133,4 +150,3 @@ export async function extractTextFromPdf(
 
   return { markdown: markdown.trim(), plainText: plainText.trim(), pageCount: totalPages };
 }
-

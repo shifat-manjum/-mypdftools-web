@@ -5,8 +5,13 @@ import { addWatermarkToPdf, toPdfBlob } from '../utils/pdfUtils';
 import { saveAs } from 'file-saver';
 import confetti from 'canvas-confetti';
 import { Stamp, Download, Loader2, Sparkles } from 'lucide-react';
+import { Language } from '../i18n/translations';
 
-export const WatermarkPdfTool: React.FC = () => {
+interface WatermarkPdfToolProps {
+  currentLang?: Language;
+}
+
+export const WatermarkPdfTool: React.FC<WatermarkPdfToolProps> = () => {
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [text, setText] = useState<string>('CONFIDENTIAL');
   const [opacity, setOpacity] = useState<number>(0.25);
