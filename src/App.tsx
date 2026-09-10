@@ -13,27 +13,40 @@ import { ToolCategory, ToolItem } from './types';
 import { Language, TRANSLATIONS } from './i18n/translations';
 import { ShieldCheck, Zap, Lock, WifiOff, ArrowUpRight } from 'lucide-react';
 
-// Automatically detect initial language based on domain or saved preference
+// Automatically detect initial language based on URL query, saved preference, domain, or browser language
 const getInitialLanguage = (): Language => {
-  try {
-    const saved = localStorage.getItem('mypdftools_lang');
-    if (saved === 'it' || saved === 'de' || saved === 'en') {
-      return saved as Language;
-    }
-  } catch {
-    // Ignore storage restrictions
-  }
+  if (typeof window !== 'undefined') {
+    // 1. Check URL query param (?lang=de, ?lang=it, ?lang=en)
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const urlLang = params.get('lang');
+      if (urlLang === 'it' || urlLang === 'de' || urlLang === 'en') {
+        localStorage.setItem('mypdftools_lang', urlLang);
+        return urlLang as Language;
+      }
+    } catch {}
 
-  if (typeof window !== 'undefined' && window.location) {
+    // 2. Check saved preference in localStorage
+    try {
+      const saved = localStorage.getItem('mypdftools_lang');
+      if (saved === 'it' || saved === 'de' || saved === 'en') {
+        return saved as Language;
+      }
+    } catch {}
+
+    // 3. Domain-based detection: mypdftools.de -> 'de', mypdftools.it -> 'it'
     const host = window.location.hostname.toLowerCase();
-    // Default to German for mypdftools.de or any .de domain
     if (host.endsWith('.de') || host.includes('mypdftools.de')) {
       return 'de';
     }
-    // Default to Italian for mypdftools.it or any .it domain
     if (host.endsWith('.it') || host.includes('mypdftools.it')) {
       return 'it';
     }
+
+    // 4. Browser language fallback
+    const navLang = (navigator.language || '').toLowerCase();
+    if (navLang.startsWith('de')) return 'de';
+    if (navLang.startsWith('it')) return 'it';
   }
 
   return 'it';
@@ -190,9 +203,9 @@ export const App: React.FC = () => {
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-6">
                   {filteredTools.map((tool) => (
-                    <div key={tool.id} className="min-h-[170px]">
+                    <div key={tool.id} className="min-h-[220px]">
                       <ToolCard
                         tool={tool}
                         currentLang={currentLang}
@@ -203,21 +216,21 @@ export const App: React.FC = () => {
 
                   {/* "Create a workflow" Banner Card */}
                   {(activeCategory === 'all' || activeCategory === 'workflows') && (
-                    <div className="bg-gradient-to-br from-white/90 via-emerald-50/50 to-teal-50/70 backdrop-blur-md rounded-2xl p-5 border border-emerald-200/80 shadow-[0_10px_30px_-5px_rgba(0,0,0,0.07)] hover:shadow-[0_20px_40px_-10px_rgba(16,185,129,0.2)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between text-left group ring-1 ring-emerald-500/10">
+                    <div className="bg-gradient-to-br from-white/90 via-emerald-50/50 to-teal-50/70 backdrop-blur-md rounded-2xl p-6 border border-emerald-200/80 shadow-[0_10px_30px_-5px_rgba(0,0,0,0.07)] hover:shadow-[0_20px_40px_-10px_rgba(16,185,129,0.2)] hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between text-left group ring-1 ring-emerald-500/10 min-h-[220px]">
                       <div>
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white mb-3 shadow-sm">
-                          <Zap className="w-5 h-5" />
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white mb-4 shadow-sm">
+                          <Zap className="w-6 h-6" />
                         </div>
-                        <h3 className="text-sm font-black text-slate-900 leading-snug">
+                        <h3 className="text-lg font-black text-slate-900 leading-snug">
                           {t.createWorkflowTitle}
                         </h3>
-                        <p className="mt-2 text-xs text-slate-600 leading-relaxed font-medium">
+                        <p className="mt-2.5 text-[13px] text-slate-600 leading-relaxed font-medium">
                           {t.createWorkflowDesc}
                         </p>
                       </div>
                       <button
                         onClick={() => navigateToTool('merge-pdf')}
-                        className="mt-4 inline-flex items-center gap-1.5 text-xs font-black text-emerald-700 group-hover:text-emerald-900 transition-colors cursor-pointer"
+                        className="mt-5 inline-flex items-center gap-1.5 text-xs font-black text-emerald-700 group-hover:text-emerald-900 transition-colors cursor-pointer"
                       >
                         <span>{t.createWorkflowBtn}</span>
                         <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

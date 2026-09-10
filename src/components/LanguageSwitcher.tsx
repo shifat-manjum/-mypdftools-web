@@ -7,10 +7,10 @@ interface LanguageSwitcherProps {
   className?: string;
 }
 
-const LANGUAGES: { code: Language; label: string; flag: string }[] = [
-  { code: 'it', label: 'IT', flag: '🇮🇹' },
-  { code: 'en', label: 'EN', flag: '🇬🇧' },
-  { code: 'de', label: 'DE', flag: '🇩🇪' },
+const LANGUAGES: { code: Language; label: string }[] = [
+  { code: 'it', label: 'IT' },
+  { code: 'en', label: 'EN' },
+  { code: 'de', label: 'DE' },
 ];
 
 export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
@@ -20,27 +20,30 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
 }) => {
   return (
     <div
-      className={`inline-flex items-center bg-slate-100/90 hover:bg-slate-200/70 p-1 rounded-full border border-slate-200 shadow-inner transition-colors ${className}`}
+      className={`inline-flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-inner flex-shrink-0 ${className}`}
       role="group"
       aria-label="Language selector"
     >
-      {LANGUAGES.map(({ code, label, flag }) => {
+      {LANGUAGES.map(({ code, label }) => {
         const isActive = currentLang === code;
         return (
           <button
             key={code}
             type="button"
-            onClick={() => onLanguageChange(code)}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-extrabold uppercase transition-all duration-200 cursor-pointer ${
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onLanguageChange(code);
+            }}
+            className={`px-3 py-1 rounded-lg text-xs font-black uppercase transition-all duration-150 cursor-pointer ${
               isActive
-                ? 'bg-white text-slate-900 shadow-[0_2px_8px_rgba(0,0,0,0.12)] scale-100 font-black ring-1 ring-slate-900/5'
-                : 'text-slate-500 hover:text-slate-900 hover:bg-white/40'
+                ? 'bg-white text-emerald-700 shadow-xs ring-1 ring-slate-900/5'
+                : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'
             }`}
             aria-label={`Switch to ${label}`}
             aria-pressed={isActive}
           >
-            <span className="text-xs">{flag}</span>
-            <span>{label}</span>
+            {label}
           </button>
         );
       })}

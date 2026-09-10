@@ -5,11 +5,11 @@ interface LogoProps {
   showBadge?: boolean;
 }
 
-export const Logo: React.FC<LogoProps> = ({ className = 'h-8', showBadge = true }) => {
+export const Logo: React.FC<LogoProps> = ({ className = '', showBadge = true }) => {
   return (
-    <div className={`flex items-center gap-2.5 select-none ${className}`}>
+    <div className={`flex items-center gap-3 select-none flex-shrink-0 ${className}`}>
       {/* Modern Shield + Document + Conversion SVG Icon */}
-      <div className="relative w-9 h-9 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-emerald-500/25 text-white flex-shrink-0 ring-1 ring-white/20">
+      <div className="relative w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-600 to-indigo-600 flex items-center justify-center shadow-md shadow-emerald-500/25 text-white flex-shrink-0 ring-1 ring-white/20">
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -32,18 +32,18 @@ export const Logo: React.FC<LogoProps> = ({ className = 'h-8', showBadge = true 
         </span>
       </div>
 
-      <div className="flex flex-col text-left">
-        <div className="flex items-center gap-1.5">
+      <div className="flex flex-col text-left justify-center">
+        <div className="flex items-center gap-1.5 leading-none">
           <span className="text-xl font-black tracking-tight text-slate-900">
             My<span className="text-emerald-600">Pdf</span>Tools
           </span>
           {showBadge && (
-            <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-xs">
+            <span className="text-[10px] font-black uppercase px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs">
               PRO
             </span>
           )}
         </div>
-        <span className="text-[9px] font-bold text-slate-400 -mt-0.5 tracking-wider uppercase">
+        <span className="text-[10px] font-bold text-slate-400 mt-1 tracking-wider uppercase leading-none">
           100% Private • Browser-Native
         </span>
       </div>
