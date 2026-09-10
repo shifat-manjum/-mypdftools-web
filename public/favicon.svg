@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+    <linearGradient id="pdfBadge" x1="13" y1="29" x2="51" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ef4444" />
+      <stop offset="100%" stop-color="#dc2626" />
+    </linearGradient>
+  </defs>
+
+  <!-- App Squircle Badge -->
+  <rect width="64" height="64" rx="16" fill="url(#bgGrad)" />
+
+  <!-- Document Sheet -->
+  <path d="M18 13C18 11.3431 19.3431 10 21 10H37L47 20V51C47 52.6569 45.6569 54 44 54H21C19.3431 54 18 52.6569 18 51V13Z" fill="#FFFFFF" />
+
+  <!-- Corner Fold Flap -->
+  <path d="M37 10V18C37 19.1046 37.8954 20 39 20H47L37 10Z" fill="#CBD5E1" />
+
+  <!-- Red "PDF" Badge Overlay -->
+  <rect x="13" y="28" width="38" height="17" rx="4.5" fill="url(#pdfBadge)" />
+
+  <!-- "PDF" Text -->
+  <text x="32" y="41" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="900" letter-spacing="0.5" text-anchor="middle">PDF</text>
+</svg>
