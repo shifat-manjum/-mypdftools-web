@@ -210,6 +210,19 @@ export const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const scrollToTools = () => {
+    if (currentPath || currentToolId) {
+      navigateHome();
+      setTimeout(() => {
+        const el = document.getElementById('tools-catalog');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 120);
+    } else {
+      const el = document.getElementById('tools-catalog');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const activeTool = useMemo(() => {
     return TOOLS.find((tool) => tool.id === currentToolId) || null;
   }, [currentToolId]);
@@ -250,6 +263,8 @@ export const App: React.FC = () => {
         onOpenAboutModal={() => setAboutModalOpen(true)}
         onOpenAuthNotice={() => setAuthNoticeOpen(true)}
         onGoHome={navigateHome}
+        onSelectTool={navigateToTool}
+        onScrollToTools={scrollToTools}
       />
 
       {/* Main Content: SEO Landing Page, Tool View, or Catalog */}
@@ -289,13 +304,15 @@ export const App: React.FC = () => {
               onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
             />
 
-            <CategoryFilters
-              currentLang={currentLang}
-              activeCategory={activeCategory}
-              onSelectCategory={setActiveCategory}
-              searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
-            />
+            <div id="tools-catalog" className="scroll-mt-24">
+              <CategoryFilters
+                currentLang={currentLang}
+                activeCategory={activeCategory}
+                onSelectCategory={setActiveCategory}
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+              />
+            </div>
 
             {/* Tools Grid with Zentixx Box Shadows */}
             <section className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-10">
