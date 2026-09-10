@@ -119,6 +119,17 @@ export const App: React.FC = () => {
     }
   }, [currentLang, currentSeoRoute, currentToolId]);
 
+  // Google Analytics (GA4) pageview tracking on SPA navigation
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'page_view', {
+        page_title: document.title,
+        page_location: window.location.href,
+        page_path: window.location.pathname + window.location.hash,
+      });
+    }
+  }, [currentPath, currentToolId, currentLang]);
+
   // Clean pathname + fallback hash routing
   useEffect(() => {
     const syncRouteFromLocation = () => {
