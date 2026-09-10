@@ -289,11 +289,6 @@ export const App: React.FC = () => {
               onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
             />
 
-            {/* Top Leaderboard Ad Slot */}
-            <div className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-10 mb-6">
-              <AdBanner format="horizontal" />
-            </div>
-
             <CategoryFilters
               currentLang={currentLang}
               activeCategory={activeCategory}
