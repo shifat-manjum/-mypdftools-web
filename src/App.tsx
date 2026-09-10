@@ -9,6 +9,8 @@ const ToolPage = React.lazy(() => import('./components/ToolPage').then(m => ({ d
 const PrivacyModal = React.lazy(() => import('./components/PrivacyModal').then(m => ({ default: m.PrivacyModal })));
 const AboutModal = React.lazy(() => import('./components/AboutModal').then(m => ({ default: m.AboutModal })));
 const AuthNoticeModal = React.lazy(() => import('./components/AuthNoticeModal').then(m => ({ default: m.AuthNoticeModal })));
+const LegalModal = React.lazy(() => import('./components/LegalModal').then(m => ({ default: m.LegalModal })));
+import type { LegalTab } from './components/LegalModal';
 import { TOOLS } from './data/tools';
 import { ToolCategory } from './types';
 import { Language, TRANSLATIONS } from './i18n/translations';
@@ -62,6 +64,10 @@ export const App: React.FC = () => {
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
   const [aboutModalOpen, setAboutModalOpen] = useState(false);
   const [authNoticeOpen, setAuthNoticeOpen] = useState(false);
+  const [legalModalState, setLegalModalState] = useState<{ isOpen: boolean; tab: LegalTab }>({
+    isOpen: false,
+    tab: 'privacy',
+  });
 
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.it;
 
@@ -86,11 +92,17 @@ export const App: React.FC = () => {
     }
   }, [currentLang]);
 
-  // Hash-based routing to support direct URLs like www.mypdftools.it/#/jpg-to-pdf
+  // Hash-based routing to support direct URLs like www.mypdftools.it/#/jpg-to-pdf, #/privacy-policy, etc.
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace(/^#\/?/, '');
-      if (hash && TOOLS.some((tool) => tool.id === hash)) {
+      if (hash === 'privacy-policy') {
+        setLegalModalState({ isOpen: true, tab: 'privacy' });
+      } else if (hash === 'terms-of-service') {
+        setLegalModalState({ isOpen: true, tab: 'terms' });
+      } else if (hash === 'cookie-policy') {
+        setLegalModalState({ isOpen: true, tab: 'cookies' });
+      } else if (hash && TOOLS.some((tool) => tool.id === hash)) {
         setCurrentToolId(hash);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
@@ -329,7 +341,9 @@ export const App: React.FC = () => {
               <button onClick={() => navigateToTool('pdf-to-jpg')} className="hover:text-emerald-600 cursor-pointer">{t.tools['pdf-to-jpg']?.title || 'PDF to JPG'}</button>
               <button onClick={() => navigateToTool('merge-pdf')} className="hover:text-emerald-600 cursor-pointer">{t.tools['merge-pdf']?.title || 'Merge PDF'}</button>
               <button onClick={() => navigateToTool('split-pdf')} className="hover:text-emerald-600 cursor-pointer">{t.tools['split-pdf']?.title || 'Split PDF'}</button>
-              <button onClick={() => navigateToTool('sign-pdf')} className="hover:text-emerald-600 cursor-pointer">{t.tools['sign-pdf']?.title || 'Sign PDF'}</button>
+              <button onClick={() => setLegalModalState({ isOpen: true, tab: 'privacy' })} className="text-slate-800 hover:text-emerald-600 cursor-pointer font-bold">{currentLang === 'it' ? 'Privacy Policy' : currentLang === 'de' ? 'Datenschutz' : 'Privacy Policy'}</button>
+              <button onClick={() => setLegalModalState({ isOpen: true, tab: 'terms' })} className="text-slate-800 hover:text-emerald-600 cursor-pointer font-bold">{currentLang === 'it' ? 'Termini di Servizio' : currentLang === 'de' ? 'AGB' : 'Terms of Service'}</button>
+              <button onClick={() => setLegalModalState({ isOpen: true, tab: 'cookies' })} className="text-slate-800 hover:text-emerald-600 cursor-pointer font-bold">Cookie Policy</button>
               <button onClick={() => setPrivacyModalOpen(true)} className="text-emerald-600 font-black hover:underline cursor-pointer">{t.footer.privacyGuarantee}</button>
               <button onClick={() => setAboutModalOpen(true)} className="text-slate-800 font-black hover:text-emerald-600 cursor-pointer">{currentLang === 'it' ? 'Chi Siamo (Founder)' : currentLang === 'de' ? 'Über uns (Gründer)' : 'About (Founder)'}</button>
             </div>
@@ -367,6 +381,17 @@ export const App: React.FC = () => {
             isOpen={authNoticeOpen}
             currentLang={currentLang}
             onClose={() => setAuthNoticeOpen(false)}
+          />
+        </Suspense>
+      )}
+
+      {legalModalState.isOpen && (
+        <Suspense fallback={null}>
+          <LegalModal
+            isOpen={legalModalState.isOpen}
+            initialTab={legalModalState.tab}
+            currentLang={currentLang}
+            onClose={() => setLegalModalState((prev) => ({ ...prev, isOpen: false }))}
           />
         </Suspense>
       )}
