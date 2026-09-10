@@ -1,24 +1,34 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { ToolItem } from '../types';
 import { Language, TRANSLATIONS } from '../i18n/translations';
 import { SEO_DATA } from '../data/seoContent';
 import { TOOLS } from '../data/tools';
 import { AdBanner } from './AdBanner';
 import { ShieldCheck, HelpCircle, ArrowLeft } from 'lucide-react';
-import * as Icons from 'lucide-react';
+import { ToolIcon } from './ToolIcon';
 
-import { JpgToPdfTool } from '../tools/JpgToPdfTool';
-import { PdfToJpgTool } from '../tools/PdfToJpgTool';
-import { MergePdfTool } from '../tools/MergePdfTool';
-import { SplitPdfTool } from '../tools/SplitPdfTool';
-import { RotatePdfTool } from '../tools/RotatePdfTool';
-import { OrganizePdfTool } from '../tools/OrganizePdfTool';
-import { WatermarkPdfTool } from '../tools/WatermarkPdfTool';
-import { PageNumbersTool } from '../tools/PageNumbersTool';
-import { ProtectPdfTool } from '../tools/ProtectPdfTool';
-import { SignPdfTool } from '../tools/SignPdfTool';
-import { PdfToMarkdownTool } from '../tools/PdfToMarkdownTool';
-import { GenericPdfTool } from '../tools/GenericPdfTool';
+const JpgToPdfTool = React.lazy(() => import('../tools/JpgToPdfTool').then(m => ({ default: m.JpgToPdfTool })));
+const PdfToJpgTool = React.lazy(() => import('../tools/PdfToJpgTool').then(m => ({ default: m.PdfToJpgTool })));
+const MergePdfTool = React.lazy(() => import('../tools/MergePdfTool').then(m => ({ default: m.MergePdfTool })));
+const SplitPdfTool = React.lazy(() => import('../tools/SplitPdfTool').then(m => ({ default: m.SplitPdfTool })));
+const RotatePdfTool = React.lazy(() => import('../tools/RotatePdfTool').then(m => ({ default: m.RotatePdfTool })));
+const OrganizePdfTool = React.lazy(() => import('../tools/OrganizePdfTool').then(m => ({ default: m.OrganizePdfTool })));
+const WatermarkPdfTool = React.lazy(() => import('../tools/WatermarkPdfTool').then(m => ({ default: m.WatermarkPdfTool })));
+const PageNumbersTool = React.lazy(() => import('../tools/PageNumbersTool').then(m => ({ default: m.PageNumbersTool })));
+const ProtectPdfTool = React.lazy(() => import('../tools/ProtectPdfTool').then(m => ({ default: m.ProtectPdfTool })));
+const SignPdfTool = React.lazy(() => import('../tools/SignPdfTool').then(m => ({ default: m.SignPdfTool })));
+const PdfToMarkdownTool = React.lazy(() => import('../tools/PdfToMarkdownTool').then(m => ({ default: m.PdfToMarkdownTool })));
+const GenericPdfTool = React.lazy(() => import('../tools/GenericPdfTool').then(m => ({ default: m.GenericPdfTool })));
+
+const ToolLoadingFallback: React.FC = () => (
+  <div className="bg-white/90 backdrop-blur-md rounded-3xl p-16 border border-slate-200/80 shadow-sm flex flex-col items-center justify-center min-h-[380px]">
+    <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center mb-4 border border-emerald-100 shadow-xs">
+      <div className="w-6 h-6 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+    <div className="h-4 w-40 bg-slate-200 rounded-full mb-2 animate-pulse"></div>
+    <div className="h-3 w-56 bg-slate-100 rounded-full animate-pulse"></div>
+  </div>
+);
 
 interface ToolPageProps {
   tool: ToolItem;
@@ -41,7 +51,6 @@ export const ToolPage: React.FC<ToolPageProps> = ({
   const description = localized?.description || tool.description;
 
   const seo = SEO_DATA[tool.id];
-  const IconComponent = (Icons as any)[tool.iconName] || Icons.FileText;
 
   const backLabel =
     currentLang === 'it'
@@ -126,7 +135,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3.5">
             <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${tool.iconBg} shadow-md`}>
-              <IconComponent className="w-6 h-6" />
+              <ToolIcon name={tool.iconName} className="w-6 h-6" />
             </div>
             <div>
               <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
@@ -153,8 +162,10 @@ export const ToolPage: React.FC<ToolPageProps> = ({
       <AdBanner format="horizontal" />
 
       {/* Main Interactive Tool Container with Zentixx Box Shadow */}
-      <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/90 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.08),0_10px_20px_-5px_rgba(0,0,0,0.04)] p-6 sm:p-8 ring-1 ring-slate-900/5">
-        {renderToolBody()}
+      <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-slate-200/90 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.08),0_10px_20px_-5px_rgba(0,0,0,0.04)] p-6 sm:p-8 ring-1 ring-slate-900/5 min-h-[380px]">
+        <Suspense fallback={<ToolLoadingFallback />}>
+          {renderToolBody()}
+        </Suspense>
       </div>
 
       {/* Trust Callout under Workspace */}
@@ -230,7 +241,6 @@ export const ToolPage: React.FC<ToolPageProps> = ({
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {relatedTools.map((rel) => {
-            const RelIcon = (Icons as any)[rel.iconName] || Icons.FileText;
             const relLocalized = t.tools[rel.id];
             const relTitle = relLocalized?.title || rel.title;
             const relDesc = relLocalized?.description || rel.description;
@@ -242,7 +252,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({
                 className="bg-white/90 backdrop-blur-sm p-4 rounded-2xl border border-slate-200/90 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_16px_30px_-6px_rgba(16,185,129,0.15)] hover:border-emerald-500/50 hover:-translate-y-1 transition-all duration-300 text-left group flex flex-col justify-between cursor-pointer"
               >
                 <div className="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center mb-3 group-hover:bg-emerald-50 text-slate-700 group-hover:text-emerald-600 transition-colors shadow-2xs">
-                  <RelIcon className="w-4 h-4" />
+                  <ToolIcon name={rel.iconName} className="w-4 h-4" />
                 </div>
                 <div>
                   <h4 className="text-xs font-black text-slate-900 group-hover:text-emerald-600 transition-colors">

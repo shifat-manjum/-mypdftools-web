@@ -1,8 +1,8 @@
 import React from 'react';
 import { ToolItem } from '../types';
 import { Language, TRANSLATIONS } from '../i18n/translations';
-import * as Icons from 'lucide-react';
 import { ArrowRight } from 'lucide-react';
+import { ToolIcon } from './ToolIcon';
 
 interface ToolCardProps {
   tool: ToolItem;
@@ -11,7 +11,6 @@ interface ToolCardProps {
 }
 
 export const ToolCard: React.FC<ToolCardProps> = ({ tool, currentLang = 'it', onClick }) => {
-  const IconComponent = (Icons as any)[tool.iconName] || Icons.FileText;
 
   // Localized title & description
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.it;
@@ -38,7 +37,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, currentLang = 'it', on
           <div
             className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-sm ${tool.iconBg}`}
           >
-            <IconComponent className="w-6 h-6" />
+            <ToolIcon name={tool.iconName} className="w-6 h-6" />
           </div>
 
           {tool.badge && (

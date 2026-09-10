@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { CategoryFilters } from './components/CategoryFilters';
 import { ToolCard } from './components/ToolCard';
-import { ToolPage } from './components/ToolPage';
-import { PrivacyModal } from './components/PrivacyModal';
-import { AboutModal } from './components/AboutModal';
-import { AuthNoticeModal } from './components/AuthNoticeModal';
 import { AdBanner } from './components/AdBanner';
+
+const ToolPage = React.lazy(() => import('./components/ToolPage').then(m => ({ default: m.ToolPage })));
+const PrivacyModal = React.lazy(() => import('./components/PrivacyModal').then(m => ({ default: m.PrivacyModal })));
+const AboutModal = React.lazy(() => import('./components/AboutModal').then(m => ({ default: m.AboutModal })));
+const AuthNoticeModal = React.lazy(() => import('./components/AuthNoticeModal').then(m => ({ default: m.AuthNoticeModal })));
 import { TOOLS } from './data/tools';
 import { ToolCategory, ToolItem } from './types';
 import { Language, TRANSLATIONS } from './i18n/translations';
@@ -158,13 +159,20 @@ export const App: React.FC = () => {
       {/* Main Content: Tool View or Catalog */}
       <main className="flex-1 pb-20 relative z-10">
         {activeTool ? (
-          <ToolPage
-            tool={activeTool}
-            currentLang={currentLang}
-            onBackToHome={navigateHome}
-            onSelectOtherTool={navigateToTool}
-            onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
-          />
+          <Suspense fallback={
+            <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-10 py-20 flex flex-col items-center justify-center min-h-[450px]">
+              <div className="w-12 h-12 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4 shadow-sm"></div>
+              <p className="text-sm font-black text-slate-700">{t.nav.allTools}...</p>
+            </div>
+          }>
+            <ToolPage
+              tool={activeTool}
+              currentLang={currentLang}
+              onBackToHome={navigateHome}
+              onSelectOtherTool={navigateToTool}
+              onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
+            />
+          </Suspense>
         ) : (
           <div>
             <Hero
@@ -333,26 +341,36 @@ export const App: React.FC = () => {
         </div>
       </footer>
 
-      {/* Privacy Guarantee Modal */}
-      <PrivacyModal
-        isOpen={privacyModalOpen}
-        currentLang={currentLang}
-        onClose={() => setPrivacyModalOpen(false)}
-      />
+      {/* Modals rendered on-demand */}
+      {privacyModalOpen && (
+        <Suspense fallback={null}>
+          <PrivacyModal
+            isOpen={privacyModalOpen}
+            currentLang={currentLang}
+            onClose={() => setPrivacyModalOpen(false)}
+          />
+        </Suspense>
+      )}
 
-      {/* About & Founder Spotlight Modal */}
-      <AboutModal
-        isOpen={aboutModalOpen}
-        currentLang={currentLang}
-        onClose={() => setAboutModalOpen(false)}
-      />
+      {aboutModalOpen && (
+        <Suspense fallback={null}>
+          <AboutModal
+            isOpen={aboutModalOpen}
+            currentLang={currentLang}
+            onClose={() => setAboutModalOpen(false)}
+          />
+        </Suspense>
+      )}
 
-      {/* 100% Free Access Notice Modal */}
-      <AuthNoticeModal
-        isOpen={authNoticeOpen}
-        currentLang={currentLang}
-        onClose={() => setAuthNoticeOpen(false)}
-      />
+      {authNoticeOpen && (
+        <Suspense fallback={null}>
+          <AuthNoticeModal
+            isOpen={authNoticeOpen}
+            currentLang={currentLang}
+            onClose={() => setAuthNoticeOpen(false)}
+          />
+        </Suspense>
+      )}
     </div>
   );
 };
