@@ -1,28 +1,86 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <defs>
+    <!-- Background Squircle Gradient -->
     <linearGradient id="bgGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#022c22" />
+    </linearGradient>
+
+    <!-- 3D Top Sheet Gradient -->
+    <linearGradient id="sheetGrad" x1="14" y1="12" x2="48" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="45%" stop-color="#10b981" />
       <stop offset="100%" stop-color="#047857" />
     </linearGradient>
-    <linearGradient id="pdfBadge" x1="13" y1="29" x2="51" y2="46" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#ef4444" />
-      <stop offset="100%" stop-color="#dc2626" />
+
+    <!-- 3D Bottom Sheet / Depth Layer -->
+    <linearGradient id="depthGrad" x1="10" y1="20" x2="40" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#064e3b" />
     </linearGradient>
+
+    <!-- Fold Flap 3D Lighting -->
+    <linearGradient id="foldLight" x1="36" y1="12" x2="48" y2="24" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6ee7b7" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+
+    <!-- Fold Under Shadow -->
+    <linearGradient id="foldShadow" x1="36" y1="22" x2="46" y2="26" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#047857" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#022c22" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Floating Sheet Ambient Shadow -->
+    <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+
+    <filter id="sheetShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
   </defs>
 
-  <!-- App Squircle Badge -->
+  <!-- Squircle Container with Subtle Border -->
   <rect width="64" height="64" rx="16" fill="url(#bgGrad)" />
+  <rect x="0.5" y="0.5" width="63" height="63" rx="15.5" stroke="#10b981" stroke-opacity="0.25" />
 
-  <!-- Document Sheet -->
-  <path d="M18 13C18 11.3431 19.3431 10 21 10H37L47 20V51C47 52.6569 45.6569 54 44 54H21C19.3431 54 18 52.6569 18 51V13Z" fill="#FFFFFF" />
+  <!-- Ambient Glow Under Icon -->
+  <circle cx="32" cy="34" r="18" fill="#10b981" fill-opacity="0.2" filter="blur(8px)" />
 
-  <!-- Corner Fold Flap -->
-  <path d="M37 10V18C37 19.1046 37.8954 20 39 20H47L37 10Z" fill="#CBD5E1" />
+  <!-- 3D Isometric / Layered Back Sheet -->
+  <g filter="url(#sheetShadow)" opacity="0.6">
+    <path d="M14 22C14 19.7909 15.7909 18 18 18H36L46 28V46C46 48.2091 44.2091 50 42 50H18C15.7909 50 14 48.2091 14 46V22Z" fill="url(#depthGrad)" />
+  </g>
 
-  <!-- Red "PDF" Badge Overlay -->
-  <rect x="13" y="28" width="38" height="17" rx="4.5" fill="url(#pdfBadge)" />
+  <!-- 3D Isometric Middle Sheet Accent -->
+  <g filter="url(#sheetShadow)" opacity="0.85">
+    <path d="M17 17C17 14.7909 18.7909 13 21 13H39L49 23V43C49 45.2091 47.2091 47 45 47H21C18.7909 47 17 45.2091 17 43V17Z" fill="#059669" />
+    <path d="M39 13V21C39 22.1046 39.8954 23 41 23H49L39 13Z" fill="#34d399" />
+  </g>
 
-  <!-- "PDF" Text -->
-  <text x="32" y="41" fill="#FFFFFF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="900" letter-spacing="0.5" text-anchor="middle">PDF</text>
+  <!-- 3D Front Glowing Glass Sheet -->
+  <g filter="url(#dropShadow)">
+    <!-- Base Document -->
+    <path d="M20 12C20 9.79086 21.7909 8 24 8H40L50 18V40C50 42.2091 48.2091 44 46 44H24C21.7909 44 20 42.2091 20 40V12Z" fill="url(#sheetGrad)" />
+    
+    <!-- Crisp Inner Bevel Highlight -->
+    <path d="M21 12C21 10.3431 22.3431 9 24 9H39.5L49 18.5V40C49 41.6569 47.6569 43 46 43H24C22.3431 43 21 41.6569 21 40V12Z" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="0.8" />
+
+    <!-- 3D Fold Flap Shadow -->
+    <path d="M40 18H50L40 28V18Z" fill="url(#foldShadow)" />
+
+    <!-- 3D Folded Corner Flap -->
+    <path d="M40 8V16C40 17.1046 40.8954 18 42 18H50L40 8Z" fill="url(#foldLight)" />
+    <!-- Flap Highlight -->
+    <path d="M40 8L50 18" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="0.8" />
+
+    <!-- Elegant 3D Document Content Lines (Minimalist, No Clunky Text) -->
+    <rect x="26" y="24" width="16" height="2.5" rx="1.25" fill="#FFFFFF" fill-opacity="0.9" />
+    <rect x="26" y="29.5" width="12" height="2.5" rx="1.25" fill="#FFFFFF" fill-opacity="0.6" />
+    <rect x="26" y="35" width="18" height="2.5" rx="1.25" fill="#FFFFFF" fill-opacity="0.4" />
+
+    <!-- Corner Specular Glisten -->
+    <circle cx="23" cy="11" r="1.5" fill="#FFFFFF" fill-opacity="0.8" />
+  </g>
 </svg>
-
