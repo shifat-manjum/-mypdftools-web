@@ -1,0 +1,78 @@
+# MyPdfTools — Complete Guide & Documentation (llms-full.txt)
+
+> MyPdfTools is a 100% private, free, and in-browser PDF suite operating on https://www.mypdftools.it and https://www.mypdftools.de. Zero files are uploaded to external servers. All processing is executed strictly on the client's device memory.
+
+## Architecture & Privacy Guarantee
+
+MyPdfTools runs entirely client-side using JavaScript, WebAssembly, and Mozilla PDF.js workers. When a user opens any tool:
+- Files are loaded via FileReader API into local browser memory.
+- PDF manipulation and rendering are executed via pdf-lib and pdfjs-dist within the user's browser.
+- Converted outputs (such as images, merged PDFs, or ZIP archives) are generated in-memory and downloaded directly via Blob URLs.
+- No network requests containing document payload are ever dispatched.
+
+## Available PDF Tools
+
+### Merge PDF
+- URL: https://www.mypdftools.it/#/merge-pdf
+- Description: Combine multiple PDF files in any selected order into one PDF.
+- Features: Drag-and-drop file reordering, file size display, instantaneous in-browser merging.
+
+### Split PDF
+- URL: https://www.mypdftools.it/#/split-pdf
+- Description: Split single pages or custom page ranges into independent PDF files.
+- Features: Range selection (e.g. 1-3, 5), individual page extraction.
+
+### Compress PDF
+- URL: https://www.mypdftools.it/#/compress-pdf
+- Description: Optimize and compress PDF documents to reduce file size.
+- Features: Client-side stream optimization, image downscaling, quality preservation.
+
+### PDF to JPG
+- URL: https://www.mypdftools.it/#/pdf-to-jpg
+- Description: Convert PDF document pages into high-resolution JPG images.
+- Features: Multi-page rendering, instant single-image download, one-click ZIP archive packaging.
+
+### JPG to PDF
+- URL: https://www.mypdftools.it/#/jpg-to-pdf
+- Description: Convert images (JPG, PNG, WebP) into a formatted PDF document.
+- Features: Orientation selection (Portrait/Landscape), margin controls, custom page sizing.
+
+### Rotate PDF
+- URL: https://www.mypdftools.it/#/rotate-pdf
+- Description: Rotate pages of a PDF document by 90, 180, or 270 degrees.
+- Features: Rotate all pages or selected individual pages.
+
+### Organize PDF
+- URL: https://www.mypdftools.it/#/organize-pdf
+- Description: Reorder, delete, and duplicate PDF pages visually.
+- Features: Interactive page thumbnail grid, intuitive rearrangement.
+
+### Protect PDF
+- URL: https://www.mypdftools.it/#/protect-pdf
+- Description: Encrypt PDF files with 128-bit / 256-bit AES password protection.
+- Features: Strong client-side encryption.
+
+### Unlock PDF
+- URL: https://www.mypdftools.it/#/unlock-pdf
+- Description: Remove password security from password-protected PDF files when known.
+
+### Sign PDF
+- URL: https://www.mypdftools.it/#/sign-pdf
+- Description: Add drawn or typed electronic signatures and date stamps to PDF pages.
+
+### Watermark PDF
+- URL: https://www.mypdftools.it/#/watermark
+- Description: Overlay custom text or image watermarks with adjustable position and opacity.
+
+### Page Numbers
+- URL: https://www.mypdftools.it/#/page-numbers
+- Description: Add pagination numbers to top or bottom corners of PDF documents.
+
+### PDF to Markdown
+- URL: https://www.mypdftools.it/#/pdf-to-markdown
+- Description: Extract text formatting, headers, and tables from PDFs into structured Markdown.
+
+## Domain Mapping
+
+- https://www.mypdftools.it : Primary production portal serving Italian users.
+- https://www.mypdftools.de : Primary production portal serving German users.

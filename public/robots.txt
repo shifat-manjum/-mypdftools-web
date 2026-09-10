@@ -5,3 +5,6 @@ Allow: /
 Host: https://www.mypdftools.it
 Sitemap: https://www.mypdftools.it/sitemap.xml
 
+# LLM Crawler Guidance (llmstxt.org)
+# llms.txt: https://www.mypdftools.it/llms.txt
+# llms-full.txt: https://www.mypdftools.it/llms-full.txt

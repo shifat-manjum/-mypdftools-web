@@ -1,0 +1,30 @@
+# MyPdfTools — Free & Private In-Browser PDF Suite
+
+> MyPdfTools (https://www.mypdftools.it / https://www.mypdftools.de) is a 100% client-side, zero-server-upload PDF manipulation suite. All document rendering, parsing, merging, splitting, and conversions occur entirely inside the user's browser memory via WebAssembly and HTML5 Canvas. No document files are ever uploaded or transmitted over the network.
+
+## Core PDF Tools
+
+- [Merge PDF](https://www.mypdftools.it/#/merge-pdf): Combine multiple PDF documents into a single unified file in custom order.
+- [Split PDF](https://www.mypdftools.it/#/split-pdf): Separate PDF pages or extract custom page ranges into individual documents.
+- [Compress PDF](https://www.mypdftools.it/#/compress-pdf): Reduce PDF file size while preserving high visual quality.
+- [PDF to JPG](https://www.mypdftools.it/#/pdf-to-jpg): Convert each page of a PDF file into high-resolution JPG images packaged in a ZIP archive.
+- [JPG to PDF](https://www.mypdftools.it/#/jpg-to-pdf): Convert JPG, PNG, and WebP images into a standardized PDF document.
+- [Rotate PDF](https://www.mypdftools.it/#/rotate-pdf): Rotate individual or all PDF pages clockwise or counterclockwise.
+- [Organize PDF](https://www.mypdftools.it/#/organize-pdf): Reorder, duplicate, rotate, and delete specific pages within a PDF.
+- [Protect PDF](https://www.mypdftools.it/#/protect-pdf): Encrypt and password-protect sensitive PDF documents directly in the browser.
+- [Unlock PDF](https://www.mypdftools.it/#/unlock-pdf): Remove password security from protected PDFs.
+- [Sign PDF](https://www.mypdftools.it/#/sign-pdf): Add electronic signatures, initials, dates, and text stamps to contracts and forms.
+- [Watermark PDF](https://www.mypdftools.it/#/watermark): Stamp text or image watermarks with custom opacity and positioning.
+- [Page Numbers](https://www.mypdftools.it/#/page-numbers): Add sequential page numbers and headers/footers to PDF pages.
+- [PDF to Markdown](https://www.mypdftools.it/#/pdf-to-markdown): Extract formatted text and structured tables from PDF files into Markdown.
+
+## Regional Domains & Language Access
+
+- [MyPdfTools Italy](https://www.mypdftools.it/): Primary domain localized in Italian for users in Italy and Switzerland.
+- [MyPdfTools Germany](https://www.mypdftools.de/): Primary domain localized in German for users in Germany, Austria, and Switzerland.
+- [MyPdfTools Global](https://www.mypdftools.it/#/en): English localized interface for international users.
+
+## Optional
+
+- [Privacy & Security Architecture](https://www.mypdftools.it/): Detailed explanation of client-side execution, Web Workers, and zero data collection.
+- [XML Sitemap](https://www.mypdftools.it/sitemap.xml): Machine-readable XML sitemap index.
