@@ -1,10 +1,9 @@
 User-agent: *
 Allow: /
 
-# Host & Sitemap definition for Google Search Console & Bing Webmaster
-Host: https://www.mypdftools.it
+# Sitemap definitions for Google Search Console & Bing Webmaster
 Sitemap: https://www.mypdftools.it/sitemap.xml
+Sitemap: https://www.mypdftools.de/sitemap.xml
 
-# LLM Crawler Guidance (llmstxt.org)
+# LLM Crawler Guidance
 # llms.txt: https://www.mypdftools.it/llms.txt
-# llms-full.txt: https://www.mypdftools.it/llms-full.txt

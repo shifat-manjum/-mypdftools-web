@@ -6,6 +6,7 @@ import { ToolCard } from './components/ToolCard';
 import { AdBanner } from './components/AdBanner';
 
 const ToolPage = React.lazy(() => import('./components/ToolPage').then(m => ({ default: m.ToolPage })));
+const SeoPageLayout = React.lazy(() => import('./components/SeoPageLayout').then(m => ({ default: m.SeoPageLayout })));
 const PrivacyModal = React.lazy(() => import('./components/PrivacyModal').then(m => ({ default: m.PrivacyModal })));
 const AboutModal = React.lazy(() => import('./components/AboutModal').then(m => ({ default: m.AboutModal })));
 const AuthNoticeModal = React.lazy(() => import('./components/AuthNoticeModal').then(m => ({ default: m.AuthNoticeModal })));
@@ -14,6 +15,7 @@ import type { LegalTab } from './components/LegalModal';
 import { TOOLS } from './data/tools';
 import { ToolCategory } from './types';
 import { Language, TRANSLATIONS } from './i18n/translations';
+import { getSeoRoute, TOOL_TO_PRIMARY_SLUG } from './data/seoRoutes';
 import { ShieldCheck, Zap, Lock, WifiOff, ArrowUpRight } from 'lucide-react';
 
 // Automatically detect initial language based on URL query, saved preference, domain, or browser language
@@ -60,6 +62,15 @@ export const App: React.FC = () => {
   const [currentLang, setCurrentLang] = useState<Language>(getInitialLanguage);
   const [activeCategory, setActiveCategory] = useState<ToolCategory>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  // Helper to extract clean path from pathname or fallback to hash
+  const getPathFromLocation = (): string => {
+    if (typeof window === 'undefined') return '';
+    const rawPath = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+    const hash = window.location.hash.replace(/^#\/?/, '');
+    return rawPath || hash;
+  };
+
+  const [currentPath, setCurrentPath] = useState<string>(getPathFromLocation);
   const [currentToolId, setCurrentToolId] = useState<string | null>(null);
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
   const [aboutModalOpen, setAboutModalOpen] = useState(false);
@@ -80,47 +91,110 @@ export const App: React.FC = () => {
     }
   };
 
-  // Dynamic document title & HTML lang update based on active language
+  // Resolve current SEO route if matching path exists
+  const currentSeoRoute = useMemo(() => {
+    return getSeoRoute(currentPath);
+  }, [currentPath]);
+
+  // Synchronize language and active tool with SEO route
+  useEffect(() => {
+    if (currentSeoRoute) {
+      if (currentSeoRoute.lang && currentSeoRoute.lang !== currentLang) {
+        setCurrentLang(currentSeoRoute.lang);
+      }
+    }
+  }, [currentSeoRoute]);
+
+  // Dynamic document title & HTML lang update based on active language (when on home)
   useEffect(() => {
     document.documentElement.lang = currentLang;
-    if (currentLang === 'it') {
-      document.title = 'MyPdfTools — Strumenti PDF 100% Gratuiti e Privati (Zero Upload)';
-    } else if (currentLang === 'de') {
-      document.title = 'MyPdfTools — 100% Kostenlose & Private PDF-Tools (Kein Upload)';
-    } else {
-      document.title = 'MyPdfTools — 100% Free & Private In-Browser PDF Suite';
-    }
-  }, [currentLang]);
-
-  // Hash-based routing to support direct URLs like www.mypdftools.it/#/jpg-to-pdf, #/privacy-policy, etc.
-  useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace(/^#\/?/, '');
-      if (hash === 'privacy-policy') {
-        setLegalModalState({ isOpen: true, tab: 'privacy' });
-      } else if (hash === 'terms-of-service') {
-        setLegalModalState({ isOpen: true, tab: 'terms' });
-      } else if (hash === 'cookie-policy') {
-        setLegalModalState({ isOpen: true, tab: 'cookies' });
-      } else if (hash && TOOLS.some((tool) => tool.id === hash)) {
-        setCurrentToolId(hash);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!currentSeoRoute && !currentToolId) {
+      if (currentLang === 'it') {
+        document.title = 'MyPdfTools — Strumenti PDF 100% Gratuiti e Privati (Zero Upload)';
+      } else if (currentLang === 'de') {
+        document.title = 'MyPdfTools — 100% Kostenlose & Private PDF-Tools (Kein Upload)';
       } else {
+        document.title = 'MyPdfTools — 100% Free & Private In-Browser PDF Suite';
+      }
+    }
+  }, [currentLang, currentSeoRoute, currentToolId]);
+
+  // Clean pathname + fallback hash routing
+  useEffect(() => {
+    const syncRouteFromLocation = () => {
+      const activeRouteSlug = getPathFromLocation();
+
+      if (activeRouteSlug === 'privacy-policy') {
+        setLegalModalState({ isOpen: true, tab: 'privacy' });
+      } else if (activeRouteSlug === 'terms-of-service') {
+        setLegalModalState({ isOpen: true, tab: 'terms' });
+      } else if (activeRouteSlug === 'cookie-policy') {
+        setLegalModalState({ isOpen: true, tab: 'cookies' });
+      }
+
+      setCurrentPath(activeRouteSlug);
+
+      const seo = getSeoRoute(activeRouteSlug);
+      if (seo) {
+        setCurrentToolId(seo.toolId);
+        if (seo.lang && (seo.lang === 'it' || seo.lang === 'de')) {
+          setCurrentLang(seo.lang);
+        }
+      } else if (TOOLS.some((tool) => tool.id === activeRouteSlug)) {
+        setCurrentToolId(activeRouteSlug);
+      } else if (!activeRouteSlug) {
         setCurrentToolId(null);
       }
     };
 
-    handleHashChange();
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    syncRouteFromLocation();
+    window.addEventListener('popstate', syncRouteFromLocation);
+    window.addEventListener('hashchange', syncRouteFromLocation);
+    return () => {
+      window.removeEventListener('popstate', syncRouteFromLocation);
+      window.removeEventListener('hashchange', syncRouteFromLocation);
+    };
   }, []);
 
+  const navigateToPath = (path: string) => {
+    const clean = path.replace(/^\/+/, '').replace(/\/+$/, '');
+    if (!clean) {
+      navigateHome();
+      return;
+    }
+    if (window.location.hash) {
+      window.history.replaceState(null, '', `/${clean}`);
+    } else {
+      window.history.pushState(null, '', `/${clean}`);
+    }
+    setCurrentPath(clean);
+    const seo = getSeoRoute(clean);
+    if (seo) {
+      setCurrentToolId(seo.toolId);
+      if (seo.lang && (seo.lang === 'it' || seo.lang === 'de')) {
+        setCurrentLang(seo.lang);
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const navigateToTool = (toolId: string) => {
-    window.location.hash = `#/${toolId}`;
+    const primarySlug = TOOL_TO_PRIMARY_SLUG[toolId]?.[currentLang] || TOOL_TO_PRIMARY_SLUG[toolId]?.it;
+    if (primarySlug) {
+      navigateToPath(primarySlug);
+    } else {
+      window.history.pushState(null, '', `/${toolId}`);
+      setCurrentPath(toolId);
+      setCurrentToolId(toolId);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const navigateHome = () => {
-    window.location.hash = '';
+    if (window.location.pathname !== '/' || window.location.hash) {
+      window.history.pushState(null, '', '/');
+    }
+    setCurrentPath('');
     setCurrentToolId(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -167,9 +241,22 @@ export const App: React.FC = () => {
         onGoHome={navigateHome}
       />
 
-      {/* Main Content: Tool View or Catalog */}
+      {/* Main Content: SEO Landing Page, Tool View, or Catalog */}
       <main className="flex-1 pb-20 relative z-10">
-        {activeTool ? (
+        {currentSeoRoute ? (
+          <Suspense fallback={
+            <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-10 py-20 flex flex-col items-center justify-center min-h-[450px]">
+              <div className="w-12 h-12 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4 shadow-sm"></div>
+              <p className="text-sm font-black text-slate-700">{t.nav.allTools}...</p>
+            </div>
+          }>
+            <SeoPageLayout
+              routeData={currentSeoRoute}
+              onNavigate={navigateToPath}
+              onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
+            />
+          </Suspense>
+        ) : activeTool ? (
           <Suspense fallback={
             <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-10 py-20 flex flex-col items-center justify-center min-h-[450px]">
               <div className="w-12 h-12 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4 shadow-sm"></div>
