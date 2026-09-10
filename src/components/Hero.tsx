@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language, TRANSLATIONS } from '../i18n/translations';
-import { ShieldCheck, WifiOff, Sparkles } from 'lucide-react';
+import { ShieldCheck, WifiOff } from 'lucide-react';
 
 interface HeroProps {
   currentLang: Language;

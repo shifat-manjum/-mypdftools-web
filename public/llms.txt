@@ -28,3 +28,4 @@
 
 - [Privacy & Security Architecture](https://www.mypdftools.it/): Detailed explanation of client-side execution, Web Workers, and zero data collection.
 - [XML Sitemap](https://www.mypdftools.it/sitemap.xml): Machine-readable XML sitemap index.
+

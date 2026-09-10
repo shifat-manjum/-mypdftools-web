@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language } from '../i18n/translations';
-import { X, ShieldCheck, Heart, Sparkles, ExternalLink, Mail, Globe, Award, Code2 } from 'lucide-react';
+import { X, ShieldCheck, Sparkles, ExternalLink, Mail, Award } from 'lucide-react';
 
 interface AboutModalProps {
   isOpen: boolean;

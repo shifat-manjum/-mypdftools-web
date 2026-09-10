@@ -10,7 +10,7 @@ const PrivacyModal = React.lazy(() => import('./components/PrivacyModal').then(m
 const AboutModal = React.lazy(() => import('./components/AboutModal').then(m => ({ default: m.AboutModal })));
 const AuthNoticeModal = React.lazy(() => import('./components/AuthNoticeModal').then(m => ({ default: m.AuthNoticeModal })));
 import { TOOLS } from './data/tools';
-import { ToolCategory, ToolItem } from './types';
+import { ToolCategory } from './types';
 import { Language, TRANSLATIONS } from './i18n/translations';
 import { ShieldCheck, Zap, Lock, WifiOff, ArrowUpRight } from 'lucide-react';
 
@@ -149,7 +149,6 @@ export const App: React.FC = () => {
       <Navbar
         currentLang={currentLang}
         onLanguageChange={handleLanguageChange}
-        onSelectTool={navigateToTool}
         onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
         onOpenAboutModal={() => setAboutModalOpen(true)}
         onOpenAuthNotice={() => setAuthNoticeOpen(true)}

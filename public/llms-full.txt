@@ -76,3 +76,4 @@ MyPdfTools runs entirely client-side using JavaScript, WebAssembly, and Mozilla 
 
 - https://www.mypdftools.it : Primary production portal serving Italian users.
 - https://www.mypdftools.de : Primary production portal serving German users.
+

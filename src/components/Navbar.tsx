@@ -7,7 +7,6 @@ import { ShieldCheck, Sparkles, Menu, X } from 'lucide-react';
 interface NavbarProps {
   currentLang: Language;
   onLanguageChange: (lang: Language) => void;
-  onSelectTool: (toolId: string) => void;
   onOpenPrivacyModal: () => void;
   onOpenAboutModal: () => void;
   onOpenAuthNotice: () => void;

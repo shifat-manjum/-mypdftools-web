@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language } from '../i18n/translations';
-import { X, Sparkles, CheckCircle2, ShieldCheck, Zap, Heart } from 'lucide-react';
+import { X, Sparkles, CheckCircle2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface AuthNoticeModalProps {
