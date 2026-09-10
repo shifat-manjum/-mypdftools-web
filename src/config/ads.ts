@@ -10,8 +10,8 @@ export const ADS_CONFIG = {
   // Set to true once your Google AdSense account is approved
   enabled: false,
 
-  // Your AdSense Publisher ID (e.g., 'ca-pub-1234567890123456')
-  adClient: 'ca-pub-XXXXXXXXXXXXXXXX',
+  // Your AdSense Publisher ID
+  adClient: 'ca-pub-3502815676488440',
 
   slots: {
     // Top leaderboard banner (728x90 desktop / 320x50 mobile)

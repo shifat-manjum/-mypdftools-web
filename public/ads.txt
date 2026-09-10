@@ -1,5 +1,5 @@
 # Google AdSense ads.txt for MyPdfTools
 # Domain: https://www.mypdftools.it & https://www.mypdftools.de
-# Once approved in Google AdSense, replace pub-0000000000000000 with your real AdSense Publisher ID
-google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+google.com, pub-3502815676488440, DIRECT, f08c47fec0942fa0
+
 
