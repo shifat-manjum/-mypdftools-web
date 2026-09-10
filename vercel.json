@@ -2,6 +2,20 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/sitemap.xml",
+      "has": [
+        {
+          "type": "host",
+          "value": "(.*)mypdftools\\.de"
+        }
+      ],
+      "destination": "/sitemap-de.xml"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/sitemap-it.xml"
+    },
+    {
       "source": "/((?!assets/|.*\\..*).*)",
       "destination": "/index.html"
     }
@@ -47,7 +61,7 @@
       ]
     },
     {
-      "source": "/sitemap.xml",
+      "source": "/(sitemap.*\\.xml)",
       "headers": [
         {
           "key": "Content-Type",
