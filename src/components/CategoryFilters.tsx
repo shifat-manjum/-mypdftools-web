@@ -32,7 +32,7 @@ export const CategoryFilters: React.FC<CategoryFiltersProps> = ({
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8" id="all-tools-section">
+    <div className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-10 mb-8" id="all-tools-section">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">

@@ -11,7 +11,7 @@ export const Hero: React.FC<HeroProps> = ({ currentLang = 'it', onOpenPrivacyMod
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.it;
 
   return (
-    <section className="pt-10 pb-8 text-center px-4 max-w-4xl mx-auto">
+    <section className="pt-12 pb-10 text-center px-4 max-w-5xl mx-auto">
       {/* Trust Pill */}
       <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-emerald-200/80 text-emerald-800 text-xs font-black mb-5 shadow-xs">
         <span className="flex h-2 w-2 relative">
@@ -28,7 +28,7 @@ export const Hero: React.FC<HeroProps> = ({ currentLang = 'it', onOpenPrivacyMod
         </span>
       </h1>
 
-      <p className="mt-4 text-sm sm:text-base md:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
+      <p className="mt-4 text-sm sm:text-base md:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed font-medium">
         {t.hero.subtitle}
       </p>
 

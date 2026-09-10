@@ -173,7 +173,7 @@ export const App: React.FC = () => {
             />
 
             {/* Top Leaderboard Ad Slot */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+            <div className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-10 mb-6">
               <AdBanner format="horizontal" />
             </div>
 
@@ -186,7 +186,7 @@ export const App: React.FC = () => {
             />
 
             {/* Tools Grid with Zentixx Box Shadows */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <section className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-10">
               {filteredTools.length === 0 ? (
                 <div className="text-center py-16 bg-white/90 backdrop-blur-md rounded-3xl border border-slate-200 shadow-sm">
                   <p className="text-sm font-bold text-slate-500">
@@ -242,12 +242,12 @@ export const App: React.FC = () => {
             </section>
 
             {/* Bottom Content Ad Slot */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+            <div className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-10 mt-12">
               <AdBanner format="horizontal" />
             </div>
 
             {/* Privacy & Trust Proof Section */}
-            <section className="max-w-5xl mx-auto mt-16 px-4">
+            <section className="max-w-[1500px] mx-auto mt-16 px-4 sm:px-6 lg:px-10">
               <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white rounded-3xl p-8 sm:p-12 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3)] border border-slate-700/60 ring-1 ring-white/10 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -312,7 +312,7 @@ export const App: React.FC = () => {
 
       {/* Footer with Language Options */}
       <footer className="bg-white/90 backdrop-blur-xl border-t border-slate-200/80 py-10 text-center text-xs text-slate-500 relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-10 space-y-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-xs text-slate-500 font-medium">
               © {new Date().getFullYear()} MyPdfTools (mypdftools.it • mypdftools.de). {t.footer.rights}

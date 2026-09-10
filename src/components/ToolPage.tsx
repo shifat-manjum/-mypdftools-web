@@ -112,7 +112,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({
   const relatedTools = TOOLS.filter((t) => t.id !== tool.id).slice(0, 4);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
+    <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-10 py-8 space-y-10">
       {/* Breadcrumb & Title */}
       <div>
         <button
