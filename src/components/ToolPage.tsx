@@ -135,7 +135,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3.5">
             <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${tool.iconBg} shadow-md`}>
-              <ToolIcon name={tool.iconName} className="w-6 h-6" />
+              <ToolIcon name={tool.iconName} toolId={tool.id} className="w-7 h-7" />
             </div>
             <div>
               <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
@@ -252,7 +252,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({
                 className="bg-white/90 backdrop-blur-sm p-4 rounded-2xl border border-slate-200/90 shadow-[0_8px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_16px_30px_-6px_rgba(16,185,129,0.15)] hover:border-emerald-500/50 hover:-translate-y-1 transition-all duration-300 text-left group flex flex-col justify-between cursor-pointer"
               >
                 <div className="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center mb-3 group-hover:bg-emerald-50 text-slate-700 group-hover:text-emerald-600 transition-colors shadow-2xs">
-                  <ToolIcon name={rel.iconName} className="w-4 h-4" />
+                  <ToolIcon name={rel.iconName} toolId={rel.id} className="w-5 h-5" />
                 </div>
                 <div>
                   <h4 className="text-xs font-black text-slate-900 group-hover:text-emerald-600 transition-colors">

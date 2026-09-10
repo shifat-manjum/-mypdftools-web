@@ -134,7 +134,7 @@ export const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-start sm:items-center gap-3.5">
             <div className={`w-13 h-13 rounded-2xl flex items-center justify-center ${toolItem.iconBg} shadow-md flex-shrink-0`}>
-              <ToolIcon name={toolItem.iconName} className="w-7 h-7" />
+              <ToolIcon name={toolItem.iconName} toolId={toolItem.id} className="w-8 h-8" />
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -290,7 +290,7 @@ export const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
                 >
                   <div>
                     <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center mb-3 group-hover:bg-emerald-50 text-slate-700 group-hover:text-emerald-600 transition-colors">
-                      <ToolIcon name={relTool.iconName} className="w-5 h-5" />
+                      <ToolIcon name={relTool.iconName} toolId={relTool.id} className="w-5 h-5" />
                     </div>
                     <h4 className="text-xs font-black text-slate-900 group-hover:text-emerald-600 transition-colors leading-snug">
                       {relTitle}

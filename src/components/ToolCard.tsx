@@ -37,7 +37,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, currentLang = 'it', on
           <div
             className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-sm ${tool.iconBg}`}
           >
-            <ToolIcon name={tool.iconName} className="w-6 h-6" />
+            <ToolIcon name={tool.iconName} toolId={tool.id} className="w-7 h-7" />
           </div>
 
           {tool.badge && (
