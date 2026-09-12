@@ -4,6 +4,8 @@ import { Hero } from './components/Hero';
 import { CategoryFilters } from './components/CategoryFilters';
 import { ToolCard } from './components/ToolCard';
 import { AdBanner } from './components/AdBanner';
+import { InstallPwaBanner } from './components/InstallPwaBanner';
+import { ProfessionalTrustSection } from './components/ProfessionalTrustSection';
 
 const ToolPage = React.lazy(() => import('./components/ToolPage').then(m => ({ default: m.ToolPage })));
 const SeoPageLayout = React.lazy(() => import('./components/SeoPageLayout').then(m => ({ default: m.SeoPageLayout })));
@@ -375,6 +377,12 @@ export const App: React.FC = () => {
               <AdBanner format="horizontal" />
             </div>
 
+            {/* Professional & GDPR Compliance Section for Accountants, Lawyers, HR & Freelancers */}
+            <ProfessionalTrustSection
+              currentLang={currentLang}
+              onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
+            />
+
             {/* Privacy & Trust Proof Section */}
             <section className="max-w-[1500px] mx-auto mt-16 px-4 sm:px-6 lg:px-10">
               <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white rounded-3xl p-8 sm:p-12 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3)] border border-slate-700/60 ring-1 ring-white/10 relative overflow-hidden">
@@ -505,6 +513,9 @@ export const App: React.FC = () => {
           />
         </Suspense>
       )}
+
+      {/* PWA Install & Quick Bookmark Prompt */}
+      <InstallPwaBanner language={currentLang} />
     </div>
   );
 };

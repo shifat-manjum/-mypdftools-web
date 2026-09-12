@@ -21,6 +21,7 @@ export interface Translations {
     subtitle: string;
     privacyButton: string;
     worksOffline: string;
+    complianceBadge?: string;
   };
   categories: {
     all: string;
@@ -83,6 +84,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       subtitle: 'Unisci, dividi, comprimi, converti, firma e organizza i tuoi PDF senza mai inviare i tuoi file riservati su Internet. 100% Gratuito e sicuro.',
       privacyButton: 'Vedi la Garanzia di Privacy',
       worksOffline: 'Funziona offline senza connessione internet',
+      complianceBadge: '⚖️ Conforme GDPR Art. 28 • Certificato per Fisco, Legale & HR',
     },
     categories: {
       all: 'Tutti',
@@ -269,6 +271,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       subtitle: 'Merge, split, compress, convert, sign, and organize your PDFs without ever sending your sensitive files across the internet. 100% Free and secure.',
       privacyButton: 'See our Privacy Guarantee',
       worksOffline: 'Works offline without internet',
+      complianceBadge: '⚖️ GDPR Art. 28 Compliant • Certified for Tax, Legal & HR',
     },
     categories: {
       all: 'All',
@@ -455,6 +458,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       subtitle: 'Zusammenfügen, teilen, komprimieren, konvertieren und unterschreiben Sie PDFs, ohne Ihre sensiblen Daten über das Internet zu senden. 100% kostenlos und sicher.',
       privacyButton: 'Datenschutzgarantie ansehen',
       worksOffline: 'Funktioniert offline ohne Internetverbindung',
+      complianceBadge: '⚖️ DSGVO Art. 28 Konform • Zertifiziert für Steuern, Recht & HR',
     },
     categories: {
       all: 'Alle',

@@ -47,6 +47,13 @@ export const Hero: React.FC<HeroProps> = ({ currentLang = 'it', onOpenPrivacyMod
           <span>{t.hero.worksOffline}</span>
         </div>
       </div>
+
+      {/* Professional & GDPR Compliance Pill */}
+      {t.hero.complianceBadge && (
+        <div className="mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 text-[11px] sm:text-xs font-bold shadow-2xs">
+          <span>{t.hero.complianceBadge}</span>
+        </div>
+      )}
     </section>
   );
 };

@@ -252,7 +252,8 @@ async function runPrerender() {
     const hreflangTags = `
     <link rel="alternate" hreflang="it" href="${route.hreflang.it}" />
     <link rel="alternate" hreflang="de" href="${route.hreflang.de}" />
-    <link rel="alternate" hreflang="x-default" href="${route.hreflang.it}" />`;
+    ${route.hreflang.en ? `<link rel="alternate" hreflang="en" href="${route.hreflang.en}" />` : ''}
+    <link rel="alternate" hreflang="x-default" href="${route.hreflang.en || route.hreflang.it}" />`;
 
     // Replace the old hreflang block or inject before </head>
     pageHtml = pageHtml.replace(/<!-- Multi-Language Hreflang [\s\S]*?<!-- Open Graph/, `${hreflangTags}\n\n    <!-- Open Graph`);
@@ -276,7 +277,7 @@ async function runPrerender() {
   console.log(`✅ Pre-rendered ${generatedCount} static HTML pages successfully!`);
 
   // 4. Generate Domain-Specific XML Sitemaps with Bidirectional Hreflang
-  console.log('🗺️ Generating domain-specific XML Sitemaps for .it and .de...');
+  console.log('🗺️ Generating domain-specific XML Sitemaps for .it, .de, and English / US...');
   const today = new Date().toISOString().split('T')[0];
 
   const itUrls = [`
@@ -284,6 +285,7 @@ async function runPrerender() {
     <loc>https://www.mypdftools.it/</loc>
     <xhtml:link rel="alternate" hreflang="it" href="https://www.mypdftools.it/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/" />
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
@@ -295,7 +297,20 @@ async function runPrerender() {
     <loc>https://www.mypdftools.de/</loc>
     <xhtml:link rel="alternate" hreflang="it" href="https://www.mypdftools.it/" />
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/" />
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>`];
+
+  const enUrls = [`
+  <url>
+    <loc>https://www.mypdftools.it/merge-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.mypdftools.it/unire-pdf" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-zusammenfuegen" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -304,15 +319,18 @@ async function runPrerender() {
   // Distribute routes to their respective domain sitemaps
   for (const slug of routeKeys) {
     const r = SEO_ROUTES[slug];
-    const isPriority = !slug.includes('/') && ['unire-pdf', 'pdf-zusammenfuegen', 'da-jpg-a-pdf', 'jpg-in-pdf', 'comprimere-pdf', 'pdf-komprimieren', 'da-word-a-pdf', 'word-in-pdf'].includes(slug);
+    const isPriority = !slug.includes('/') && ['unire-pdf', 'pdf-zusammenfuegen', 'merge-pdf', 'da-jpg-a-pdf', 'jpg-in-pdf', 'jpg-to-pdf', 'comprimere-pdf', 'pdf-komprimieren', 'compress-pdf', 'da-word-a-pdf', 'word-in-pdf', 'word-to-pdf'].includes(slug);
     const priority = isPriority ? '0.95' : slug.includes('/') ? '0.80' : '0.88';
+
+    const enUrl = r.hreflang.en || (r.lang === 'en' ? r.canonical : 'https://www.mypdftools.it/merge-pdf');
 
     const urlEntry = `
   <url>
     <loc>${r.canonical}</loc>
     <xhtml:link rel="alternate" hreflang="it" href="${r.hreflang.it}" />
     <xhtml:link rel="alternate" hreflang="de" href="${r.hreflang.de}" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="${r.hreflang.it}" />
+    ${enUrl ? `<xhtml:link rel="alternate" hreflang="en" href="${enUrl}" />` : ''}
+    <xhtml:link rel="alternate" hreflang="x-default" href="${enUrl || r.hreflang.it}" />
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>${priority}</priority>
@@ -320,6 +338,9 @@ async function runPrerender() {
 
     if (r.domain === 'mypdftools.de' || r.lang === 'de') {
       deUrls.push(urlEntry);
+    } else if (r.lang === 'en') {
+      enUrls.push(urlEntry);
+      itUrls.push(urlEntry); // Included in general sitemap for mypdftools.it
     } else {
       itUrls.push(urlEntry);
     }
@@ -339,18 +360,29 @@ ${deUrls.join('')}
 </urlset>
 `;
 
-  // Write sitemap-it.xml, sitemap-de.xml, and sitemap.xml (default to Italian for mypdftools.it)
+  const sitemapEnXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${enUrls.join('')}
+</urlset>
+`;
+
+  // Write sitemap files
   fs.writeFileSync(path.join(distDir, 'sitemap-it.xml'), sitemapItXml, 'utf8');
   fs.writeFileSync(path.resolve('public/sitemap-it.xml'), sitemapItXml, 'utf8');
 
   fs.writeFileSync(path.join(distDir, 'sitemap-de.xml'), sitemapDeXml, 'utf8');
   fs.writeFileSync(path.resolve('public/sitemap-de.xml'), sitemapDeXml, 'utf8');
 
+  fs.writeFileSync(path.join(distDir, 'sitemap-en.xml'), sitemapEnXml, 'utf8');
+  fs.writeFileSync(path.resolve('public/sitemap-en.xml'), sitemapEnXml, 'utf8');
+
   fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemapItXml, 'utf8');
   fs.writeFileSync(path.resolve('public/sitemap.xml'), sitemapItXml, 'utf8');
 
-  console.log(`✅ sitemap-it.xml created with ${itUrls.length} Italian URLs!`);
+  console.log(`✅ sitemap-it.xml created with ${itUrls.length} Italian & Global URLs!`);
   console.log(`✅ sitemap-de.xml created with ${deUrls.length} German URLs!`);
+  console.log(`✅ sitemap-en.xml created with ${enUrls.length} English URLs!`);
 
   // 5. Generate / Update robots.txt
   const robotsTxt = `User-agent: *
@@ -358,6 +390,7 @@ Allow: /
 
 # Sitemap definitions for Google Search Console & Bing Webmaster
 Sitemap: https://www.mypdftools.it/sitemap.xml
+Sitemap: https://www.mypdftools.it/sitemap-en.xml
 Sitemap: https://www.mypdftools.de/sitemap.xml
 
 # LLM Crawler Guidance
@@ -365,7 +398,7 @@ Sitemap: https://www.mypdftools.de/sitemap.xml
 `;
   fs.writeFileSync(path.join(distDir, 'robots.txt'), robotsTxt, 'utf8');
   fs.writeFileSync(path.resolve('public/robots.txt'), robotsTxt, 'utf8');
-  console.log('✅ robots.txt updated.');
+  console.log('✅ robots.txt updated with English sitemap.');
 }
 
 runPrerender().catch((err) => {

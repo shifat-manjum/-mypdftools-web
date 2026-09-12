@@ -3,6 +3,7 @@ Allow: /
 
 # Sitemap definitions for Google Search Console & Bing Webmaster
 Sitemap: https://www.mypdftools.it/sitemap.xml
+Sitemap: https://www.mypdftools.it/sitemap-en.xml
 Sitemap: https://www.mypdftools.de/sitemap.xml
 
 # LLM Crawler Guidance
