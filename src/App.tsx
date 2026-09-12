@@ -4,7 +4,6 @@ import { Hero } from './components/Hero';
 import { CategoryFilters } from './components/CategoryFilters';
 import { ToolCard } from './components/ToolCard';
 import { AdBanner } from './components/AdBanner';
-import { InstallPwaBanner } from './components/InstallPwaBanner';
 import { ProfessionalTrustSection } from './components/ProfessionalTrustSection';
 
 const ToolPage = React.lazy(() => import('./components/ToolPage').then(m => ({ default: m.ToolPage })));
@@ -513,9 +512,6 @@ export const App: React.FC = () => {
           />
         </Suspense>
       )}
-
-      {/* PWA Install & Quick Bookmark Prompt */}
-      <InstallPwaBanner language={currentLang} />
     </div>
   );
 };

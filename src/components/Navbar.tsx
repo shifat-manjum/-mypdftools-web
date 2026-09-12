@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Logo } from './Logo';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { Language, TRANSLATIONS } from '../i18n/translations';
-import { ShieldCheck, Sparkles, Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Sparkles, Menu, X, ChevronDown, ArrowRight, Bookmark, Check } from 'lucide-react';
 import { TOOLS } from '../data/tools';
 import { ToolIcon } from './ToolIcon';
 
@@ -29,7 +29,20 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const handleBookmark = () => {
+    setBookmarked(true);
+    setTimeout(() => setBookmarked(false), 2500);
+  };
+
+  const bookmarkLabel =
+    currentLang === 'it'
+      ? (bookmarked ? 'Premi Ctrl+D!' : 'Preferiti')
+      : currentLang === 'de'
+      ? (bookmarked ? 'Drücke Strg+D!' : 'Lesezeichen')
+      : (bookmarked ? 'Press Ctrl+D!' : 'Bookmark');
 
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.it;
 
@@ -298,6 +311,24 @@ export const Navbar: React.FC<NavbarProps> = ({
               onLanguageChange={onLanguageChange}
             />
 
+            {/* Quick Bookmark Button */}
+            <button
+              onClick={handleBookmark}
+              className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer shadow-2xs ${
+                bookmarked
+                  ? 'bg-emerald-50 text-emerald-700 border-emerald-300 scale-105'
+                  : 'bg-white hover:bg-amber-50/80 text-slate-700 hover:text-amber-700 border-slate-200/80 hover:border-amber-300'
+              }`}
+              title={currentLang === 'it' ? 'Aggiungi ai preferiti (Ctrl+D / Cmd+D)' : currentLang === 'de' ? 'Zu Lesezeichen hinzufügen (Strg+D / Cmd+D)' : 'Add to Bookmarks (Ctrl+D / Cmd+D)'}
+            >
+              {bookmarked ? (
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
+              ) : (
+                <Bookmark className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
+              )}
+              <span>{bookmarkLabel}</span>
+            </button>
+
             {/* 100% Free / No Account Needed Notice */}
             <button
               onClick={onOpenAuthNotice}
@@ -350,6 +381,25 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="block w-full text-left px-4 py-2.5 text-sm font-black text-slate-800 hover:bg-emerald-50 rounded-xl"
           >
             ✨ {aboutText} (Shifat Manjum)
+          </button>
+
+          <button
+            onClick={handleBookmark}
+            className={`flex items-center justify-between w-full px-4 py-2.5 text-sm font-bold rounded-xl border transition-all cursor-pointer ${
+              bookmarked
+                ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
+                : 'bg-white text-slate-700 border-slate-200'
+            }`}
+          >
+            <span className="flex items-center gap-2">
+              {bookmarked ? (
+                <Check className="w-4 h-4 text-emerald-600" />
+              ) : (
+                <Bookmark className="w-4 h-4 text-amber-500 fill-amber-400" />
+              )}
+              <span>{bookmarkLabel}</span>
+            </span>
+            <span className="text-xs text-slate-400 font-medium">Ctrl+D</span>
           </button>
 
           <button
