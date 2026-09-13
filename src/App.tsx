@@ -4,7 +4,6 @@ import { Hero } from './components/Hero';
 import { CategoryFilters } from './components/CategoryFilters';
 import { ToolCard } from './components/ToolCard';
 import { AdBanner } from './components/AdBanner';
-import { ProfessionalTrustSection } from './components/ProfessionalTrustSection';
 
 const ToolPage = React.lazy(() => import('./components/ToolPage').then(m => ({ default: m.ToolPage })));
 const SeoPageLayout = React.lazy(() => import('./components/SeoPageLayout').then(m => ({ default: m.SeoPageLayout })));
@@ -375,12 +374,6 @@ export const App: React.FC = () => {
             <div className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-10 mt-12">
               <AdBanner format="horizontal" />
             </div>
-
-            {/* Professional & GDPR Compliance Section for Accountants, Lawyers, HR & Freelancers */}
-            <ProfessionalTrustSection
-              currentLang={currentLang}
-              onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
-            />
 
             {/* Privacy & Trust Proof Section */}
             <section className="max-w-[1500px] mx-auto mt-16 px-4 sm:px-6 lg:px-10">
