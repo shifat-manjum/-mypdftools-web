@@ -221,8 +221,13 @@ async function runPrerender() {
         </main>
 
         <!-- Static Prerendered Footer -->
-        <footer class="w-full bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+        <footer class="w-full bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 space-y-2">
           <p>© ${new Date().getFullYear()} MyPdfTools (mypdftools.it • mypdftools.de). All rights reserved.</p>
+          <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-semibold text-slate-600">
+            <a href="/" class="hover:text-emerald-600">Home</a>
+            <a href="mailto:khshifat@gmail.com" class="hover:text-emerald-600 font-bold">Contact: khshifat@gmail.com</a>
+            <a href="https://github.com/shifat-manjum" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-600">Developer (Shifat Manjum)</a>
+          </div>
         </footer>
       </div>
     `;

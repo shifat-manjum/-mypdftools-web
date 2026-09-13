@@ -9,6 +9,7 @@ const ToolPage = React.lazy(() => import('./components/ToolPage').then(m => ({ d
 const SeoPageLayout = React.lazy(() => import('./components/SeoPageLayout').then(m => ({ default: m.SeoPageLayout })));
 const PrivacyModal = React.lazy(() => import('./components/PrivacyModal').then(m => ({ default: m.PrivacyModal })));
 const AboutModal = React.lazy(() => import('./components/AboutModal').then(m => ({ default: m.AboutModal })));
+const ContactModal = React.lazy(() => import('./components/ContactModal').then(m => ({ default: m.ContactModal })));
 const AuthNoticeModal = React.lazy(() => import('./components/AuthNoticeModal').then(m => ({ default: m.AuthNoticeModal })));
 const LegalModal = React.lazy(() => import('./components/LegalModal').then(m => ({ default: m.LegalModal })));
 import type { LegalTab } from './components/LegalModal';
@@ -74,6 +75,7 @@ export const App: React.FC = () => {
   const [currentToolId, setCurrentToolId] = useState<string | null>(null);
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
   const [aboutModalOpen, setAboutModalOpen] = useState(false);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
   const [authNoticeOpen, setAuthNoticeOpen] = useState(false);
   const [legalModalState, setLegalModalState] = useState<{ isOpen: boolean; tab: LegalTab }>({
     isOpen: false,
@@ -261,6 +263,7 @@ export const App: React.FC = () => {
         onLanguageChange={handleLanguageChange}
         onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
         onOpenAboutModal={() => setAboutModalOpen(true)}
+        onOpenContactModal={() => setContactModalOpen(true)}
         onOpenAuthNotice={() => setAuthNoticeOpen(true)}
         onGoHome={navigateHome}
         onSelectTool={navigateToTool}
@@ -455,7 +458,17 @@ export const App: React.FC = () => {
               <button onClick={() => setLegalModalState({ isOpen: true, tab: 'terms' })} className="text-slate-800 hover:text-emerald-600 cursor-pointer font-bold">{currentLang === 'it' ? 'Termini di Servizio' : currentLang === 'de' ? 'AGB' : 'Terms of Service'}</button>
               <button onClick={() => setLegalModalState({ isOpen: true, tab: 'cookies' })} className="text-slate-800 hover:text-emerald-600 cursor-pointer font-bold">Cookie Policy</button>
               <button onClick={() => setPrivacyModalOpen(true)} className="text-emerald-600 font-black hover:underline cursor-pointer">{t.footer.privacyGuarantee}</button>
-              <button onClick={() => setAboutModalOpen(true)} className="text-slate-800 font-black hover:text-emerald-600 cursor-pointer">{currentLang === 'it' ? 'Chi Siamo (Founder)' : currentLang === 'de' ? 'Über uns (Gründer)' : 'About (Founder)'}</button>
+              <button onClick={() => setAboutModalOpen(true)} className="text-slate-800 font-black hover:text-emerald-600 cursor-pointer">{currentLang === 'it' ? 'Chi Siamo' : currentLang === 'de' ? 'Über uns' : 'About Us'}</button>
+              <a
+                href="mailto:khshifat@gmail.com"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setContactModalOpen(true);
+                }}
+                className="text-slate-800 font-black hover:text-emerald-600 cursor-pointer"
+              >
+                {currentLang === 'it' ? 'Contattaci' : currentLang === 'de' ? 'Kontakt' : 'Contact Us'}
+              </a>
             </div>
           </div>
           <p className="text-[11px] text-slate-400 max-w-2xl mx-auto font-medium">
@@ -481,6 +494,16 @@ export const App: React.FC = () => {
             isOpen={aboutModalOpen}
             currentLang={currentLang}
             onClose={() => setAboutModalOpen(false)}
+          />
+        </Suspense>
+      )}
+
+      {contactModalOpen && (
+        <Suspense fallback={null}>
+          <ContactModal
+            isOpen={contactModalOpen}
+            currentLang={currentLang}
+            onClose={() => setContactModalOpen(false)}
           />
         </Suspense>
       )}

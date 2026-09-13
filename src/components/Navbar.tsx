@@ -11,6 +11,7 @@ interface NavbarProps {
   onLanguageChange: (lang: Language) => void;
   onOpenPrivacyModal: () => void;
   onOpenAboutModal: () => void;
+  onOpenContactModal?: () => void;
   onOpenAuthNotice: () => void;
   onGoHome: () => void;
   onSelectTool?: (toolId: string) => void;
@@ -22,6 +23,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onLanguageChange,
   onOpenPrivacyModal,
   onOpenAboutModal,
+  onOpenContactModal,
   onOpenAuthNotice,
   onGoHome,
   onSelectTool,
@@ -33,8 +35,17 @@ export const Navbar: React.FC<NavbarProps> = ({
   const menuRef = useRef<HTMLDivElement>(null);
 
   const handleBookmark = () => {
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+    const shortcut = isMac ? 'Cmd+D' : 'Ctrl+D';
+    alert(
+      currentLang === 'it'
+        ? `Premi ${shortcut} per aggiungere MyPdfTools ai tuoi Preferiti!`
+        : currentLang === 'de'
+        ? `Drücke ${shortcut}, um MyPdfTools zu deinen Lesezeichen hinzuzufügen!`
+        : `Press ${shortcut} to bookmark MyPdfTools!`
+    );
     setBookmarked(true);
-    setTimeout(() => setBookmarked(false), 2500);
+    setTimeout(() => setBookmarked(false), 3000);
   };
 
   const bookmarkLabel =
@@ -48,6 +59,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const aboutText =
     currentLang === 'it' ? 'Chi Siamo' : currentLang === 'de' ? 'Über uns' : 'About';
+
+  const contactText =
+    currentLang === 'it' ? 'Contattaci' : currentLang === 'de' ? 'Kontakt' : 'Contact';
 
   const freeNoticeText =
     currentLang === 'it'
@@ -290,9 +304,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={onOpenAboutModal}
-              className="px-3.5 py-2 rounded-xl text-xs font-black uppercase tracking-wider text-slate-700 hover:text-emerald-600 hover:bg-emerald-50/60 transition-colors cursor-pointer"
+              className="px-3 py-2 rounded-xl text-xs font-black uppercase tracking-wider text-slate-700 hover:text-emerald-600 hover:bg-emerald-50/60 transition-colors cursor-pointer"
             >
               {aboutText}
+            </button>
+
+            <button
+              onClick={onOpenContactModal}
+              className="px-3 py-2 rounded-xl text-xs font-black uppercase tracking-wider text-slate-700 hover:text-emerald-600 hover:bg-emerald-50/60 transition-colors cursor-pointer"
+            >
+              {contactText}
             </button>
 
             {/* 100% Private Trust Badge */}
@@ -381,6 +402,16 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="block w-full text-left px-4 py-2.5 text-sm font-black text-slate-800 hover:bg-emerald-50 rounded-xl"
           >
             ✨ {aboutText} (Shifat Manjum)
+          </button>
+
+          <button
+            onClick={() => {
+              if (onOpenContactModal) onOpenContactModal();
+              setMobileMenuOpen(false);
+            }}
+            className="block w-full text-left px-4 py-2.5 text-sm font-black text-slate-800 hover:bg-emerald-50 rounded-xl"
+          >
+            ✉️ {contactText}
           </button>
 
           <button
