@@ -140,6 +140,9 @@
           handleFixedHeaders(true);
         }
 
+        // Hide progress overlay briefly so it is never captured in the slice screenshot
+        if (progressOverlay) progressOverlay.style.display = 'none';
+
         // Capture visible slice from background service worker
         const response = await new Promise((resolve) => {
           chrome.runtime.sendMessage(
@@ -147,6 +150,9 @@
             (res) => resolve(res)
           );
         });
+
+        // Restore progress overlay immediately after capture
+        if (progressOverlay) progressOverlay.style.display = 'block';
 
         if (response && response.dataUrl) {
           slices.push({

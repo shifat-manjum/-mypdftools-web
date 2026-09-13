@@ -126,13 +126,21 @@
     }
     </script>
 
+    <!-- DNS-Prefetch and Preconnect for 3rd Party APIs -->
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="xksXU2Sb5QgK7JRfXBThrc5l-pTPExSf1CYPbWLcDIs" />
+  </head>
+  <body class="bg-[#f8fafc] text-slate-900 font-sans antialiased min-h-screen selection:bg-emerald-500 selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
 
-    <!-- Google AdSense Verification & Auto Ads -->
+    <!-- Non-blocking 3rd Party Scripts (AdSense & GA4) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3502815676488440" crossorigin="anonymous"></script>
-
-    <!-- Google Analytics (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-5GSW854S0X"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -140,9 +148,5 @@
       gtag('js', new Date());
       gtag('config', 'G-5GSW854S0X');
     </script>
-  </head>
-  <body class="bg-[#f8fafc] text-slate-900 font-sans antialiased min-h-screen selection:bg-emerald-500 selection:text-white">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
