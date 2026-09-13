@@ -1,28 +1,27 @@
-// viewer.js - Canvas stitching engine, zoom manager, privacy blur/crop, and PNG/PDF export
+// viewer.js - Stitching engine with overlap trimming and GoFullPage-style full document preview
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const canvas = document.getElementById('output-canvas');
-  const ctx = canvas.getContext('2d');
-  const canvasWrapper = document.getElementById('canvas-wrapper');
+  const hiddenCanvas = document.getElementById('hidden-canvas');
+  const ctx = hiddenCanvas.getContext('2d');
+  const previewStage = document.getElementById('preview-stage');
+  const previewImage = document.getElementById('preview-image');
+  const previewCard = document.getElementById('preview-card');
   const loadingSpinner = document.getElementById('loading-spinner');
   const pageTitleLabel = document.getElementById('page-title-label');
-  const zoomLevelLabel = document.getElementById('zoom-level');
-  const selectionOverlay = document.getElementById('selection-overlay');
+  const dimensionBadge = document.getElementById('dimension-badge');
+  const blurOverlay = document.getElementById('blur-overlay');
 
-  const btnZoomIn = document.getElementById('btn-zoom-in');
-  const btnZoomOut = document.getElementById('btn-zoom-out');
-  const btnZoomFit = document.getElementById('btn-zoom-fit');
+  const btnFitWidth = document.getElementById('btn-fit-width');
   const btnZoom100 = document.getElementById('btn-zoom-100');
   const btnDownloadPng = document.getElementById('btn-download-png');
   const btnDownloadPdf = document.getElementById('btn-download-pdf');
   const btnToolBlur = document.getElementById('btn-tool-blur');
-  const btnToolCrop = document.getElementById('btn-tool-crop');
 
-  let activeMode = null; // 'blur' or 'crop'
-  let currentZoom = 1;
-  let isSelecting = false;
-  let startX = 0, startY = 0;
   let captureMetadata = null;
+  let fullImageDataUrl = null;
+  let isBlurActive = false;
+  let isDragging = false;
+  let startX = 0, startY = 0;
 
   // 1. Fetch capture data from background service worker
   const captureData = await new Promise((resolve) => {
@@ -30,42 +29,69 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   if (!captureData || !captureData.slices || captureData.slices.length === 0) {
-    loadingSpinner.innerHTML = '<p style="color: #ef4444;">No capture data found. Please take a new screenshot.</p>';
+    loadingSpinner.innerHTML = '<p style="color: #ef4444; font-weight: 700;">No screenshot data found. Please take a new screenshot.</p>';
     return;
   }
 
   captureMetadata = captureData;
   if (pageTitleLabel && captureData.pageTitle) {
     pageTitleLabel.textContent = captureData.pageTitle;
-    document.title = `${captureData.pageTitle} — MyPdfTools Capture`;
+    document.title = `${captureData.pageTitle} — Full Page Preview`;
   }
 
-  // 2. Stitch the slices together onto the canvas
-  await stitchSlices(captureData);
+  // 2. Pre-load all captured slice images
+  const loadedImages = await Promise.all(
+    captureData.slices.map((slice) => loadImage(slice.dataUrl))
+  );
 
-  async function stitchSlices(data) {
-    const dpr = data.devicePixelRatio || 1;
-    const slices = data.slices;
+  const firstImg = loadedImages[0];
+  const dpr = firstImg.width / captureData.totalWidth;
 
-    // Load first image to verify true physical pixel width
-    const firstImg = await loadImage(slices[0].dataUrl);
-    const pixelWidth = firstImg.width;
-    const scaleFactor = pixelWidth / data.totalWidth;
-    const totalPixelHeight = Math.round(data.totalHeight * scaleFactor);
+  // Total canvas height = true document scroll height in physical pixels
+  const totalPixelWidth = firstImg.width;
+  const totalPixelHeight = Math.round(captureData.totalHeight * dpr);
 
-    canvas.width = pixelWidth;
-    canvas.height = totalPixelHeight;
+  hiddenCanvas.width = totalPixelWidth;
+  hiddenCanvas.height = totalPixelHeight;
 
-    for (let i = 0; i < slices.length; i++) {
-      const slice = slices[i];
-      const img = i === 0 ? firstImg : await loadImage(slice.dataUrl);
-      const drawY = Math.round(slice.yOffset * scaleFactor);
-      ctx.drawImage(img, 0, drawY);
+  // 3. Precision Stitching with Overlap Trimming
+  // Draw each slice at its true physical scroll position
+  for (let i = 0; i < captureData.slices.length; i++) {
+    const slice = captureData.slices[i];
+    const img = loadedImages[i];
+    const drawY = Math.round(slice.scrollY * dpr);
+
+    // If this is the last slice and overlaps the previous slice:
+    if (i > 0 && i === captureData.slices.length - 1) {
+      const prevSlice = captureData.slices[i - 1];
+      const prevBottomY = Math.round((prevSlice.scrollY + captureData.viewportHeight) * dpr);
+      const overlap = prevBottomY - drawY;
+
+      if (overlap > 0 && overlap < img.height) {
+        // Skip the duplicate top portion of this final slice
+        const srcY = overlap;
+        const srcH = img.height - overlap;
+        const destY = prevBottomY;
+        const destH = srcH;
+
+        ctx.drawImage(img, 0, srcY, img.width, srcH, 0, destY, img.width, destH);
+        continue;
+      }
     }
 
-    loadingSpinner.style.display = 'none';
-    fitToWidth();
+    ctx.drawImage(img, 0, drawY);
   }
+
+  // 4. Render the Full Document Preview
+  fullImageDataUrl = hiddenCanvas.toDataURL('image/png');
+  previewImage.src = fullImageDataUrl;
+
+  if (dimensionBadge) {
+    dimensionBadge.textContent = `${totalPixelWidth} × ${totalPixelHeight} px`;
+  }
+
+  loadingSpinner.style.display = 'none';
+  previewStage.classList.remove('hidden');
 
   function loadImage(src) {
     return new Promise((resolve, reject) => {
@@ -76,135 +102,103 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // 3. Zoom Controls
-  function setZoom(scale, labelText) {
-    currentZoom = Math.max(0.1, Math.min(scale, 3.0));
-    canvasWrapper.style.transform = `scale(${currentZoom})`;
-    zoomLevelLabel.textContent = labelText || `${Math.round(currentZoom * 100)}%`;
-  }
+  // 5. Preview Mode & Zoom Controls (Fit vs 100%)
+  btnFitWidth?.addEventListener('click', () => {
+    previewImage.className = 'preview-image fit-mode';
+    btnFitWidth.classList.add('active');
+    btnZoom100.classList.remove('active');
+  });
 
-  function fitToWidth() {
-    const containerWidth = canvasWrapper.parentElement.clientWidth - 48;
-    const scale = containerWidth / canvas.width;
-    setZoom(scale, 'Fit');
-  }
+  btnZoom100?.addEventListener('click', () => {
+    previewImage.className = 'preview-image zoom-100';
+    btnZoom100.classList.add('active');
+    btnFitWidth.classList.remove('active');
+  });
 
-  btnZoomFit?.addEventListener('click', fitToWidth);
-  btnZoom100?.addEventListener('click', () => setZoom(1, '100%'));
-  btnZoomIn?.addEventListener('click', () => setZoom(currentZoom + 0.15));
-  btnZoomOut?.addEventListener('click', () => setZoom(currentZoom - 0.15));
-
-  // 4. Privacy Blur / Redact Tool
+  // 6. Privacy Blur Tool
   btnToolBlur?.addEventListener('click', () => {
-    if (activeMode === 'blur') {
-      activeMode = null;
-      btnToolBlur.classList.remove('active');
-    } else {
-      activeMode = 'blur';
-      btnToolBlur.classList.add('active');
-      btnToolCrop.classList.remove('active');
-    }
+    isBlurActive = !isBlurActive;
+    btnToolBlur.classList.toggle('active', isBlurActive);
+    previewCard.style.cursor = isBlurActive ? 'crosshair' : 'default';
   });
 
-  btnToolCrop?.addEventListener('click', () => {
-    if (activeMode === 'crop') {
-      activeMode = null;
-      btnToolCrop.classList.remove('active');
-    } else {
-      activeMode = 'crop';
-      btnToolCrop.classList.add('active');
-      btnToolBlur.classList.remove('active');
-    }
-  });
-
-  // Canvas selection for Blur and Crop
-  canvasWrapper.addEventListener('mousedown', (e) => {
-    if (!activeMode) return;
-    const rect = canvas.getBoundingClientRect();
-    startX = (e.clientX - rect.left) / currentZoom;
-    startY = (e.clientY - rect.top) / currentZoom;
-    isSelecting = true;
-    selectionOverlay.classList.remove('hidden');
-    updateOverlay(startX, startY, 0, 0);
+  previewCard?.addEventListener('mousedown', (e) => {
+    if (!isBlurActive) return;
+    const rect = previewImage.getBoundingClientRect();
+    startX = e.clientX - rect.left;
+    startY = e.clientY - rect.top;
+    isDragging = true;
+    blurOverlay.classList.remove('hidden');
+    updateBlurBox(startX, startY, 0, 0);
   });
 
   window.addEventListener('mousemove', (e) => {
-    if (!isSelecting || !activeMode) return;
-    const rect = canvas.getBoundingClientRect();
-    const currentX = (e.clientX - rect.left) / currentZoom;
-    const currentY = (e.clientY - rect.top) / currentZoom;
+    if (!isDragging || !isBlurActive) return;
+    const rect = previewImage.getBoundingClientRect();
+    const currentX = e.clientX - rect.left;
+    const currentY = e.clientY - rect.top;
 
     const x = Math.min(startX, currentX);
     const y = Math.min(startY, currentY);
     const w = Math.abs(currentX - startX);
     const h = Math.abs(currentY - startY);
 
-    updateOverlay(x, y, w, h);
+    updateBlurBox(x, y, w, h);
   });
 
   window.addEventListener('mouseup', (e) => {
-    if (!isSelecting || !activeMode) return;
-    isSelecting = false;
-    selectionOverlay.classList.add('hidden');
+    if (!isDragging || !isBlurActive) return;
+    isDragging = false;
+    blurOverlay.classList.add('hidden');
 
-    const rect = canvas.getBoundingClientRect();
-    const endX = (e.clientX - rect.left) / currentZoom;
-    const endY = (e.clientY - rect.top) / currentZoom;
+    const rect = previewImage.getBoundingClientRect();
+    const endX = e.clientX - rect.left;
+    const endY = e.clientY - rect.top;
 
-    const x = Math.round(Math.min(startX, endX));
-    const y = Math.round(Math.min(startY, endY));
-    const w = Math.round(Math.abs(endX - startX));
-    const h = Math.round(Math.abs(endY - startY));
+    const dispX = Math.min(startX, endX);
+    const dispY = Math.min(startY, endY);
+    const dispW = Math.abs(endX - startX);
+    const dispH = Math.abs(endY - startY);
 
-    if (w < 5 || h < 5) return;
+    if (dispW < 5 || dispH < 5) return;
 
-    if (activeMode === 'blur') {
-      applyBlur(x, y, w, h);
-    } else if (activeMode === 'crop') {
-      applyCrop(x, y, w, h);
-      activeMode = null;
-      btnToolCrop.classList.remove('active');
-    }
+    // Map displayed coordinates back to true canvas pixel coordinates
+    const scale = hiddenCanvas.width / rect.width;
+    const trueX = Math.round(dispX * scale);
+    const trueY = Math.round(dispY * scale);
+    const trueW = Math.round(dispW * scale);
+    const trueH = Math.round(dispH * scale);
+
+    // Apply frosted privacy redaction block onto canvas
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+    ctx.fillRect(trueX, trueY, trueW, trueH);
+    ctx.strokeStyle = '#10b981';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(trueX, trueY, trueW, trueH);
+
+    // Refresh preview image
+    fullImageDataUrl = hiddenCanvas.toDataURL('image/png');
+    previewImage.src = fullImageDataUrl;
   });
 
-  function updateOverlay(x, y, w, h) {
-    selectionOverlay.style.left = `${x}px`;
-    selectionOverlay.style.top = `${y}px`;
-    selectionOverlay.style.width = `${w}px`;
-    selectionOverlay.style.height = `${h}px`;
+  function updateBlurBox(x, y, w, h) {
+    blurOverlay.style.left = `${x}px`;
+    blurOverlay.style.top = `${y}px`;
+    blurOverlay.style.width = `${w}px`;
+    blurOverlay.style.height = `${h}px`;
   }
 
-  // Applies high-grade privacy pixelation / blur to the selected region
-  function applyBlur(x, y, w, h) {
-    const imgData = ctx.getImageData(x, y, w, h);
-    // Draw a solid frosted privacy block over the area
-    ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-    ctx.fillRect(x, y, w, h);
-    ctx.strokeStyle = '#34d399';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(x, y, w, h);
-  }
-
-  function applyCrop(x, y, w, h) {
-    const croppedData = ctx.getImageData(x, y, w, h);
-    canvas.width = w;
-    canvas.height = h;
-    ctx.putImageData(croppedData, 0, 0);
-    fitToWidth();
-  }
-
-  // 5. Download PNG
+  // 7. Download PNG
   btnDownloadPng?.addEventListener('click', () => {
-    const filename = sanitizeFilename(captureMetadata?.pageTitle || 'screenshot') + '.png';
+    const filename = sanitizeFilename(captureMetadata?.pageTitle || 'fullpage_screenshot') + '.png';
     const link = document.createElement('a');
     link.download = filename;
-    link.href = canvas.toDataURL('image/png');
+    link.href = fullImageDataUrl;
     link.click();
   });
 
-  // 6. Export as PDF (Client-side clean print stylesheet)
+  // 8. Export as PDF
   btnDownloadPdf?.addEventListener('click', () => {
-    const imgData = canvas.toDataURL('image/jpeg', 0.95);
     const printWindow = window.open('', '_blank');
     if (!printWindow) {
       alert('Please allow popups to generate the PDF.');
@@ -215,7 +209,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <!DOCTYPE html>
       <html>
       <head>
-        <title>${captureMetadata?.pageTitle || 'Document'} - PDF Export</title>
+        <title>${captureMetadata?.pageTitle || 'Full Page Screenshot'} - PDF</title>
         <style>
           @page {
             margin: 0;
@@ -237,7 +231,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </style>
       </head>
       <body>
-        <img src="${imgData}" onload="window.print(); window.close();" />
+        <img src="${fullImageDataUrl}" onload="window.print(); window.close();" />
       </body>
       </html>
     `);
@@ -248,4 +242,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     return title.replace(/[^a-z0-9_-]/gi, '_').toLowerCase().substring(0, 50);
   }
 });
-

@@ -1,4 +1,4 @@
-// content.js - Injected into webpage to handle auto-scrolling, sticky-header management, and slice coordination
+// content.js - Reliable auto-scroller with exact pixel positioning and smart header handling
 
 (() => {
   // Prevent duplicate injection
@@ -44,7 +44,7 @@
         <div style="width: 100%; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 9999px; overflow: hidden;">
           <div id="__mypdftools_bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #10b981, #34d399); transition: width 0.15s ease;"></div>
         </div>
-        <span style="font-size: 10px; color: #94a3b8; text-align: center;">Auto-scrolling and stitching page...</span>
+        <span style="font-size: 10px; color: #94a3b8; text-align: center;">Scanning & stitching full page...</span>
       </div>
     `;
 
@@ -67,24 +67,27 @@
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  // Handle sticky / fixed elements to prevent repeating headers down the stitched image
-  function handleFixedElements(hide) {
-    const all = document.querySelectorAll('*');
+  // Only soften top fixed navigation bars (< 140px) on subsequent scrolls so they don't repeat
+  // NEVER use display: none which breaks page layout!
+  function handleFixedHeaders(hide) {
+    const all = document.querySelectorAll('header, nav, [class*="header"], [class*="nav"]');
     for (const el of all) {
-      // Don't touch our progress overlay
       if (el.id === '__mypdftools_capture_overlay' || el.closest('#__mypdftools_capture_overlay')) continue;
 
       const style = window.getComputedStyle(el);
-      if (style.position === 'fixed' || style.position === 'sticky') {
+      const rect = el.getBoundingClientRect();
+
+      // Only target small top header bars that stick to top: 0
+      if ((style.position === 'fixed' || style.position === 'sticky') && rect.top <= 10 && rect.height < 140) {
         if (hide) {
-          if (!el.__mypdftools_orig_display) {
-            el.__mypdftools_orig_display = el.style.display || 'block';
+          if (el.__mypdftools_orig_opacity === undefined) {
+            el.__mypdftools_orig_opacity = el.style.opacity || '1';
           }
-          el.style.display = 'none';
+          el.style.opacity = '0';
         } else {
-          if (el.__mypdftools_orig_display) {
-            el.style.display = el.__mypdftools_orig_display;
-            delete el.__mypdftools_orig_display;
+          if (el.__mypdftools_orig_opacity !== undefined) {
+            el.style.opacity = el.__mypdftools_orig_opacity;
+            delete el.__mypdftools_orig_opacity;
           }
         }
       }
@@ -95,16 +98,19 @@
     const origScrollX = window.scrollX;
     const origScrollY = window.scrollY;
 
+    // Reset scroll to top smoothly before starting capture
+    window.scrollTo(0, 0);
+    await sleep(250);
+
     createProgressOverlay();
 
-    // If mobile simulation requested, apply temporary viewport constraint
     let origBodyStyle = '';
     if (mode === 'mobile') {
       origBodyStyle = document.body.getAttribute('style') || '';
       document.body.style.maxWidth = '390px';
       document.body.style.margin = '0 auto';
       document.body.style.boxShadow = '0 0 40px rgba(0,0,0,0.5)';
-      await sleep(350); // let responsive styles recalculate
+      await sleep(350);
     }
 
     const viewportWidth = window.innerWidth;
@@ -120,21 +126,21 @@
 
     const slices = [];
     let currentY = 0;
+    let lastActualY = -1;
 
     try {
-      while (currentY < scrollHeight) {
-        // Scroll to position
+      while (true) {
         window.scrollTo(0, currentY);
+        await sleep(250); // Allow render and animations to settle
 
-        // After the first viewport slice, temporarily hide fixed headers to avoid repeating headers
-        if (currentY > 0) {
-          handleFixedElements(true);
+        const actualY = window.scrollY;
+
+        // Hide top fixed header bar after the first viewport slice so it only appears at the top
+        if (actualY > 50) {
+          handleFixedHeaders(true);
         }
 
-        // Wait for render / lazy images
-        await sleep(220);
-
-        // Notify background to capture visible area
+        // Capture visible slice from background service worker
         const response = await new Promise((resolve) => {
           chrome.runtime.sendMessage(
             { action: 'CAPTURE_SLICE' },
@@ -145,21 +151,27 @@
         if (response && response.dataUrl) {
           slices.push({
             dataUrl: response.dataUrl,
-            yOffset: currentY,
+            scrollY: actualY,
             viewportHeight: viewportHeight,
             viewportWidth: viewportWidth,
           });
         }
 
-        currentY += viewportHeight;
-        const progress = Math.min(100, (currentY / scrollHeight) * 100);
+        const progress = Math.min(100, ((actualY + viewportHeight) / scrollHeight) * 100);
         updateProgress(progress);
+
+        // Check if we've reached the very bottom of the webpage
+        if (actualY + viewportHeight >= scrollHeight - 5 || actualY === lastActualY) {
+          break;
+        }
+
+        lastActualY = actualY;
+        currentY += viewportHeight;
       }
     } catch (err) {
       console.error('Capture sequence error:', err);
     } finally {
-      // Restore page state
-      handleFixedElements(false);
+      handleFixedHeaders(false);
       if (mode === 'mobile') {
         document.body.setAttribute('style', origBodyStyle);
       }
@@ -167,12 +179,13 @@
       removeProgressOverlay();
     }
 
-    // Send collected slices to background to assemble into the studio
+    // Send the captured slices to the background service worker
     chrome.runtime.sendMessage({
       action: 'CAPTURE_COMPLETED',
       slices: slices,
       totalWidth: viewportWidth,
       totalHeight: scrollHeight,
+      viewportHeight: viewportHeight,
       devicePixelRatio: devicePixelRatio,
       pageTitle: document.title || 'Webpage Screenshot',
       pageUrl: window.location.href,
@@ -180,7 +193,6 @@
     });
   }
 
-  // Listen for messages from background / popup
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'EXECUTE_CAPTURE') {
       executeFullPageCapture(message.mode || 'desktop');
@@ -189,4 +201,3 @@
     return true;
   });
 })();
-
