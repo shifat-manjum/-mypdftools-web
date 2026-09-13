@@ -16,7 +16,8 @@ import type { LegalTab } from './components/LegalModal';
 import { TOOLS } from './data/tools';
 import { ToolCategory } from './types';
 import { Language, TRANSLATIONS } from './i18n/translations';
-import { getSeoRoute, TOOL_TO_PRIMARY_SLUG } from './data/seoRoutes';
+import { TOOL_TO_PRIMARY_SLUG } from './data/toolSlugs';
+import type { SeoRouteData } from './data/seoRoutes';
 import { ShieldCheck, Zap, Lock, WifiOff, ArrowUpRight } from 'lucide-react';
 
 // Automatically detect initial language based on URL query, saved preference, domain, or browser language
@@ -93,19 +94,28 @@ export const App: React.FC = () => {
     }
   };
 
-  // Resolve current SEO route if matching path exists
-  const currentSeoRoute = useMemo(() => {
-    return getSeoRoute(currentPath);
-  }, [currentPath]);
+  // Resolve current SEO route lazily if matching path exists
+  const [currentSeoRoute, setCurrentSeoRoute] = useState<SeoRouteData | null>(null);
 
-  // Synchronize language and active tool with SEO route
   useEffect(() => {
-    if (currentSeoRoute) {
-      if (currentSeoRoute.lang && currentSeoRoute.lang !== currentLang) {
-        setCurrentLang(currentSeoRoute.lang);
-      }
+    if (!currentPath) {
+      setCurrentSeoRoute(null);
+      return;
     }
-  }, [currentSeoRoute]);
+    let isMounted = true;
+    import('./data/seoRoutes').then(({ getSeoRoute }) => {
+      if (!isMounted) return;
+      const seo = getSeoRoute(currentPath);
+      setCurrentSeoRoute(seo || null);
+      if (seo) {
+        setCurrentToolId(seo.toolId);
+        if (seo.lang && (seo.lang === 'it' || seo.lang === 'de' || seo.lang === 'en')) {
+          setCurrentLang(seo.lang);
+        }
+      }
+    });
+    return () => { isMounted = false; };
+  }, [currentPath]);
 
   // Dynamic document title & HTML lang update based on active language (when on home)
   useEffect(() => {
@@ -147,13 +157,7 @@ export const App: React.FC = () => {
 
       setCurrentPath(activeRouteSlug);
 
-      const seo = getSeoRoute(activeRouteSlug);
-      if (seo) {
-        setCurrentToolId(seo.toolId);
-        if (seo.lang && (seo.lang === 'it' || seo.lang === 'de')) {
-          setCurrentLang(seo.lang);
-        }
-      } else if (TOOLS.some((tool) => tool.id === activeRouteSlug)) {
+      if (TOOLS.some((tool) => tool.id === activeRouteSlug)) {
         setCurrentToolId(activeRouteSlug);
       } else if (!activeRouteSlug) {
         setCurrentToolId(null);
@@ -181,13 +185,6 @@ export const App: React.FC = () => {
       window.history.pushState(null, '', `/${clean}`);
     }
     setCurrentPath(clean);
-    const seo = getSeoRoute(clean);
-    if (seo) {
-      setCurrentToolId(seo.toolId);
-      if (seo.lang && (seo.lang === 'it' || seo.lang === 'de')) {
-        setCurrentLang(seo.lang);
-      }
-    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

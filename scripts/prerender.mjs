@@ -498,17 +498,6 @@ async function runPrerender() {
 
   console.log(`✅ Pre-rendered ${generatedCount} static HTML pages successfully!`);
 
-  // 3b. Pre-render the Homepage dist/index.html with full semantic HTML
-  console.log('🏠 Pre-rendering homepage dist/index.html with full semantic HTML...');
-  const homepageHtml = generateHomepageHtml({
-    tools: TOOLS,
-    translations: TRANSLATIONS.it || {},
-    toolToSlug: TOOL_TO_PRIMARY_SLUG,
-  });
-  const prerenderedIndexHtml = baseHtml.replace('<div id="root"></div>', `<div id="root">${homepageHtml}</div>`);
-  fs.writeFileSync(indexHtmlPath, prerenderedIndexHtml, 'utf8');
-  console.log('✅ Pre-rendered homepage dist/index.html successfully!');
-
   // 4. Generate Domain-Specific XML Sitemaps with Bidirectional Hreflang
   console.log('🗺️ Generating domain-specific XML Sitemaps for .it, .de, and English / US...');
   const today = new Date().toISOString().split('T')[0];

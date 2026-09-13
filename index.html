@@ -53,13 +53,12 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#10b981" />
-    <!-- Fast Non-blocking Google Fonts with preconnect -->
+    <!-- Fast Non-blocking Google Fonts with preconnect & display=swap -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     </noscript>
 
     <!-- Structured Data (JSON-LD) for Google Rich Snippets -->
@@ -136,17 +135,59 @@
     <meta name="google-site-verification" content="xksXU2Sb5QgK7JRfXBThrc5l-pTPExSf1CYPbWLcDIs" />
   </head>
   <body class="bg-[#f8fafc] text-slate-900 font-sans antialiased min-h-screen selection:bg-emerald-500 selection:text-white">
-    <div id="root"></div>
+    <div id="root">
+      <div style="min-height: 100vh; background: #f8fafc; padding: 48px 16px; text-align: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+        <div style="max-width: 800px; margin: 0 auto;">
+          <div style="display: inline-block; padding: 6px 16px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 9999px; color: #047857; font-size: 12px; font-weight: 800; margin-bottom: 20px;">
+            Zero Upload sui Server • 100% Privato nel Browser
+          </div>
+          <h1 style="font-size: 32px; font-weight: 900; color: #0f172a; margin: 0 0 14px 0; letter-spacing: -0.02em;">
+            Tutti gli strumenti per i tuoi PDF.
+          </h1>
+          <p style="font-size: 15px; color: #64748b; margin: 0 auto; max-width: 600px; line-height: 1.6;">
+            Unisci, dividi, comprimi, converti, firma e organizza i tuoi PDF al 100% nel tuo browser.
+          </p>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
 
-    <!-- Non-blocking 3rd Party Scripts (AdSense & GA4) -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3502815676488440" crossorigin="anonymous"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5GSW854S0X"></script>
+    <!-- Defer 3rd Party Scripts (AdSense & GA4) to avoid blocking main thread during initial paint -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-5GSW854S0X');
+      (function() {
+        var loaded = false;
+        function loadThirdParty() {
+          if (loaded) return;
+          loaded = true;
+
+          // GA4
+          var ga = document.createElement('script');
+          ga.async = true;
+          ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-5GSW854S0X';
+          document.body.appendChild(ga);
+
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-5GSW854S0X');
+
+          // AdSense
+          var ads = document.createElement('script');
+          ads.async = true;
+          ads.crossOrigin = 'anonymous';
+          ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3502815676488440';
+          document.body.appendChild(ads);
+        }
+
+        ['scroll', 'keydown', 'touchstart', 'click', 'mousemove'].forEach(function(evt) {
+          window.addEventListener(evt, loadThirdParty, { once: true, passive: true });
+        });
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(function() { setTimeout(loadThirdParty, 3000); });
+        } else {
+          setTimeout(loadThirdParty, 3000);
+        }
+      })();
     </script>
   </body>
 </html>
