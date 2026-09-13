@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyPdfTools Capture</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="logo-group">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>MyPdfTools</h1>
+          <span class="badge">CAPTURE PRO</span>
+        </div>
+      </div>
+      <span class="privacy-pill">🔒 100% Local</span>
+    </header>
+
+    <!-- Capture Action Cards -->
+    <main class="actions-list">
+      <button id="btn-full-page" class="action-card primary">
+        <div class="card-icon emerald">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="card-title">Full Page (Desktop)</span>
+          <span class="card-desc">Auto-scrolls & stitches entire page</span>
+        </div>
+        <span class="shortcut-tag">Alt+Shift+P</span>
+      </button>
+
+      <button id="btn-mobile-page" class="action-card secondary">
+        <div class="card-icon purple">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="card-title">Full Page (Mobile View)</span>
+          <span class="card-desc">Simulates 390px iPhone viewport</span>
+        </div>
+        <span class="new-pill">NEW</span>
+      </button>
+
+      <button id="btn-visible-page" class="action-card">
+        <div class="card-icon amber">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </div>
+        <div class="card-content">
+          <span class="card-title">Visible Screen Only</span>
+          <span class="card-desc">Captures what's currently in view</span>
+        </div>
+      </button>
+    </main>
+
+    <!-- Status / Progress Banner (hidden by default) -->
+    <div id="status-banner" class="status-banner hidden">
+      <div class="spinner"></div>
+      <span id="status-text">Capturing page...</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+      <a href="https://www.mypdftools.it" target="_blank" rel="noopener noreferrer" class="footer-link">
+        <span>✨ Explore Free PDF Suite</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+      </a>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
+
