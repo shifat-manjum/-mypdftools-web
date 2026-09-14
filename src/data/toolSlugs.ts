@@ -22,3 +22,4 @@ export const TOOL_TO_PRIMARY_SLUG: Record<string, { it: string; de: string; en?:
   'page-numbers': { it: 'numeri-di-pagina-pdf', de: 'pdf-seitenzahlen', en: 'add-page-numbers-to-pdf' },
   'pdf-to-markdown': { it: 'da-pdf-a-markdown', de: 'pdf-in-markdown', en: 'pdf-to-markdown' },
 };
+
