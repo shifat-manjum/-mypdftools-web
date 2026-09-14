@@ -152,26 +152,23 @@
     </div>
     <script type="module" src="/src/main.tsx"></script>
 
-    <!-- Defer 3rd Party Scripts (AdSense & GA4) to avoid blocking main thread during initial paint -->
+    <!-- Global Site Tag (GA4) - Instant tracking without blocking paint -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', 'G-5GSW854S0X');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5GSW854S0X"></script>
+
+    <!-- Defer Heavy AdSense Script so it never hurts PageSpeed or blocks main thread -->
     <script>
       (function() {
-        var loaded = false;
-        function loadThirdParty() {
-          if (loaded) return;
-          loaded = true;
-
-          // GA4
-          var ga = document.createElement('script');
-          ga.async = true;
-          ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-5GSW854S0X';
-          document.body.appendChild(ga);
-
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-5GSW854S0X');
-
-          // AdSense
+        var adsLoaded = false;
+        function loadAdSense() {
+          if (adsLoaded) return;
+          adsLoaded = true;
           var ads = document.createElement('script');
           ads.async = true;
           ads.crossOrigin = 'anonymous';
@@ -179,13 +176,13 @@
           document.body.appendChild(ads);
         }
 
-        ['scroll', 'keydown', 'touchstart', 'click', 'mousemove'].forEach(function(evt) {
-          window.addEventListener(evt, loadThirdParty, { once: true, passive: true });
+        ['scroll', 'keydown', 'touchstart', 'click'].forEach(function(evt) {
+          window.addEventListener(evt, loadAdSense, { once: true, passive: true });
         });
         if ('requestIdleCallback' in window) {
-          requestIdleCallback(function() { setTimeout(loadThirdParty, 3000); });
+          requestIdleCallback(function() { setTimeout(loadAdSense, 3000); });
         } else {
-          setTimeout(loadThirdParty, 3000);
+          setTimeout(loadAdSense, 3000);
         }
       })();
     </script>
