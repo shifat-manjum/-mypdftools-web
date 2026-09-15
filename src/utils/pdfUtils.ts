@@ -204,18 +204,25 @@ export async function rotatePdfPages(
 }
 
 /**
- * Organize / Reorder pages of a PDF
+ * Organize / Reorder pages of a PDF with optional page rotations
  */
 export async function organizePdfPages(
   file: File,
-  newOrderIndices: number[]
+  newOrderIndices: number[],
+  pageRotations?: number[]
 ): Promise<Uint8Array> {
   const buffer = await file.arrayBuffer();
   const pdfDoc = await PDFDocument.load(buffer, { ignoreEncryption: true });
   const newPdf = await PDFDocument.create();
 
   const pages = await newPdf.copyPages(pdfDoc, newOrderIndices);
-  pages.forEach((p) => newPdf.addPage(p));
+  pages.forEach((p, idx) => {
+    if (pageRotations && pageRotations[idx]) {
+      const currentAngle = p.getRotation().angle;
+      p.setRotation(degrees((currentAngle + pageRotations[idx]) % 360));
+    }
+    newPdf.addPage(p);
+  });
 
   return await newPdf.save();
 }
