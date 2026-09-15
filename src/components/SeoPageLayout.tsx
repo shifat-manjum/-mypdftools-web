@@ -18,6 +18,8 @@ const WatermarkPdfTool = React.lazy(() => import('../tools/WatermarkPdfTool').th
 const PageNumbersTool = React.lazy(() => import('../tools/PageNumbersTool').then(m => ({ default: m.PageNumbersTool })));
 const ProtectPdfTool = React.lazy(() => import('../tools/ProtectPdfTool').then(m => ({ default: m.ProtectPdfTool })));
 const SignPdfTool = React.lazy(() => import('../tools/SignPdfTool').then(m => ({ default: m.SignPdfTool })));
+const CompressPdfTool = React.lazy(() => import('../tools/CompressPdfTool').then(m => ({ default: m.CompressPdfTool })));
+const WordToPdfTool = React.lazy(() => import('../tools/WordToPdfTool').then(m => ({ default: m.WordToPdfTool })));
 const PdfToMarkdownTool = React.lazy(() => import('../tools/PdfToMarkdownTool').then(m => ({ default: m.PdfToMarkdownTool })));
 const GenericPdfTool = React.lazy(() => import('../tools/GenericPdfTool').then(m => ({ default: m.GenericPdfTool })));
 
@@ -106,6 +108,10 @@ export const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
         return <ProtectPdfTool mode="unlock" currentLang={lang} />;
       case 'sign-pdf':
         return <SignPdfTool currentLang={lang} />;
+      case 'compress-pdf':
+        return <CompressPdfTool currentLang={lang} />;
+      case 'word-to-pdf':
+        return <WordToPdfTool currentLang={lang} />;
       case 'pdf-to-markdown':
         return <PdfToMarkdownTool currentLang={lang} />;
       default:
