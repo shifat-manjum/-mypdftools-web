@@ -12,6 +12,7 @@ const AboutModal = React.lazy(() => import('./components/AboutModal').then(m => 
 const ContactModal = React.lazy(() => import('./components/ContactModal').then(m => ({ default: m.ContactModal })));
 const AuthNoticeModal = React.lazy(() => import('./components/AuthNoticeModal').then(m => ({ default: m.AuthNoticeModal })));
 const LegalModal = React.lazy(() => import('./components/LegalModal').then(m => ({ default: m.LegalModal })));
+import { ErrorBoundary } from './components/ErrorBoundary';
 import type { LegalTab } from './components/LegalModal';
 import { TOOLS } from './data/tools';
 import { ToolCategory } from './types';
@@ -269,6 +270,7 @@ export const App: React.FC = () => {
 
       {/* Main Content: SEO Landing Page, Tool View, or Catalog */}
       <main className="flex-1 pb-20 relative z-10">
+        <ErrorBoundary>
         {currentSeoRoute ? (
           <Suspense fallback={
             <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-10 py-20 flex flex-col items-center justify-center min-h-[450px]">
@@ -437,6 +439,7 @@ export const App: React.FC = () => {
             </section>
           </div>
         )}
+        </ErrorBoundary>
       </main>
 
       {/* Footer with Language Options */}
