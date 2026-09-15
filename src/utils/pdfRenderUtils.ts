@@ -2,14 +2,9 @@ import * as pdfjsLib from 'pdfjs-dist';
 // @ts-ignore
 import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.js?url';
 
-// Configure worker source with Vite bundled worker or public fallback
+// Configure worker source with local public worker
 if (typeof window !== 'undefined') {
-  try {
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      pdfWorkerUrl || '/pdf.worker.min.js';
-  } catch {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
-  }
+  pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
 }
 
 export interface RenderedPageImage {
@@ -29,6 +24,7 @@ export async function loadPdfDocument(file: File) {
     data: new Uint8Array(arrayBuffer),
     cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',
     cMapPacked: true,
+    standardFontDataUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/standard_fonts/',
   });
   return await loadingTask.promise;
 }
@@ -42,17 +38,26 @@ export async function getPdfPageCount(file: File): Promise<number> {
 }
 
 /**
- * Converts dataURL to Blob synchronously and safely across all browsers
+ * Converts HTML5 Canvas to Blob reliably and performantly
  */
-function dataUrlToBlob(dataUrl: string, mimeType: string): Blob {
-  const parts = dataUrl.split(',');
-  const byteString = atob(parts[1] || '');
-  const arrayBuffer = new ArrayBuffer(byteString.length);
-  const uint8Array = new Uint8Array(arrayBuffer);
-  for (let i = 0; i < byteString.length; i++) {
-    uint8Array[i] = byteString.charCodeAt(i);
-  }
-  return new Blob([uint8Array], { type: mimeType });
+export function canvasToBlob(canvas: HTMLCanvasElement, mimeType: string, quality: number = 0.92): Promise<Blob> {
+  return new Promise((resolve) => {
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resolve(blob);
+      } else {
+        const dataUrl = canvas.toDataURL(mimeType, quality);
+        const parts = dataUrl.split(',');
+        const byteString = atob(parts[1] || '');
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+        }
+        resolve(new Blob([ab], { type: mimeType }));
+      }
+    }, mimeType, quality);
+  });
 }
 
 /**
@@ -72,6 +77,10 @@ export async function renderPdfPageToCanvas(
 
   canvas.width = Math.floor(viewport.width);
   canvas.height = Math.floor(viewport.height);
+
+  // Fill canvas with white background before rendering (prevents black background in JPG)
+  context.fillStyle = '#ffffff';
+  context.fillRect(0, 0, canvas.width, canvas.height);
 
   await page.render({
     canvasContext: context,
@@ -97,8 +106,8 @@ export async function convertPdfToImages(
 
   for (let i = 1; i <= totalPages; i++) {
     const canvas = await renderPdfPageToCanvas(pdf, i, scale);
-    const dataUrl = canvas.toDataURL(mime, 0.92);
-    const blob = dataUrlToBlob(dataUrl, mime);
+    const blob = await canvasToBlob(canvas, mime, 0.92);
+    const dataUrl = URL.createObjectURL(blob);
 
     results.push({
       pageNumber: i,
