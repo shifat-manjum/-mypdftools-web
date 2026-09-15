@@ -18,6 +18,7 @@ const PageNumbersTool = React.lazy(() => import('../tools/PageNumbersTool').then
 const ProtectPdfTool = React.lazy(() => import('../tools/ProtectPdfTool').then(m => ({ default: m.ProtectPdfTool })));
 const SignPdfTool = React.lazy(() => import('../tools/SignPdfTool').then(m => ({ default: m.SignPdfTool })));
 const CompressPdfTool = React.lazy(() => import('../tools/CompressPdfTool').then(m => ({ default: m.CompressPdfTool })));
+const WordToPdfTool = React.lazy(() => import('../tools/WordToPdfTool').then(m => ({ default: m.WordToPdfTool })));
 const PdfToMarkdownTool = React.lazy(() => import('../tools/PdfToMarkdownTool').then(m => ({ default: m.PdfToMarkdownTool })));
 const GenericPdfTool = React.lazy(() => import('../tools/GenericPdfTool').then(m => ({ default: m.GenericPdfTool })));
 
@@ -116,6 +117,8 @@ export const ToolPage: React.FC<ToolPageProps> = ({
         return <SignPdfTool currentLang={currentLang} />;
       case 'pdf-to-markdown':
         return <PdfToMarkdownTool currentLang={currentLang} />;
+      case 'word-to-pdf':
+        return <WordToPdfTool currentLang={currentLang} />;
       default:
         return <GenericPdfTool tool={tool} currentLang={currentLang} />;
     }
