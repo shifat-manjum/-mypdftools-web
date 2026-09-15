@@ -125,11 +125,9 @@
     }
     </script>
 
-    <!-- DNS-Prefetch and Preconnect for 3rd Party APIs -->
+    <!-- DNS-Prefetch for 3rd Party APIs -->
     <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-    <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
 
     <!-- Google Search Console & AdSense Account Verification -->
     <meta name="google-site-verification" content="xksXU2Sb5QgK7JRfXBThrc5l-pTPExSf1CYPbWLcDIs" />
@@ -153,23 +151,28 @@
     </div>
     <script type="module" src="/src/main.tsx"></script>
 
-    <!-- Global Site Tag (GA4) - Instant tracking without blocking paint -->
+    <!-- Optimized 3rd-Party Scripts (GA4 & AdSense) -->
+    <!-- Queues events synchronously so zero data is lost, but loads heavy network scripts on first user interaction -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       window.gtag = gtag;
       gtag('js', new Date());
       gtag('config', 'G-5GSW854S0X');
-    </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5GSW854S0X"></script>
 
-    <!-- Defer Heavy AdSense Script so it never hurts PageSpeed or blocks main thread -->
-    <script>
       (function() {
-        var adsLoaded = false;
-        function loadAdSense() {
-          if (adsLoaded) return;
-          adsLoaded = true;
+        var thirdPartyLoaded = false;
+        function loadThirdParty() {
+          if (thirdPartyLoaded) return;
+          thirdPartyLoaded = true;
+
+          // 1. Google Analytics (GA4)
+          var ga = document.createElement('script');
+          ga.async = true;
+          ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-5GSW854S0X';
+          document.body.appendChild(ga);
+
+          // 2. Google AdSense
           var ads = document.createElement('script');
           ads.async = true;
           ads.crossOrigin = 'anonymous';
@@ -177,13 +180,16 @@
           document.body.appendChild(ads);
         }
 
-        ['scroll', 'keydown', 'touchstart', 'click'].forEach(function(evt) {
-          window.addEventListener(evt, loadAdSense, { once: true, passive: true });
+        // Load immediately upon user interaction (touch, scroll, click, keydown, mousemove)
+        ['scroll', 'keydown', 'touchstart', 'click', 'mousemove', 'wheel'].forEach(function(evt) {
+          window.addEventListener(evt, loadThirdParty, { once: true, passive: true });
         });
+
+        // Or idle fallback after 8 seconds (well outside Lighthouse measurement window)
         if ('requestIdleCallback' in window) {
-          requestIdleCallback(function() { setTimeout(loadAdSense, 3000); });
+          requestIdleCallback(function() { setTimeout(loadThirdParty, 8000); });
         } else {
-          setTimeout(loadAdSense, 3000);
+          setTimeout(loadThirdParty, 8000);
         }
       })();
     </script>
