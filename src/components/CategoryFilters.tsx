@@ -42,10 +42,10 @@ export const CategoryFilters: React.FC<CategoryFiltersProps> = ({
               <button
                 key={cat.id}
                 onClick={() => onSelectCategory(cat.id)}
-                className={`whitespace-nowrap px-4 py-1.5 text-xs font-bold rounded-full transition-all duration-200 cursor-pointer ${
+                className={`whitespace-nowrap px-4 py-2.5 sm:py-1.5 min-h-[44px] sm:min-h-[34px] flex items-center justify-center text-xs font-bold rounded-full transition-all duration-200 cursor-pointer ${
                   isActive
                     ? 'bg-slate-900 text-white shadow-md shadow-slate-900/20 ring-2 ring-slate-900/10'
-                    : 'bg-white/90 backdrop-blur-md text-slate-600 hover:bg-white hover:text-slate-900 border border-slate-200 shadow-xs'
+                    : 'bg-white/90 backdrop-blur-md text-slate-700 hover:bg-white hover:text-slate-900 border border-slate-200 shadow-xs'
                 }`}
               >
                 {cat.label}
@@ -59,10 +59,11 @@ export const CategoryFilters: React.FC<CategoryFiltersProps> = ({
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
+            aria-label={t.searchPlaceholder || 'Search PDF tools'}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder={t.searchPlaceholder}
-            className="w-full pl-9 pr-4 py-2 text-xs bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all placeholder:text-slate-400 shadow-xs"
+            className="w-full pl-9 pr-4 py-2.5 text-xs bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-full focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all placeholder:text-slate-500 shadow-xs"
           />
         </div>
       </div>

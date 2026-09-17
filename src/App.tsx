@@ -468,23 +468,23 @@ export const App: React.FC = () => {
             <p className="text-xs text-slate-500 font-medium">
               © {new Date().getFullYear()} MyPdfTools (mypdftools.it • mypdftools.de). {t.footer.rights}
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-bold text-slate-600">
-              <button onClick={() => navigateToTool('jpg-to-pdf')} className="hover:text-emerald-600 cursor-pointer">{t.tools['jpg-to-pdf']?.title || 'JPG to PDF'}</button>
-              <button onClick={() => navigateToTool('pdf-to-jpg')} className="hover:text-emerald-600 cursor-pointer">{t.tools['pdf-to-jpg']?.title || 'PDF to JPG'}</button>
-              <button onClick={() => navigateToTool('merge-pdf')} className="hover:text-emerald-600 cursor-pointer">{t.tools['merge-pdf']?.title || 'Merge PDF'}</button>
-              <button onClick={() => navigateToTool('split-pdf')} className="hover:text-emerald-600 cursor-pointer">{t.tools['split-pdf']?.title || 'Split PDF'}</button>
-              <button onClick={() => setLegalModalState({ isOpen: true, tab: 'privacy' })} className="text-slate-800 hover:text-emerald-600 cursor-pointer font-bold">{currentLang === 'it' ? 'Privacy Policy' : currentLang === 'de' ? 'Datenschutz' : 'Privacy Policy'}</button>
-              <button onClick={() => setLegalModalState({ isOpen: true, tab: 'terms' })} className="text-slate-800 hover:text-emerald-600 cursor-pointer font-bold">{currentLang === 'it' ? 'Termini di Servizio' : currentLang === 'de' ? 'AGB' : 'Terms of Service'}</button>
-              <button onClick={() => setLegalModalState({ isOpen: true, tab: 'cookies' })} className="text-slate-800 hover:text-emerald-600 cursor-pointer font-bold">Cookie Policy</button>
-              <button onClick={() => setPrivacyModalOpen(true)} className="text-emerald-600 font-black hover:underline cursor-pointer">{t.footer.privacyGuarantee}</button>
-              <button onClick={() => setAboutModalOpen(true)} className="text-slate-800 font-black hover:text-emerald-600 cursor-pointer">{currentLang === 'it' ? 'Chi Siamo' : currentLang === 'de' ? 'Über uns' : 'About Us'}</button>
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-4 text-xs font-bold text-slate-600">
+              <button onClick={() => navigateToTool('jpg-to-pdf')} className="px-2.5 py-2 min-h-[44px] inline-flex items-center hover:text-emerald-600 cursor-pointer">{t.tools['jpg-to-pdf']?.title || 'JPG to PDF'}</button>
+              <button onClick={() => navigateToTool('pdf-to-jpg')} className="px-2.5 py-2 min-h-[44px] inline-flex items-center hover:text-emerald-600 cursor-pointer">{t.tools['pdf-to-jpg']?.title || 'PDF to JPG'}</button>
+              <button onClick={() => navigateToTool('merge-pdf')} className="px-2.5 py-2 min-h-[44px] inline-flex items-center hover:text-emerald-600 cursor-pointer">{t.tools['merge-pdf']?.title || 'Merge PDF'}</button>
+              <button onClick={() => navigateToTool('split-pdf')} className="px-2.5 py-2 min-h-[44px] inline-flex items-center hover:text-emerald-600 cursor-pointer">{t.tools['split-pdf']?.title || 'Split PDF'}</button>
+              <button onClick={() => setLegalModalState({ isOpen: true, tab: 'privacy' })} className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold">{currentLang === 'it' ? 'Privacy Policy' : currentLang === 'de' ? 'Datenschutz' : 'Privacy Policy'}</button>
+              <button onClick={() => setLegalModalState({ isOpen: true, tab: 'terms' })} className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold">{currentLang === 'it' ? 'Termini di Servizio' : currentLang === 'de' ? 'AGB' : 'Terms of Service'}</button>
+              <button onClick={() => setLegalModalState({ isOpen: true, tab: 'cookies' })} className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold">Cookie Policy</button>
+              <button onClick={() => setPrivacyModalOpen(true)} className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-emerald-600 font-black hover:underline cursor-pointer">{t.footer.privacyGuarantee}</button>
+              <button onClick={() => setAboutModalOpen(true)} className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 font-black hover:text-emerald-600 cursor-pointer">{currentLang === 'it' ? 'Chi Siamo' : currentLang === 'de' ? 'Über uns' : 'About Us'}</button>
               <a
                 href="mailto:khshifat@gmail.com"
                 onClick={(e) => {
                   e.preventDefault();
                   setContactModalOpen(true);
                 }}
-                className="text-slate-800 font-black hover:text-emerald-600 cursor-pointer"
+                className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 font-black hover:text-emerald-600 cursor-pointer"
               >
                 {currentLang === 'it' ? 'Contattaci' : currentLang === 'de' ? 'Kontakt' : 'Contact Us'}
               </a>

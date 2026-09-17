@@ -35,10 +35,10 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
               e.stopPropagation();
               onLanguageChange(code);
             }}
-            className={`px-3 py-1 rounded-lg text-xs font-black uppercase transition-all duration-150 cursor-pointer ${
+            className={`px-3.5 py-2 sm:py-1 min-h-[44px] sm:min-h-[32px] min-w-[44px] sm:min-w-[36px] flex items-center justify-center rounded-lg text-xs font-black uppercase transition-all duration-150 cursor-pointer ${
               isActive
                 ? 'bg-white text-emerald-700 shadow-xs ring-1 ring-slate-900/5'
-                : 'text-slate-500 hover:text-slate-900 hover:bg-white/50'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
             }`}
             aria-label={`Switch to ${label}`}
             aria-pressed={isActive}
