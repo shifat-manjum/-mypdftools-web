@@ -18,6 +18,10 @@ export class ErrorBoundary extends Component<Props, State> {
   };
 
   public static getDerivedStateFromError(error: Error): State {
+    // If it's an external DOM mutation error (e.g. Google Chrome Auto-Translate wrapping text nodes), do not crash
+    if (error?.message?.includes('removeChild') || error?.message?.includes('not a child of this node')) {
+      return { hasError: false, error: null };
+    }
     return { hasError: true, error };
   }
 
@@ -55,3 +59,4 @@ export class ErrorBoundary extends Component<Props, State> {
     return this.props.children;
   }
 }
+

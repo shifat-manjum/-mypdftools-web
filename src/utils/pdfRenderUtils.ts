@@ -2,9 +2,9 @@ import * as pdfjsLib from 'pdfjs-dist';
 // @ts-ignore
 import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.js?url';
 
-// Configure worker source with local public worker
+// Configure worker source with bundled Vite worker and public fallback
 if (typeof window !== 'undefined') {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+  pdfjsLib.GlobalWorkerOptions.workerSrc = (pdfWorkerUrl as string) || '/pdf.worker.min.js';
 }
 
 export interface RenderedPageImage {

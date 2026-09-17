@@ -197,46 +197,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     link.click();
   });
 
-  // 8. Export as PDF
+  // 8. Export as PDF (uses print media stylesheet with Save as PDF)
   btnDownloadPdf?.addEventListener('click', () => {
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) {
-      alert('Please allow popups to generate the PDF.');
-      return;
-    }
-
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>${captureMetadata?.pageTitle || 'Full Page Screenshot'} - PDF</title>
-        <style>
-          @page {
-            margin: 0;
-            size: auto;
-          }
-          body {
-            margin: 0;
-            padding: 0;
-            background: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-          }
-          img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-          }
-        </style>
-      </head>
-      <body>
-        <img src="${fullImageDataUrl}" onload="window.print(); window.close();" />
-      </body>
-      </html>
-    `);
-    printWindow.document.close();
+    window.print();
   });
+
 
   function sanitizeFilename(title) {
     return title.replace(/[^a-z0-9_-]/gi, '_').toLowerCase().substring(0, 50);

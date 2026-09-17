@@ -341,3 +341,39 @@ body, html {
   background: #10b981;
   color: #ffffff;
 }
+
+/* Native Print Stylesheet for 1-Click PDF Export */
+@media print {
+  body, html {
+    background: #ffffff !important;
+    color: #000000 !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .studio-header,
+  .viewer-companion-banner,
+  #blur-overlay,
+  #loading-spinner,
+  .control-pill,
+  .tool-pill,
+  .dimension-badge {
+    display: none !important;
+  }
+  .studio-layout,
+  .viewer-stage-container,
+  #preview-stage,
+  #preview-card {
+    height: auto !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+  }
+  #preview-image {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important;
+  }
+}

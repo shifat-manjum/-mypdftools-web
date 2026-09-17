@@ -20,6 +20,7 @@ const ProtectPdfTool = React.lazy(() => import('../tools/ProtectPdfTool').then(m
 const SignPdfTool = React.lazy(() => import('../tools/SignPdfTool').then(m => ({ default: m.SignPdfTool })));
 const CompressPdfTool = React.lazy(() => import('../tools/CompressPdfTool').then(m => ({ default: m.CompressPdfTool })));
 const WordToPdfTool = React.lazy(() => import('../tools/WordToPdfTool').then(m => ({ default: m.WordToPdfTool })));
+const PdfToWordTool = React.lazy(() => import('../tools/PdfToWordTool').then(m => ({ default: m.PdfToWordTool })));
 const PdfToMarkdownTool = React.lazy(() => import('../tools/PdfToMarkdownTool').then(m => ({ default: m.PdfToMarkdownTool })));
 const GenericPdfTool = React.lazy(() => import('../tools/GenericPdfTool').then(m => ({ default: m.GenericPdfTool })));
 
@@ -112,6 +113,8 @@ export const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
         return <CompressPdfTool currentLang={lang} />;
       case 'word-to-pdf':
         return <WordToPdfTool currentLang={lang} />;
+      case 'pdf-to-word':
+        return <PdfToWordTool currentLang={lang} />;
       case 'pdf-to-markdown':
         return <PdfToMarkdownTool currentLang={lang} />;
       default:
