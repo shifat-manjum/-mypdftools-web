@@ -23,3 +23,18 @@ export const TOOL_TO_PRIMARY_SLUG: Record<string, { it: string; de: string; en?:
   'pdf-to-markdown': { it: 'da-pdf-a-markdown', de: 'pdf-in-markdown', en: 'pdf-to-markdown' },
 };
 
+export const SLUG_TO_TOOL_MAP: Record<string, { toolId: string; lang: 'it' | 'de' | 'en' }> = {};
+
+Object.entries(TOOL_TO_PRIMARY_SLUG).forEach(([toolId, langs]) => {
+  if (langs.it) SLUG_TO_TOOL_MAP[langs.it] = { toolId, lang: 'it' };
+  if (langs.de) SLUG_TO_TOOL_MAP[langs.de] = { toolId, lang: 'de' };
+  if (langs.en) SLUG_TO_TOOL_MAP[langs.en] = { toolId, lang: 'en' };
+  // Also map bare tool ID
+  SLUG_TO_TOOL_MAP[toolId] = { toolId, lang: 'en' };
+});
+
+export function findToolBySlug(slug: string): { toolId: string; lang: 'it' | 'de' | 'en' } | null {
+  const clean = slug.replace(/^\/+/, '').replace(/\/+$/, '');
+  return SLUG_TO_TOOL_MAP[clean] || null;
+}
+

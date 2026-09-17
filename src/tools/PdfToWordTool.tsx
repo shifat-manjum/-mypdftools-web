@@ -407,3 +407,4 @@ export const PdfToWordTool: React.FC<PdfToWordToolProps> = ({ currentLang = 'it'
     </div>
   );
 };
+

@@ -50,6 +50,7 @@ export const TOOLS: ToolItem[] = [
     iconName: 'MsExcel',
     iconBg: 'bg-emerald-50 text-[#107C41]',
     iconColor: '#107C41',
+    isImplemented: true,
   },
   {
     id: 'pdf-to-excel',
@@ -59,6 +60,7 @@ export const TOOLS: ToolItem[] = [
     iconName: 'MsExcel',
     iconBg: 'bg-emerald-50 text-[#107C41]',
     iconColor: '#107C41',
+    isImplemented: true,
   },
   {
     id: 'powerpoint-to-pdf',
@@ -68,6 +70,7 @@ export const TOOLS: ToolItem[] = [
     iconName: 'MsPowerPoint',
     iconBg: 'bg-orange-50 text-[#C43E1C]',
     iconColor: '#C43E1C',
+    isImplemented: true,
   },
   {
     id: 'pdf-to-powerpoint',
@@ -77,6 +80,7 @@ export const TOOLS: ToolItem[] = [
     iconName: 'MsPowerPoint',
     iconBg: 'bg-orange-50 text-[#C43E1C]',
     iconColor: '#C43E1C',
+    isImplemented: true,
   },
 
   /* Core PDF Organization & Document Tools */

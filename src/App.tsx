@@ -17,7 +17,7 @@ import type { LegalTab } from './components/LegalModal';
 import { TOOLS } from './data/tools';
 import { ToolCategory } from './types';
 import { Language, TRANSLATIONS } from './i18n/translations';
-import { TOOL_TO_PRIMARY_SLUG } from './data/toolSlugs';
+import { TOOL_TO_PRIMARY_SLUG, findToolBySlug } from './data/toolSlugs';
 import type { SeoRouteData } from './data/seoRoutes';
 import { ShieldCheck, Zap, Lock, WifiOff, ArrowUpRight } from 'lucide-react';
 
@@ -93,6 +93,15 @@ export const App: React.FC = () => {
     } catch {
       // Ignore in restricted environments
     }
+
+    // If currently viewing a tool or SEO page, switch to that tool's translated URL
+    const activeId = currentToolId || currentSeoRoute?.toolId;
+    if (activeId && TOOL_TO_PRIMARY_SLUG[activeId]) {
+      const targetSlug = TOOL_TO_PRIMARY_SLUG[activeId][lang] || TOOL_TO_PRIMARY_SLUG[activeId].it;
+      if (targetSlug && targetSlug !== currentPath) {
+        navigateToPath(targetSlug);
+      }
+    }
   };
 
   // Resolve current SEO route lazily if matching path exists
@@ -101,6 +110,7 @@ export const App: React.FC = () => {
   useEffect(() => {
     if (!currentPath) {
       setCurrentSeoRoute(null);
+      setCurrentToolId(null);
       return;
     }
     let isMounted = true;
@@ -112,6 +122,15 @@ export const App: React.FC = () => {
         setCurrentToolId(seo.toolId);
         if (seo.lang && (seo.lang === 'it' || seo.lang === 'de' || seo.lang === 'en')) {
           setCurrentLang(seo.lang);
+        }
+      } else {
+        // Fallback: check direct tool slug mapping (Excel, PowerPoint, etc.)
+        const match = findToolBySlug(currentPath);
+        if (match) {
+          setCurrentToolId(match.toolId);
+          if (match.lang) {
+            setCurrentLang(match.lang);
+          }
         }
       }
     });
