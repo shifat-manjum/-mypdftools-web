@@ -8,9 +8,109 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.mypdftools.it/privacy-policy</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.mypdftools.it/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/datenschutz" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/privacy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/privacy" />
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://www.mypdftools.it/terms-of-service</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.mypdftools.it/terms-of-service" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/nutzungsbedingungen" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/terms" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/terms" />
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://www.mypdftools.it/cookie-policy</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.mypdftools.it/cookie-policy" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/cookie-policy" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/cookies" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/cookies" />
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://www.mypdftools.it/chi-siamo</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.mypdftools.it/chi-siamo" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/ueber-uns" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/about" />
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://www.mypdftools.it/contatti</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.mypdftools.it/contatti" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/kontakt" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/contact" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/contact" />
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://www.mypdftools.it/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.mypdftools.it/privacy-policy" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/datenschutz" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/privacy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/privacy" />
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://www.mypdftools.it/terms</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.mypdftools.it/terms-of-service" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/nutzungsbedingungen" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/terms" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/terms" />
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://www.mypdftools.it/cookies</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.mypdftools.it/cookie-policy" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/cookie-policy" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/cookies" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/cookies" />
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://www.mypdftools.it/about</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.mypdftools.it/chi-siamo" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/ueber-uns" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/about" />
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://www.mypdftools.it/contact</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.mypdftools.it/contatti" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/kontakt" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/contact" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/contact" />
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
   </url>
   <url>
     <loc>https://www.mypdftools.it/unire-pdf</loc>
@@ -18,7 +118,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-zusammenfuegen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
@@ -28,7 +128,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-teilen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -38,7 +138,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-komprimieren" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
@@ -48,7 +148,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-verkleinern" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -58,7 +158,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/jpg-in-pdf" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
@@ -68,7 +168,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/fotos-in-pdf-umwandeln" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -78,7 +178,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-in-jpg" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -88,7 +188,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/word-in-pdf" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
@@ -98,7 +198,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-in-word" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -108,7 +208,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/excel-in-pdf" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -118,7 +218,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-in-excel" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -128,7 +228,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-unterschreiben" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -138,7 +238,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-bearbeiten" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -148,7 +248,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-drehen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -158,7 +258,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-organisieren" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -168,7 +268,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-seiten-loeschen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -178,7 +278,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-seiten-extrahieren" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -188,7 +288,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-schuetzen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -198,7 +298,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-entsperren" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -208,7 +308,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-wasserzeichen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -218,7 +318,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-seitenzahlen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -228,7 +328,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-in-markdown" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -238,7 +338,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/ratgeber/pdf-dateien-zusammenfuegen-anleitung" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -248,7 +348,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/ratgeber/pdf-verkleinern-ohne-qualitaetsverlust" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -258,7 +358,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/ratgeber/bilder-in-pdf-umwandeln-kostenlos" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -268,7 +368,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/powerpoint-in-pdf" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -278,7 +378,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-in-powerpoint" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -288,7 +388,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/png-in-pdf" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -298,7 +398,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-in-png" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -308,7 +408,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-in-text" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -318,7 +418,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/ocr-pdf-online-kostenlos" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -328,7 +428,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-zuschneiden" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -338,7 +438,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-abflachen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -348,7 +448,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-schwaerzen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -358,7 +458,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-reparieren" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -368,7 +468,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-vergleichen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -378,7 +478,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-schwarz-weiss" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -388,7 +488,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/zwei-pdf-zusammenfuegen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -398,7 +498,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/rechnungen-pdf-zusammenfuegen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -408,7 +508,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-am-handy-zusammenfuegen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -418,7 +518,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-komprimieren-fuer-email" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -428,7 +528,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-unter-2mb-verkleinern" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -438,7 +538,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-fuer-bewerbung-verkleinern" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -448,7 +548,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-digital-unterschreiben-kostenlos" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -458,7 +558,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/vertrag-pdf-unterschreiben" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -468,7 +568,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/scans-in-pdf-umwandeln" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -478,7 +578,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/screenshot-in-pdf-umwandeln" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -488,7 +588,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/belege-in-pdf-umwandeln" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -498,7 +598,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/ratgeber/pdf-ohne-ausdrucken-unterschreiben" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -508,7 +608,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/ratgeber/pdf-mit-passwort-schuetzen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -518,7 +618,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/ratgeber/einzelne-seiten-aus-pdf-speichern" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -528,7 +628,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/ratgeber/word-in-pdf-umwandeln-kostenlos" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -538,7 +638,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/ratgeber/pdf-dauerhaft-drehen-und-speichern" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
@@ -548,7 +648,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-zusammenfuegen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/merge-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/merge-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
@@ -558,7 +658,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-zusammenfuegen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/combine-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/combine-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -568,7 +668,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-teilen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/split-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/split-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -578,7 +678,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-komprimieren" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/compress-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/compress-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
@@ -588,7 +688,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-komprimieren" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/reduce-pdf-size" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/reduce-pdf-size" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -598,7 +698,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/jpg-in-pdf" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/jpg-to-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/jpg-to-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
@@ -608,7 +708,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/jpg-in-pdf" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/image-to-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/image-to-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -618,7 +718,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-in-jpg" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/pdf-to-jpg" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/pdf-to-jpg" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -628,7 +728,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/word-in-pdf" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/word-to-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/word-to-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
@@ -638,7 +738,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-in-word" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/pdf-to-word" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/pdf-to-word" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -648,7 +748,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-unterschreiben" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/sign-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/sign-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -658,7 +758,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-bearbeiten" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/edit-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/edit-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -668,7 +768,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-drehen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/rotate-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/rotate-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -678,7 +778,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-organisieren" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/organize-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/organize-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -688,7 +788,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-seiten-loeschen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/delete-pdf-pages" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/delete-pdf-pages" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -698,7 +798,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-schuetzen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/protect-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/protect-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -708,7 +808,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-entsperren" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/unlock-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/unlock-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -718,7 +818,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-wasserzeichen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/watermark-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/watermark-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -728,7 +828,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-seitenzahlen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/add-page-numbers-to-pdf" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/add-page-numbers-to-pdf" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -738,7 +838,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/pdf-in-markdown" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/pdf-to-markdown" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/pdf-to-markdown" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -748,7 +848,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/ratgeber/pdf-dateien-kostenlos-zusammenfuegen" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/how-to-merge-pdf-files" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/how-to-merge-pdf-files" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -758,7 +858,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/ratgeber/pdf-verkleinern-ohne-qualitaetsverlust" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/how-to-compress-pdf-without-losing-quality" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/how-to-compress-pdf-without-losing-quality" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>
@@ -768,7 +868,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.mypdftools.de/ratgeber/pdf-digital-unterschreiben-anleitung" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.mypdftools.it/how-to-sign-a-pdf-document-online" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.mypdftools.it/how-to-sign-a-pdf-document-online" />
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.88</priority>
   </url>

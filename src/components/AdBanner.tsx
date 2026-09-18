@@ -38,18 +38,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({
     );
   }
 
-  // Visual placeholder showing monetization zone
-  return (
-    <div
-      className={`my-4 border border-dashed border-slate-300 bg-slate-50/70 rounded-xl p-3 flex flex-col items-center justify-center text-center transition-all ${className}`}
-    >
-      <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-        <span>Advertisement Space</span>
-      </div>
-      <p className="text-[11px] text-slate-500 mt-0.5">
-        Google AdSense slot ({format === 'horizontal' ? '728×90' : 'Responsive'})
-      </p>
-    </div>
-  );
+  // Comply with Google AdSense: Never render empty mock ad placeholders
+  return null;
 };
 

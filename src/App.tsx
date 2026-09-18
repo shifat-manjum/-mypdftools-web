@@ -167,12 +167,16 @@ export const App: React.FC = () => {
     const syncRouteFromLocation = () => {
       const activeRouteSlug = getPathFromLocation();
 
-      if (activeRouteSlug === 'privacy-policy') {
+      if (['privacy-policy', 'datenschutz', 'privacy'].includes(activeRouteSlug)) {
         setLegalModalState({ isOpen: true, tab: 'privacy' });
-      } else if (activeRouteSlug === 'terms-of-service') {
+      } else if (['terms-of-service', 'nutzungsbedingungen', 'terms'].includes(activeRouteSlug)) {
         setLegalModalState({ isOpen: true, tab: 'terms' });
-      } else if (activeRouteSlug === 'cookie-policy') {
+      } else if (['cookie-policy', 'cookies'].includes(activeRouteSlug)) {
         setLegalModalState({ isOpen: true, tab: 'cookies' });
+      } else if (['chi-siamo', 'about', 'ueber-uns'].includes(activeRouteSlug)) {
+        setAboutModalOpen(true);
+      } else if (['contatti', 'contact', 'kontakt'].includes(activeRouteSlug)) {
+        setContactModalOpen(true);
       }
 
       setCurrentPath(activeRouteSlug);
@@ -473,16 +477,57 @@ export const App: React.FC = () => {
               <button onClick={() => navigateToTool('pdf-to-jpg')} className="px-2.5 py-2 min-h-[44px] inline-flex items-center hover:text-emerald-600 cursor-pointer">{t.tools['pdf-to-jpg']?.title || 'PDF to JPG'}</button>
               <button onClick={() => navigateToTool('merge-pdf')} className="px-2.5 py-2 min-h-[44px] inline-flex items-center hover:text-emerald-600 cursor-pointer">{t.tools['merge-pdf']?.title || 'Merge PDF'}</button>
               <button onClick={() => navigateToTool('split-pdf')} className="px-2.5 py-2 min-h-[44px] inline-flex items-center hover:text-emerald-600 cursor-pointer">{t.tools['split-pdf']?.title || 'Split PDF'}</button>
-              <button onClick={() => setLegalModalState({ isOpen: true, tab: 'privacy' })} className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold">{currentLang === 'it' ? 'Privacy Policy' : currentLang === 'de' ? 'Datenschutz' : 'Privacy Policy'}</button>
-              <button onClick={() => setLegalModalState({ isOpen: true, tab: 'terms' })} className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold">{currentLang === 'it' ? 'Termini di Servizio' : currentLang === 'de' ? 'AGB' : 'Terms of Service'}</button>
-              <button onClick={() => setLegalModalState({ isOpen: true, tab: 'cookies' })} className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold">Cookie Policy</button>
-              <button onClick={() => setPrivacyModalOpen(true)} className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-emerald-600 font-black hover:underline cursor-pointer">{t.footer.privacyGuarantee}</button>
-              <button onClick={() => setAboutModalOpen(true)} className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 font-black hover:text-emerald-600 cursor-pointer">{currentLang === 'it' ? 'Chi Siamo' : currentLang === 'de' ? 'Über uns' : 'About Us'}</button>
               <a
-                href="mailto:khshifat@gmail.com"
+                href="/privacy-policy"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLegalModalState({ isOpen: true, tab: 'privacy' });
+                  window.history.pushState({}, '', '/privacy-policy');
+                }}
+                className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold"
+              >
+                {currentLang === 'it' ? 'Privacy Policy' : currentLang === 'de' ? 'Datenschutz' : 'Privacy Policy'}
+              </a>
+              <a
+                href="/terms-of-service"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLegalModalState({ isOpen: true, tab: 'terms' });
+                  window.history.pushState({}, '', '/terms-of-service');
+                }}
+                className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold"
+              >
+                {currentLang === 'it' ? 'Termini di Servizio' : currentLang === 'de' ? 'AGB' : 'Terms of Service'}
+              </a>
+              <a
+                href="/cookie-policy"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLegalModalState({ isOpen: true, tab: 'cookies' });
+                  window.history.pushState({}, '', '/cookie-policy');
+                }}
+                className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold"
+              >
+                Cookie Policy
+              </a>
+              <button onClick={() => setPrivacyModalOpen(true)} className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-emerald-600 font-black hover:underline cursor-pointer">{t.footer.privacyGuarantee}</button>
+              <a
+                href="/chi-siamo"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setAboutModalOpen(true);
+                  window.history.pushState({}, '', '/chi-siamo');
+                }}
+                className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 font-black hover:text-emerald-600 cursor-pointer"
+              >
+                {currentLang === 'it' ? 'Chi Siamo' : currentLang === 'de' ? 'Über uns' : 'About Us'}
+              </a>
+              <a
+                href="/contatti"
                 onClick={(e) => {
                   e.preventDefault();
                   setContactModalOpen(true);
+                  window.history.pushState({}, '', '/contatti');
                 }}
                 className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 font-black hover:text-emerald-600 cursor-pointer"
               >
