@@ -1,5 +1,12 @@
 {
   "cleanUrls": true,
+  "redirects": [
+    { "source": "/privacy", "destination": "/privacy-policy", "permanent": true },
+    { "source": "/terms", "destination": "/terms-of-service", "permanent": true },
+    { "source": "/cookies", "destination": "/cookie-policy", "permanent": true },
+    { "source": "/about", "destination": "/chi-siamo", "permanent": true },
+    { "source": "/contact", "destination": "/contatti", "permanent": true }
+  ],
   "rewrites": [
     {
       "source": "/sitemap.xml",

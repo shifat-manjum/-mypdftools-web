@@ -856,24 +856,17 @@ async function runPrerender() {
   console.log('⚖️ Pre-rendering Legal & Compliance Pages (Privacy, Terms, Cookies, About, Contact)...');
   const compliancePages = [
     // Italian Pages
-    { slug: 'privacy-policy', type: 'privacy', lang: 'it', canonical: 'https://www.mypdftools.it/privacy-policy', it: 'https://www.mypdftools.it/privacy-policy', de: 'https://www.mypdftools.de/datenschutz', en: 'https://www.mypdftools.it/privacy' },
-    { slug: 'terms-of-service', type: 'terms', lang: 'it', canonical: 'https://www.mypdftools.it/terms-of-service', it: 'https://www.mypdftools.it/terms-of-service', de: 'https://www.mypdftools.de/nutzungsbedingungen', en: 'https://www.mypdftools.it/terms' },
-    { slug: 'cookie-policy', type: 'cookies', lang: 'it', canonical: 'https://www.mypdftools.it/cookie-policy', it: 'https://www.mypdftools.it/cookie-policy', de: 'https://www.mypdftools.de/cookie-policy', en: 'https://www.mypdftools.it/cookies' },
-    { slug: 'chi-siamo', type: 'about', lang: 'it', canonical: 'https://www.mypdftools.it/chi-siamo', it: 'https://www.mypdftools.it/chi-siamo', de: 'https://www.mypdftools.de/ueber-uns', en: 'https://www.mypdftools.it/about' },
-    { slug: 'contatti', type: 'contact', lang: 'it', canonical: 'https://www.mypdftools.it/contatti', it: 'https://www.mypdftools.it/contatti', de: 'https://www.mypdftools.de/kontakt', en: 'https://www.mypdftools.it/contact' },
+    { slug: 'privacy-policy', type: 'privacy', lang: 'it', canonical: 'https://www.mypdftools.it/privacy-policy', it: 'https://www.mypdftools.it/privacy-policy', de: 'https://www.mypdftools.de/datenschutz', en: 'https://www.mypdftools.it/privacy-policy' },
+    { slug: 'terms-of-service', type: 'terms', lang: 'it', canonical: 'https://www.mypdftools.it/terms-of-service', it: 'https://www.mypdftools.it/terms-of-service', de: 'https://www.mypdftools.de/nutzungsbedingungen', en: 'https://www.mypdftools.it/terms-of-service' },
+    { slug: 'cookie-policy', type: 'cookies', lang: 'it', canonical: 'https://www.mypdftools.it/cookie-policy', it: 'https://www.mypdftools.it/cookie-policy', de: 'https://www.mypdftools.de/cookie-policy', en: 'https://www.mypdftools.it/cookie-policy' },
+    { slug: 'chi-siamo', type: 'about', lang: 'it', canonical: 'https://www.mypdftools.it/chi-siamo', it: 'https://www.mypdftools.it/chi-siamo', de: 'https://www.mypdftools.de/ueber-uns', en: 'https://www.mypdftools.it/chi-siamo' },
+    { slug: 'contatti', type: 'contact', lang: 'it', canonical: 'https://www.mypdftools.it/contatti', it: 'https://www.mypdftools.it/contatti', de: 'https://www.mypdftools.de/kontakt', en: 'https://www.mypdftools.it/contatti' },
 
     // German Pages
-    { slug: 'datenschutz', type: 'privacy', lang: 'de', canonical: 'https://www.mypdftools.de/datenschutz', it: 'https://www.mypdftools.it/privacy-policy', de: 'https://www.mypdftools.de/datenschutz', en: 'https://www.mypdftools.it/privacy' },
-    { slug: 'nutzungsbedingungen', type: 'terms', lang: 'de', canonical: 'https://www.mypdftools.de/nutzungsbedingungen', it: 'https://www.mypdftools.it/terms-of-service', de: 'https://www.mypdftools.de/nutzungsbedingungen', en: 'https://www.mypdftools.it/terms' },
-    { slug: 'ueber-uns', type: 'about', lang: 'de', canonical: 'https://www.mypdftools.de/ueber-uns', it: 'https://www.mypdftools.it/chi-siamo', de: 'https://www.mypdftools.de/ueber-uns', en: 'https://www.mypdftools.it/about' },
-    { slug: 'kontakt', type: 'contact', lang: 'de', canonical: 'https://www.mypdftools.de/kontakt', it: 'https://www.mypdftools.it/contatti', de: 'https://www.mypdftools.de/kontakt', en: 'https://www.mypdftools.it/contact' },
-
-    // English Pages
-    { slug: 'privacy', type: 'privacy', lang: 'en', canonical: 'https://www.mypdftools.it/privacy', it: 'https://www.mypdftools.it/privacy-policy', de: 'https://www.mypdftools.de/datenschutz', en: 'https://www.mypdftools.it/privacy' },
-    { slug: 'terms', type: 'terms', lang: 'en', canonical: 'https://www.mypdftools.it/terms', it: 'https://www.mypdftools.it/terms-of-service', de: 'https://www.mypdftools.de/nutzungsbedingungen', en: 'https://www.mypdftools.it/terms' },
-    { slug: 'cookies', type: 'cookies', lang: 'en', canonical: 'https://www.mypdftools.it/cookies', it: 'https://www.mypdftools.it/cookie-policy', de: 'https://www.mypdftools.de/cookie-policy', en: 'https://www.mypdftools.it/cookies' },
-    { slug: 'about', type: 'about', lang: 'en', canonical: 'https://www.mypdftools.it/about', it: 'https://www.mypdftools.it/chi-siamo', de: 'https://www.mypdftools.de/ueber-uns', en: 'https://www.mypdftools.it/about' },
-    { slug: 'contact', type: 'contact', lang: 'en', canonical: 'https://www.mypdftools.it/contact', it: 'https://www.mypdftools.it/contatti', de: 'https://www.mypdftools.de/kontakt', en: 'https://www.mypdftools.it/contact' },
+    { slug: 'datenschutz', type: 'privacy', lang: 'de', canonical: 'https://www.mypdftools.de/datenschutz', it: 'https://www.mypdftools.it/privacy-policy', de: 'https://www.mypdftools.de/datenschutz', en: 'https://www.mypdftools.it/privacy-policy' },
+    { slug: 'nutzungsbedingungen', type: 'terms', lang: 'de', canonical: 'https://www.mypdftools.de/nutzungsbedingungen', it: 'https://www.mypdftools.it/terms-of-service', de: 'https://www.mypdftools.de/nutzungsbedingungen', en: 'https://www.mypdftools.it/terms-of-service' },
+    { slug: 'ueber-uns', type: 'about', lang: 'de', canonical: 'https://www.mypdftools.de/ueber-uns', it: 'https://www.mypdftools.it/chi-siamo', de: 'https://www.mypdftools.de/ueber-uns', en: 'https://www.mypdftools.it/chi-siamo' },
+    { slug: 'kontakt', type: 'contact', lang: 'de', canonical: 'https://www.mypdftools.de/kontakt', it: 'https://www.mypdftools.it/contatti', de: 'https://www.mypdftools.de/kontakt', en: 'https://www.mypdftools.it/contatti' },
   ];
 
   for (const cp of compliancePages) {
@@ -1174,11 +1167,8 @@ async function runPrerender() {
     <priority>0.70</priority>
   </url>`;
 
-    if (cp.canonical.includes('mypdftools.de')) {
+    if (cp.canonical.includes('mypdftools.de') || cp.lang === 'de') {
       deUrls.push(urlEntry);
-    } else if (cp.lang === 'en') {
-      enUrls.push(urlEntry);
-      itUrls.push(urlEntry);
     } else {
       itUrls.push(urlEntry);
     }
@@ -1208,7 +1198,6 @@ async function runPrerender() {
       deUrls.push(urlEntry);
     } else if (r.lang === 'en') {
       enUrls.push(urlEntry);
-      itUrls.push(urlEntry);
     } else {
       itUrls.push(urlEntry);
     }
@@ -1259,7 +1248,6 @@ Allow: /
 # Sitemap definitions for Google Search Console & Bing Webmaster
 Sitemap: https://www.mypdftools.it/sitemap.xml
 Sitemap: https://www.mypdftools.it/sitemap-en.xml
-Sitemap: https://www.mypdftools.de/sitemap.xml
 
 # LLM Crawler Guidance
 # llms.txt: https://www.mypdftools.it/llms.txt
