@@ -927,8 +927,9 @@ async function runPrerender() {
     '<div id="root"><!-- SSR_INJECT --></div>',
     `<div id="root">${homepageContent}</div>`
   );
-  fs.writeFileSync(indexHtmlPath, renderedHomeHtml, 'utf8');
-  console.log('✅ dist/index.html updated with rich pre-rendered content!');
+  fs.writeFileSync(path.join(distDir, 'index-it.html'), renderedHomeHtml, 'utf8');
+  fs.writeFileSync(path.resolve('public/index-it.html'), renderedHomeHtml, 'utf8');
+  console.log('✅ dist/index-it.html and public/index-it.html created with rich Italian content!');
 
   // 1b. Pre-render German Homepage into dist/index-de.html (for mypdftools.de)
   console.log('🇩🇪 Pre-rendering German Homepage into dist/index-de.html...');
@@ -1371,6 +1372,12 @@ Sitemap: https://www.mypdftools.de/sitemap-de.xml
   fs.writeFileSync(path.resolve('public/robots-de.txt'), robotsDeTxt, 'utf8');
 
   console.log('✅ robots.txt and robots-de.txt updated with complete sitemaps.');
+
+  // Remove dist/index.html so Vercel evaluates host-based rewrites for /
+  if (fs.existsSync(indexHtmlPath)) {
+    fs.unlinkSync(indexHtmlPath);
+    console.log('✅ Removed dist/index.html so Vercel host rewrites route / to /index-it.html or /index-de.html dynamically.');
+  }
 }
 
 runPrerender().catch((err) => {

@@ -43,6 +43,24 @@
       "destination": "/index-de.html"
     },
     {
+      "source": "/",
+      "destination": "/index-it.html"
+    },
+    {
+      "source": "/index.html",
+      "has": [
+        {
+          "type": "host",
+          "value": "(.*)mypdftools\\.de"
+        }
+      ],
+      "destination": "/index-de.html"
+    },
+    {
+      "source": "/index.html",
+      "destination": "/index-it.html"
+    },
+    {
       "source": "/((?!assets/|.*\\..*).*)",
       "has": [
         {
@@ -54,7 +72,7 @@
     },
     {
       "source": "/((?!assets/|.*\\..*).*)",
-      "destination": "/index.html"
+      "destination": "/index-it.html"
     }
   ],
   "headers": [
