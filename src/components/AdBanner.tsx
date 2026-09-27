@@ -24,13 +24,16 @@ export const AdBanner: React.FC<AdBannerProps> = ({
 
   // When live AdSense is enabled
   if (ADS_CONFIG.enabled) {
+    const activeSlot = slotId || ADS_CONFIG.slots.topBanner;
+    const isValidSlot = activeSlot && activeSlot !== '1111111111' && activeSlot !== '2222222222' && activeSlot !== '3333333333';
+
     return (
-      <div className={`my-4 flex justify-center overflow-hidden ${className}`}>
+      <div className={`my-4 flex justify-center overflow-hidden min-h-[90px] ${className}`}>
         <ins
           className="adsbygoogle"
           style={{ display: 'block' }}
           data-ad-client={ADS_CONFIG.adClient}
-          data-ad-slot={slotId || ADS_CONFIG.slots.topBanner}
+          {...(isValidSlot ? { 'data-ad-slot': activeSlot } : {})}
           data-ad-format="auto"
           data-full-width-responsive="true"
         />

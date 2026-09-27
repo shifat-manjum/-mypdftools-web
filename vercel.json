@@ -23,6 +23,36 @@
       "destination": "/sitemap-it.xml"
     },
     {
+      "source": "/robots.txt",
+      "has": [
+        {
+          "type": "host",
+          "value": "(.*)mypdftools\\.de"
+        }
+      ],
+      "destination": "/robots-de.txt"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "(.*)mypdftools\\.de"
+        }
+      ],
+      "destination": "/index-de.html"
+    },
+    {
+      "source": "/((?!assets/|.*\\..*).*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "(.*)mypdftools\\.de"
+        }
+      ],
+      "destination": "/index-de.html"
+    },
+    {
       "source": "/((?!assets/|.*\\..*).*)",
       "destination": "/index.html"
     }

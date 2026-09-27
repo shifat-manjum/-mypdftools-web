@@ -2,8 +2,9 @@ User-agent: *
 Allow: /
 
 # Sitemap definitions for Google Search Console & Bing Webmaster
-Sitemap: https://www.mypdftools.it/sitemap.xml
+Sitemap: https://www.mypdftools.it/sitemap-it.xml
 Sitemap: https://www.mypdftools.it/sitemap-en.xml
+Sitemap: https://www.mypdftools.de/sitemap-de.xml
 
 # LLM Crawler Guidance
 # llms.txt: https://www.mypdftools.it/llms.txt

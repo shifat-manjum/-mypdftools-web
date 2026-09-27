@@ -7,21 +7,21 @@
  * 3. Fill in your ad slot IDs below
  */
 export const ADS_CONFIG = {
-  // Set to true once your Google AdSense account is approved
-  enabled: false,
+  // Activated Google AdSense
+  enabled: true,
 
   // Your AdSense Publisher ID
   adClient: 'ca-pub-3502815676488440',
 
   slots: {
-    // Top leaderboard banner (728x90 desktop / 320x50 mobile)
-    topBanner: '1111111111',
+    // Top leaderboard banner (leave empty for Google Auto-Responsive placement)
+    topBanner: '',
 
-    // Golden slot next to download button (highest click-through rate)
-    downloadSuccessSlot: '2222222222',
+    // Golden slot next to download button
+    downloadSuccessSlot: '',
 
     // In-page content banner
-    contentBanner: '3333333333',
+    contentBanner: '',
   },
 };
 

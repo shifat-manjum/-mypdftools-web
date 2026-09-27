@@ -34,20 +34,29 @@ const getInitialLanguage = (): Language => {
       }
     } catch {}
 
-    // 2. Check saved preference in localStorage
+    // 2. Domain-based detection: mypdftools.de -> 'de', mypdftools.it -> 'it'
+    const host = window.location.hostname.toLowerCase();
+    const isGermanDomain = host.endsWith('.de') || host.includes('mypdftools.de');
+    const isItalianDomain = host.endsWith('.it') || host.includes('mypdftools.it');
+
+    // 3. Check saved preference in localStorage
     try {
       const saved = localStorage.getItem('mypdftools_lang');
       if (saved === 'it' || saved === 'de' || saved === 'en') {
+        if (isGermanDomain && saved === 'it') {
+          return 'de';
+        }
+        if (isItalianDomain && saved === 'de') {
+          return 'it';
+        }
         return saved as Language;
       }
     } catch {}
 
-    // 3. Domain-based detection: mypdftools.de -> 'de', mypdftools.it -> 'it'
-    const host = window.location.hostname.toLowerCase();
-    if (host.endsWith('.de') || host.includes('mypdftools.de')) {
+    if (isGermanDomain) {
       return 'de';
     }
-    if (host.endsWith('.it') || host.includes('mypdftools.it')) {
+    if (isItalianDomain) {
       return 'it';
     }
 

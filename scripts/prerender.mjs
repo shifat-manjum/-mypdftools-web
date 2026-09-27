@@ -13,14 +13,15 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
-function generateHomepageHtml({ tools, translations, toolToSlug }) {
-  const t = translations;
+function generateHomepageHtml({ tools, translations, toolToSlug, lang = 'it' }) {
+  const isDe = lang === 'de';
+  const t = translations?.[lang] || translations?.it || translations;
 
   const toolCardsHtml = tools.map((tool) => {
     const localized = t.tools?.[tool.id];
     const title = localized?.title || tool.title;
     const desc = localized?.description || tool.description;
-    const slug = toolToSlug?.[tool.id]?.it || tool.id;
+    const slug = (isDe ? toolToSlug?.[tool.id]?.de : toolToSlug?.[tool.id]?.it) || tool.id;
     const href = slug.startsWith('/') ? slug : `/${slug}`;
 
     return `
@@ -48,6 +49,20 @@ function generateHomepageHtml({ tools, translations, toolToSlug }) {
       </div>`;
   }).join('\n');
 
+  const navLinks = isDe ? `
+            <a href="/pdf-zusammenfuegen" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">PDF zusammenfügen</a>
+            <a href="/pdf-teilen" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">PDF teilen</a>
+            <a href="/pdf-komprimieren" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">PDF komprimieren</a>
+            <a href="/jpg-in-pdf" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">JPG in PDF</a>
+            <a href="/word-in-pdf" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">Word in PDF</a>
+  ` : `
+            <a href="/unire-pdf" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">Unisci PDF</a>
+            <a href="/dividere-pdf" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">Dividi PDF</a>
+            <a href="/comprimere-pdf" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">Comprimi PDF</a>
+            <a href="/da-jpg-a-pdf" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">Da JPG a PDF</a>
+            <a href="/da-word-a-pdf" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">Da Word a PDF</a>
+  `;
+
   return `
     <div class="min-h-screen flex flex-col bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9]/70 to-[#ecfdf5]/30">
       <!-- Static Prerendered Semantic Navigation -->
@@ -58,16 +73,12 @@ function generateHomepageHtml({ tools, translations, toolToSlug }) {
             <span class="tracking-tight">MyPdf<span class="text-emerald-600">Tools</span></span>
           </a>
           <nav class="hidden md:flex items-center gap-2" aria-label="Main Navigation">
-            <a href="/unire-pdf" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">Unisci PDF</a>
-            <a href="/dividere-pdf" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">Dividi PDF</a>
-            <a href="/comprimere-pdf" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">Comprimi PDF</a>
-            <a href="/da-jpg-a-pdf" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">Da JPG a PDF</a>
-            <a href="/da-word-a-pdf" class="text-xs font-bold text-slate-700 hover:text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors">Da Word a PDF</a>
+            ${navLinks}
           </nav>
           <div class="flex items-center gap-3">
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black">
               <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span>100% Privato</span>
+              <span>${isDe ? '100% Privat' : '100% Privato'}</span>
             </span>
           </div>
         </div>
@@ -81,27 +92,29 @@ function generateHomepageHtml({ tools, translations, toolToSlug }) {
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span>Zero Upload sui Server • Elaborazione 100% Privata nel Browser</span>
+            <span>${isDe ? 'Zero Server-Upload • 100% Private Verarbeitung im Browser' : 'Zero Upload sui Server • Elaborazione 100% Privata nel Browser'}</span>
           </div>
 
           <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-            Tutti gli strumenti per i tuoi PDF.{' '}
+            ${isDe ? 'Alle Werkzeuge für Ihre PDFs.' : 'Tutti gli strumenti per i tuoi PDF.'}{' '}
             <span class="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 bg-clip-text text-transparent block sm:inline">
-              Completamente Privato.
+              ${isDe ? 'Vollständig Privat.' : 'Completamente Privato.'}
             </span>
           </h1>
 
           <p class="mt-4 text-sm sm:text-base md:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed font-medium">
-            Unisci, dividi, comprimi, converti, firma e organizza i tuoi PDF senza mai inviare i tuoi file riservati su Internet. 100% Gratuito, conforme al GDPR e sicuro.
+            ${isDe
+              ? 'Zusammenfügen, teilen, komprimieren, konvertieren, signieren und organisieren Sie Ihre PDFs, ohne vertrauliche Dokumente ins Internet hochzuladen. 100% Kostenlos, DSGVO-konform und sicher.'
+              : 'Unisci, dividi, comprimi, converti, firma e organizza i tuoi PDF senza mai inviare i tuoi file riservati su Internet. 100% Gratuito, conforme al GDPR e sicuro.'}
           </p>
 
           <div class="mt-7 flex flex-wrap items-center justify-center gap-3">
             <a href="#trust-guarantee" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-white/90 hover:bg-white text-slate-800 text-xs font-black border border-slate-200/90 shadow-sm transition-all">
-              <span>Vedi la Garanzia di Privacy</span>
+              <span>${isDe ? 'Datenschutzgarantie ansehen' : 'Vedi la Garanzia di Privacy'}</span>
             </a>
             <span class="text-xs text-slate-400 font-medium hidden sm:inline">&bull;</span>
             <div class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 bg-white/60 px-3 py-1.5 rounded-full border border-slate-200/50">
-              <span>Funziona offline senza connessione internet</span>
+              <span>${isDe ? 'Funktioniert offline ohne Internetverbindung' : 'Funziona offline senza connessione internet'}</span>
             </div>
           </div>
         </section>
@@ -110,15 +123,15 @@ function generateHomepageHtml({ tools, translations, toolToSlug }) {
         <div id="tools-catalog" class="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-10 mb-8 scroll-mt-24">
           <div class="flex flex-wrap items-center justify-between gap-4 bg-white/80 backdrop-blur-md p-3 rounded-2xl border border-slate-200/80 shadow-xs">
             <div class="flex flex-wrap items-center gap-1.5">
-              <span class="px-4 py-2 rounded-xl text-xs font-black bg-emerald-600 text-white shadow-sm cursor-pointer">Tutti</span>
-              <a href="/unire-pdf" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition-colors">Organizza</a>
-              <a href="/comprimere-pdf" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition-colors">Ottimizza</a>
-              <a href="/da-jpg-a-pdf" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition-colors">Converti</a>
-              <a href="/modificare-pdf" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition-colors">Modifica</a>
-              <a href="/proteggere-pdf" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition-colors">Sicurezza</a>
+              <span class="px-4 py-2 rounded-xl text-xs font-black bg-emerald-600 text-white shadow-sm cursor-pointer">${isDe ? 'Alle' : 'Tutti'}</span>
+              <a href="${isDe ? '/pdf-zusammenfuegen' : '/unire-pdf'}" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition-colors">${isDe ? 'Organisieren' : 'Organizza'}</a>
+              <a href="${isDe ? '/pdf-komprimieren' : '/comprimere-pdf'}" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition-colors">${isDe ? 'Optimieren' : 'Ottimizza'}</a>
+              <a href="${isDe ? '/jpg-in-pdf' : '/da-jpg-a-pdf'}" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition-colors">${isDe ? 'Konvertieren' : 'Converti'}</a>
+              <a href="${isDe ? '/pdf-bearbeiten' : '/modificare-pdf'}" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition-colors">${isDe ? 'Bearbeiten' : 'Modifica'}</a>
+              <a href="${isDe ? '/pdf-schuetzen' : '/proteggere-pdf'}" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-emerald-600 hover:bg-slate-100 transition-colors">${isDe ? 'Sicherheit' : 'Sicurezza'}</a>
             </div>
             <div class="text-xs text-slate-500 font-bold px-3">
-              ${tools.length} Strumenti PDF Disponibili
+              ${tools.length} ${isDe ? 'PDF-Tools Verfügbar' : 'Strumenti PDF Disponibili'}
             </div>
           </div>
         </div>
@@ -135,14 +148,16 @@ function generateHomepageHtml({ tools, translations, toolToSlug }) {
                   ⚡
                 </div>
                 <h2 class="text-lg font-black text-slate-900 leading-snug">
-                  Crea un flusso di lavoro
+                  ${isDe ? 'Workflow erstellen' : 'Crea un flusso di lavoro'}
                 </h2>
                 <p class="mt-2.5 text-[13px] text-slate-600 leading-relaxed font-medium">
-                  Concatena più strumenti (ad es. Unisci &rarr; Comprimi) in un unico passaggio super rapido.
+                  ${isDe
+                    ? 'Kombinieren Sie mehrere Tools (z.B. Zusammenfügen &rarr; Komprimieren) in einem einzigen schnellen Schritt.'
+                    : 'Concatena più strumenti (ad es. Unisci &rarr; Comprimi) in un unico passaggio super rapido.'}
                 </p>
               </div>
-              <a href="/unire-pdf" class="mt-5 inline-flex items-center gap-1.5 text-xs font-black text-emerald-700 group-hover:text-emerald-900 transition-colors">
-                <span>Inizia Subito</span>
+              <a href="${isDe ? '/pdf-zusammenfuegen' : '/unire-pdf'}" class="mt-5 inline-flex items-center gap-1.5 text-xs font-black text-emerald-700 group-hover:text-emerald-900 transition-colors">
+                <span>${isDe ? 'Jetzt starten' : 'Inizia Subito'}</span>
                 <span>&rarr;</span>
               </a>
             </div>
@@ -154,44 +169,48 @@ function generateHomepageHtml({ tools, translations, toolToSlug }) {
           <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white rounded-3xl p-8 sm:p-12 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3)] border border-slate-700/60 ring-1 ring-white/10 relative overflow-hidden">
             <div class="max-w-2xl mx-auto text-center space-y-3 relative z-10">
               <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-black shadow-xs">
-                <span>100% Privacy &amp; Sicurezza</span>
+                <span>${isDe ? '100% Datenschutz &amp; Sicherheit' : '100% Privacy &amp; Sicurezza'}</span>
               </div>
               <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                I tuoi file rimangono tuoi al 100%. Senza eccezioni.
+                ${isDe ? 'Ihre Dateien gehören zu 100% Ihnen. Ohne Ausnahme.' : 'I tuoi file rimangono tuoi al 100%. Senza eccezioni.'}
               </h2>
               <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
-                A differenza di altri servizi online, noi non carichiamo i tuoi file su nessun server. L'elaborazione avviene direttamente nella memoria del tuo browser.
+                ${isDe
+                  ? 'Im Gegensatz zu anderen Online-Diensten laden wir Ihre Dateien auf keinen Server hoch. Die Verarbeitung erfolgt direkt im Arbeitsspeicher Ihres Browsers.'
+                  : 'A differenza di altri servizi online, noi non carichiamo i tuoi file su nessun server. L\'elaborazione avviene direttamente nella memoria del tuo browser.'}
               </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 text-center relative z-10">
               <div class="p-6 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-md">
-                <h3 class="text-sm font-black text-white mb-2">Zero Upload sui Server</h3>
-                <p class="text-xs text-slate-300 font-medium leading-relaxed">I file non lasciano mai il tuo dispositivo. Nessun rischio di fuga di dati riservati.</p>
+                <h3 class="text-sm font-black text-white mb-2">${isDe ? 'Kein Server-Upload' : 'Zero Upload sui Server'}</h3>
+                <p class="text-xs text-slate-300 font-medium leading-relaxed">${isDe ? 'Dateien verlassen niemals Ihr Gerät. Kein Risiko von Datenlecks.' : 'I file non lasciano mai il tuo dispositivo. Nessun rischio di fuga di dati riservati.'}</p>
               </div>
               <div class="p-6 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-md">
-                <h3 class="text-sm font-black text-white mb-2">Velocità Istantanea</h3>
-                <p class="text-xs text-slate-300 font-medium leading-relaxed">Nessuna attesa di upload o download. Le operazioni avvengono alla massima velocità del tuo hardware.</p>
+                <h3 class="text-sm font-black text-white mb-2">${isDe ? 'Sofortige Geschwindigkeit' : 'Velocità Istantanea'}</h3>
+                <p class="text-xs text-slate-300 font-medium leading-relaxed">${isDe ? 'Keine Wartezeiten beim Upload oder Download. Maximale Leistung auf Ihrem Gerät.' : 'Nessuna attesa di upload o download. Le operazioni avvengono alla massima velocità del tuo hardware.'}</p>
               </div>
               <div class="p-6 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-md">
-                <h3 class="text-sm font-black text-white mb-2">Funziona Offline</h3>
-                <p class="text-xs text-slate-300 font-medium leading-relaxed">Una volta caricata la pagina, puoi disconnetterti da internet e continuare a usare tutti gli strumenti.</p>
+                <h3 class="text-sm font-black text-white mb-2">${isDe ? 'Funktioniert Offline' : 'Funziona Offline'}</h3>
+                <p class="text-xs text-slate-300 font-medium leading-relaxed">${isDe ? 'Sobald die Seite geladen ist, können Sie das Internet trennen und weiterarbeiten.' : 'Una volta caricata la pagina, puoi disconnetterti da internet e continuare a usare tutti gli strumenti.'}</p>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- In-Depth Editorial Articles & Publisher Content (Required for Google AdSense Quality Compliance) -->
+        <!-- In-Depth Editorial Articles & Publisher Content -->
         <section class="max-w-[1500px] mx-auto mt-20 px-4 sm:px-6 lg:px-10 space-y-16">
           <div class="text-center max-w-3xl mx-auto space-y-3">
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-black uppercase tracking-wider">
-              Guide Editoriali &amp; Standard di Settore
+              ${isDe ? 'Redaktionelle Ratgeber &amp; Branchenstandards' : 'Guide Editoriali &amp; Standard di Settore'}
             </span>
             <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              Tutto Quello che Devi Sapere sulla Gestione Sicura dei Documenti PDF
+              ${isDe ? 'Alles, was Sie über die sichere Verwaltung von PDF-Dokumenten wissen müssen' : 'Tutto Quello che Devi Sapere sulla Gestione Sicura dei Documenti PDF'}
             </h2>
             <p class="text-sm text-slate-600 font-medium">
-              Approfondimenti tecnici curati dal team di MyPdfTools sulla conformità normativa GDPR, l'architettura WebAssembly client-side e le migliori pratiche di ottimizzazione documentale.
+              ${isDe
+                ? 'Technische Einblicke des MyPdfTools-Teams zur DSGVO-Konformität, clientseitigen WebAssembly-Architektur und bewährten Methoden der Dokumentenoptimierung.'
+                : 'Approfondimenti tecnici curati dal team di MyPdfTools sulla conformità normativa GDPR, l\'architettura WebAssembly client-side e le migliori pratiche di ottimizzazione documentale.'}
             </p>
           </div>
 
@@ -199,22 +218,28 @@ function generateHomepageHtml({ tools, translations, toolToSlug }) {
             <!-- Article 1 -->
             <article class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-sm hover:shadow-md transition-shadow space-y-4 text-left">
               <div class="flex items-center gap-2 text-xs font-black text-emerald-600 uppercase tracking-wide">
-                <span>Normativa &amp; Privacy</span>
+                <span>${isDe ? 'Recht &amp; Datenschutz' : 'Normativa &amp; Privacy'}</span>
                 <span>&bull;</span>
-                <span>Tempo di lettura: 4 min</span>
+                <span>${isDe ? 'Lesezeit: 4 Min.' : 'Tempo di lettura: 4 min'}</span>
               </div>
               <h3 class="text-xl font-black text-slate-900 leading-snug">
-                La Sicurezza nei Documenti PDF: Riservatezza dei Dati e Conformità GDPR per Imprese e Professionisti
+                ${isDe ? 'Sicherheit bei PDF-Dokumenten: Datenschutz und DSGVO-Konformität für Unternehmen und Freiberufler' : 'La Sicurezza nei Documenti PDF: Riservatezza dei Dati e Conformità GDPR per Imprese e Professionisti'}
               </h3>
               <div class="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-3 font-normal">
                 <p>
-                  Nel contesto lavorativo moderno, i file PDF rappresentano il formato universale per contratti commerciali, dichiarazioni fiscali (come il Modello 730 o Unico), buste paga, cartelle cliniche e documenti d'identità. Tuttavia, la maggior parte degli utenti ignora che utilizzare i tradizionali convertitori PDF gratuiti online comporta il caricamento di questi file altamente riservati su server cloud remoti, spesso situati al di fuori dell'Unione Europea.
+                  ${isDe
+                    ? 'Im modernen Arbeitsalltag sind PDF-Dateien das universelle Format für Geschäftsverträge, Steuererklärungen, Gehaltsabrechnungen, medizinische Berichte und Ausweisdokumente. Vielen Nutzern ist jedoch nicht bewusst, dass herkömmliche kostenlose Online-PDF-Konverter diese vertraulichen Dateien auf entfernte Cloud-Server hochladen, die sich oft außerhalb der Europäischen Union befinden.'
+                    : 'Nel contesto lavorativo moderno, i file PDF rappresentano il formato universale per contratti commerciali, dichiarazioni fiscali (come il Modello 730 o Unico), buste paga, cartelle cliniche e documenti d\'identità. Tuttavia, la maggior parte degli utenti ignora che utilizzare i tradizionali convertitori PDF gratuiti online comporta il caricamento di questi file altamente riservati su server cloud remoti, spesso situati al di fuori dell\'Unione Europea.'}
                 </p>
                 <p>
-                  Secondo l'<strong>Articolo 32 del Regolamento Generale sulla Protezione dei Dati (GDPR UE 2016/679)</strong>, il titolare del trattamento è obbligato a mettere in atto misure tecniche e organizzative adeguate per garantire un livello di sicurezza commisurato al rischio. L'invio non autorizzato di documenti aziendali o personali a server terzi sconosciuti costituisce una potenziale violazione dei dati (data breach) con sanzioni rilevanti.
+                  ${isDe
+                    ? 'Gemäß <strong>Artikel 32 der Datenschutz-Grundverordnung (DSGVO EU 2016/679)</strong> ist der Verantwortliche verpflichtet, geeignete technische und organisatorische Maßnahmen zu treffen, um ein dem Risiko angemessenes Schutzniveau zu gewährleisten. Die unbefugte Übermittlung von Unternehmens- oder Personaldokumenten an unbekannte Server Dritter stellt eine potenzielle Datenpanne (Data Breach) mit empfindlichen Bußgeldern dar.'
+                    : 'Secondo l\'<strong>Articolo 32 del Regolamento Generale sulla Protezione dei Dati (GDPR UE 2016/679)</strong>, il titolare del trattamento è obbligato a mettere in atto misure tecniche e organizzative adeguate per garantire un livello di sicurezza commisurato al rischio. L\'invio non autorizzato di documenti aziendali o personali a server terzi sconosciuti costituisce una potenziale violazione dei dati (data breach) con sanzioni rilevanti.'}
                 </p>
                 <p>
-                  <strong>MyPdfTools adotta il principio del «Privacy by Design» (Art. 25 GDPR)</strong>: i file non vengono mai inviati a nessun server. L'elaborazione avviene interamente sul dispositivo locale dell'utente, eliminando alla radice ogni rischio di intercettazione, archiviazione non autorizzata o accesso illecito da parte di terzi.
+                  ${isDe
+                    ? '<strong>MyPdfTools setzt auf das Prinzip «Privacy by Design» (Art. 25 DSGVO)</strong>: Dateien werden niemals an einen Server gesendet. Die Verarbeitung findet vollständig auf dem lokalen Endgerät des Nutzers statt, wodurch jedes Risiko von Abfangen, unbefugter Speicherung oder unrechtmäßigem Zugriff durch Dritte ausgeschlossen wird.'
+                    : '<strong>MyPdfTools adotta il principio del «Privacy by Design» (Art. 25 GDPR)</strong>: i file non vengono mai inviati a nessun server. L\'elaborazione avviene interamente sul dispositivo locale dell\'utente, eliminando alla radice ogni rischio di intercettazione, archiviazione non autorizzata o accesso illecito da parte di terzi.'}
                 </p>
               </div>
             </article>
@@ -222,22 +247,28 @@ function generateHomepageHtml({ tools, translations, toolToSlug }) {
             <!-- Article 2 -->
             <article class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-sm hover:shadow-md transition-shadow space-y-4 text-left">
               <div class="flex items-center gap-2 text-xs font-black text-emerald-600 uppercase tracking-wide">
-                <span>Architettura Web</span>
+                <span>${isDe ? 'Webarchitektur' : 'Architettura Web'}</span>
                 <span>&bull;</span>
-                <span>Tempo di lettura: 3 min</span>
+                <span>${isDe ? 'Lesezeit: 3 Min.' : 'Tempo di lettura: 3 min'}</span>
               </div>
               <h3 class="text-xl font-black text-slate-900 leading-snug">
-                Architettura 100% Client-Side nel Browser: Come WebAssembly e HTML5 Proteggono i Tuoi File
+                ${isDe ? '100% Client-Side Webarchitektur: Wie WebAssembly und HTML5 Ihre Dokumente schützen' : 'Architettura 100% Client-Side nel Browser: Come WebAssembly e HTML5 Proteggono i Tuoi File'}
               </h3>
               <div class="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-3 font-normal">
                 <p>
-                  Per anni, le operazioni avanzate su file PDF (come l'unione di documenti multipagina, la compressione degli stream di oggetti o la rasterizzazione di immagini ad alta risoluzione) hanno richiesto potenti librerie software eseguite su server dedicati (ad esempio basati su Ghostscript o Poppler). Questo modello tradizionale imponeva agli utenti di attendere lenti tempi di upload e download.
+                  ${isDe
+                    ? 'Jahrelang erforderten komplexe Operationen an PDF-Dateien (wie das Zusammenfügen mehrseitiger Dokumente oder das Rasterisieren hochauflösender Bilder) serverseitige Bibliotheken (wie Ghostscript oder Poppler). Dies zwang Nutzer zu zeitraubenden Uploads und Downloads.'
+                    : 'Per anni, le operazioni avanzate su file PDF (come l\'unione di documenti multipagina, la compressione degli stream di oggetti o la rasterizzazione di immagini ad alta risoluzione) hanno richiesto potenti librerie software eseguite su server dedicati (ad esempio basati su Ghostscript o Poppler). Questo modello tradizionale imponeva agli utenti di attendere lenti tempi di upload e download.'}
                 </p>
                 <p>
-                  Con l'avvento di <strong>WebAssembly (Wasm)</strong> e delle moderne API HTML5 Canvas, i browser moderni (Chrome, Safari, Firefox, Edge) sono ora in grado di eseguire codice compilato ad altissime prestazioni direttamente all'interno della sandbox protetta del client.
+                  ${isDe
+                    ? 'Mit <strong>WebAssembly (Wasm)</strong> und modernen HTML5 Canvas APIs können moderne Browser (Chrome, Safari, Firefox, Edge) nun kompilierte Hochleistungsprogramme direkt in der geschützten Sandbox des Clients ausführen.'
+                    : 'Con l\'avvento di <strong>WebAssembly (Wasm)</strong> e delle moderne API HTML5 Canvas, i browser moderni (Chrome, Safari, Firefox, Edge) sono ora in grado di eseguire codice compilato ad altissime prestazioni direttamente all\'interno della sandbox protetta del client.'}
                 </p>
                 <p>
-                  Quando selezioni uno strumento su MyPdfTools, il motore di elaborazione legge i byte del documento direttamente dalla memoria RAM del tuo dispositivo. I calcoli matematici, la ricomposizione delle tabelle dei riferimenti incrociati (xref) e la compressione Flate avvengono istantaneamente a livello locale. Puoi persino disattivare la connessione Wi-Fi o mettere il computer in modalità aereo: MyPdfTools continuerà a elaborare i tuoi documenti senza alcuna interruzione.
+                  ${isDe
+                    ? 'Wenn Sie ein Tool auf MyPdfTools auswählen, liest die Verarbeitungs-Engine die Datei direkt aus dem Arbeitsspeicher Ihres Endgeräts. Mathematische Berechnungen und Optimierungen erfolgen lokal in Echtzeit. Sie können sogar das WLAN deaktivieren – MyPdfTools arbeitet nahtlos offline weiter.'
+                    : 'Quando selezioni uno strumento su MyPdfTools, il motore di elaborazione legge i byte del documento direttamente dalla memoria RAM del tuo dispositivo. I calcoli matematici, la ricomposizione delle tabelle dei riferimenti incrociati (xref) e la compressione Flate avvengono istantaneamente a livello locale. Puoi persino disattivare la connessione Wi-Fi o mettere il computer in modalità aereo: MyPdfTools continuerà a elaborare i tuoi documenti senza alcuna interruzione.'}
                 </p>
               </div>
             </article>
@@ -245,26 +276,32 @@ function generateHomepageHtml({ tools, translations, toolToSlug }) {
             <!-- Article 3 -->
             <article class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-sm hover:shadow-md transition-shadow space-y-4 text-left">
               <div class="flex items-center gap-2 text-xs font-black text-emerald-600 uppercase tracking-wide">
-                <span>Ottimizzazione &amp; PEC</span>
+                <span>${isDe ? 'Optimierung &amp; E-Mail' : 'Ottimizzazione &amp; PEC'}</span>
                 <span>&bull;</span>
-                <span>Tempo di lettura: 4 min</span>
+                <span>${isDe ? 'Lesezeit: 4 Min.' : 'Tempo di lettura: 4 min'}</span>
               </div>
               <h3 class="text-xl font-black text-slate-900 leading-snug">
-                Guida alla Compressione Intelligente: Ridurre le Dimensioni dei PDF Senza Perdere Qualità
+                ${isDe ? 'Leitfaden zur intelligenten Komprimierung: PDF-Dateigröße ohne Qualitätsverlust verringern' : 'Guida alla Compressione Intelligente: Ridurre le Dimensioni dei PDF Senza Perdere Qualità'}
               </h3>
               <div class="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-3 font-normal">
                 <p>
-                  In Italia e in Germania, l'invio telematico di atti giudiziari (Processo Civile Telematico - PCT), fatture elettroniche, bandi di gara pubblici o allegati via Posta Elettronica Certificata (PEC) impone rigidi limiti di peso (spesso compresi tra 30 MB e 50 MB per messaggio). Documenti scansionati con risoluzioni eccessive o contenenti metadati ridondanti rischiano di bloccare la trasmissione.
+                  ${isDe
+                    ? 'In Deutschland und Europa erfordert der digitale Versand von Rechnungen, Behördenunterlagen oder Bewerbungen oft strenge Dateigrößen-Limits (häufig 5 MB bis 20 MB). Zu hoch aufgelöste Scans blockieren oft den E-Mail-Postausgang.'
+                    : 'In Italia e in Germania, l\'invio telematico di atti giudiziari (Processo Civile Telematico - PCT), fatture elettroniche, bandi di gara pubblici o allegati via Posta Elettronica Certificata (PEC) impone rigidi limiti di peso (spesso compresi tra 30 MB e 50 MB per messaggio). Documenti scansionati con risoluzioni eccessive o contenenti metadati ridondanti rischiano di bloccare la trasmissione.'}
                 </p>
                 <p>
-                  Una compressione PDF efficace richiede un equilibrio perfetto tra due tecniche:
+                  ${isDe
+                    ? 'Eine effektive PDF-Komprimierung erfordert ein Gleichgewicht zwischen zwei Techniken:'
+                    : 'Una compressione PDF efficace richiede un equilibrio perfetto tra due tecniche:'}
                 </p>
                 <ul class="list-disc pl-5 space-y-1">
-                  <li><strong>Ottimizzazione Lossless dei Flussi:</strong> Rimozione di metadati inutilizzati (come cronologia di revisione, anteprime incorporate obsolete e formati XML duplicati) e ricompressione delle tabelle vettoriali mantenendo il testo nitido al 100%.</li>
-                  <li><strong>Ricampionamento Intelligente delle Immagini:</strong> Regolazione della densità di pixel (DPI) delle immagini raster incorporate a 150-200 DPI, ideale per la lettura su schermo e la stampa nitida da ufficio.</li>
+                  <li><strong>${isDe ? 'Verlustfreie Struktur-Optimierung:' : 'Ottimizzazione Lossless dei Flussi:'}</strong> ${isDe ? 'Entfernung redundanter Metadaten und Neukomprimierung von Vektortabellen bei 100% gestochen scharfem Text.' : 'Rimozione di metadati inutilizzati (come cronologia di revisione, anteprime incorporate obsolete e formati XML duplicati) e ricompressione delle tabelle vettoriali mantenendo il testo nitido al 100%.'}</li>
+                  <li><strong>${isDe ? 'Intelligente Bild-Neuberechnung:' : 'Ricampionamento Intelligente delle Immagini:'}</strong> ${isDe ? 'Anpassung der Pixeldichte (DPI) eingebetteter Rasterbilder auf 150–200 DPI, ideal für Bildschirmdarstellung und Büroausdruck.' : 'Regolazione della densità di pixel (DPI) delle immagini raster incorporate a 150-200 DPI, ideale per la lettura su schermo e la stampa nitida da ufficio.'}</li>
                 </ul>
                 <p>
-                  Utilizzando lo strumento di compressione locale di MyPdfTools, puoi ridurre drasticamente le dimensioni dei tuoi PDF nel rispetto dei requisiti di conformità tecnica degli enti pubblici e dei gestori PEC.
+                  ${isDe
+                    ? 'Mit dem lokalen Komprimierungs-Tool von MyPdfTools reduzieren Sie die Dateigröße drastisch unter Einhaltung technischer Standards.'
+                    : 'Utilizzando lo strumento di compressione locale di MyPdfTools, puoi ridurre drasticamente le dimensioni dei tuoi PDF nel rispetto dei requisiti di conformità tecnica degli enti pubblici e dei gestori PEC.'}
                 </p>
               </div>
             </article>
@@ -272,120 +309,144 @@ function generateHomepageHtml({ tools, translations, toolToSlug }) {
             <!-- Article 4 -->
             <article class="bg-white rounded-3xl p-8 border border-slate-200/90 shadow-sm hover:shadow-md transition-shadow space-y-4 text-left">
               <div class="flex items-center gap-2 text-xs font-black text-emerald-600 uppercase tracking-wide">
-                <span>Standard Documentali</span>
+                <span>${isDe ? 'Dokumentenstandards' : 'Standard Documentali'}</span>
                 <span>&bull;</span>
-                <span>Tempo di lettura: 3 min</span>
+                <span>${isDe ? 'Lesezeit: 3 Min.' : 'Tempo di lettura: 3 min'}</span>
               </div>
               <h3 class="text-xl font-black text-slate-900 leading-snug">
-                Conversione Documentale ad Alta Fedeltà: Da Immagini (JPG, PNG) e Office a PDF Standard
+                ${isDe ? 'Hochwertige Dokumentenkonvertierung: Von Bildern (JPG, PNG) und Office zu Standard-PDF' : 'Conversione Documentale ad Alta Fedeltà: Da Immagini (JPG, PNG) e Office a PDF Standard'}
               </h3>
               <div class="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-3 font-normal">
                 <p>
-                  La conservazione documentale a lungo termine richiede formati stabili, conformi alle specifiche internazionali ISO. Convertire fotografie scattate da smartphone o ricevute scannerizzate in formato PDF non deve comportare distorsioni delle proporzioni né perdita di leggibilità dei caratteri tipografici.
+                  ${isDe
+                    ? 'Die langfristige Archivierung von Dokumenten erfordert stabile, ISO-konforme Formate. Das Konvertieren von Smartphone-Fotos oder gescannten Belegen in PDF darf weder Proportionen verzerren noch die Lesbarkeit beeinträchtigen.'
+                    : 'La conservazione documentale a lungo termine richiede formati stabili, conformi alle specifiche internazionali ISO. Convertire fotografie scattate da smartphone o ricevute scannerizzate in formato PDF non deve comportare distorsioni delle proporzioni né perdita di leggibilità dei caratteri tipografici.'}
                 </p>
                 <p>
-                  Il convertitore da <em>JPG a PDF</em> di MyPdfTools calcola automaticamente le proporzioni native di ciascuna immagine, consentendo all'utente di scegliere tra l'adattamento ai formati standard (come l'A4 internazionale con margini di sicurezza) o il mantenimento della risoluzione originale dell'immagine.
+                  ${isDe
+                    ? 'Der JPG-in-PDF-Konverter von MyPdfTools berechnet automatisch das Seitenverhältnis jedes Bildes und ermöglicht die Anpassung an DIN-A4-Standards mit Rändern oder den Erhalt der Originalauflösung.'
+                    : 'Il convertitore da <em>JPG a PDF</em> di MyPdfTools calcola automaticamente le proporzioni native di ciascuna immagine, consentendo all\'utente di scegliere tra l\'adattamento ai formati standard (come l\'A4 internazionale con margini di sicurezza) o il mantenimento della risoluzione originale dell\'immagine.'}
                 </p>
                 <p>
-                  Inoltre, la conversione da formati Office garantisce che font, impaginazione e interlinea vengano preservati fedelmente, producendo documenti pronti per la condivisione istituzionale, la firma con Carta d'Identità Elettronica (CIE/SPID) o l'archiviazione notarile.
+                  ${isDe
+                    ? 'Darüber hinaus stellt die Office-Konvertierung sicher, dass Schriftarten, Layout und Zeilenabstände originalgetreu erhalten bleiben.'
+                    : 'Inoltre, la conversione da formati Office garantisce che font, impaginazione e interlinea vengano preservati fedelmente, producendo documenti pronti per la condivisione istituzionale, la firma con Carta d\'Identità Elettronica (CIE/SPID) o l\'archiviazione notarile.'}
                 </p>
               </div>
             </article>
           </div>
         </section>
 
-        <!-- FAQ Section (Essential for Search Quality & AdSense Value) -->
+        <!-- FAQ Section -->
         <section class="max-w-[1500px] mx-auto mt-20 px-4 sm:px-6 lg:px-10 space-y-8">
           <div class="text-center max-w-2xl mx-auto space-y-2">
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black uppercase">
-              Risposte Immediate
+              ${isDe ? 'Schnelle Antworten' : 'Risposte Immediate'}
             </span>
             <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              Domande Frequenti su MyPdfTools
+              ${isDe ? 'Häufig gestellte Fragen zu MyPdfTools' : 'Domande Frequenti su MyPdfTools'}
             </h2>
             <p class="text-xs sm:text-sm text-slate-500 font-medium">
-              Tutto quello che c'è da sapere sulla sicurezza, i costi e il funzionamento della nostra piattaforma.
+              ${isDe
+                ? 'Alles, was Sie über Sicherheit, Kosten und die Funktionsweise unserer Plattform wissen müssen.'
+                : 'Tutto quello che c\'è da sapere sulla sicurezza, i costi e il funzionamento della nostra piattaforma.'}
             </p>
           </div>
 
           <div class="max-w-4xl mx-auto space-y-4">
             <details class="bg-white rounded-2xl border border-slate-200/90 p-5 group shadow-xs">
               <summary class="font-bold text-slate-900 cursor-pointer text-sm sm:text-base flex items-center justify-between">
-                <span>I miei file PDF o le mie informazioni personali vengono caricati su Internet?</span>
+                <span>${isDe ? 'Werden meine PDF-Dateien oder persönliche Daten ins Internet hochgeladen?' : 'I miei file PDF o le mie informazioni personali vengono caricati su Internet?'}</span>
                 <span class="text-emerald-600 text-lg group-open:rotate-180 transition-transform">&darr;</span>
               </summary>
               <p class="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal pt-3 border-t border-slate-100">
-                Assolutamente no. A differenza di quasi tutti gli altri servizi concorrenti, MyPdfTools opera al 100% all'interno del tuo browser web tramite codice WebAssembly locale. Nessun file, immagine o dato confidenziale lascia mai la memoria RAM del tuo dispositivo.
+                ${isDe
+                  ? 'Absolut nicht. Im Gegensatz zu fast allen konkurrierenden Diensten operiert MyPdfTools zu 100% in Ihrem Webbrowser mittels lokalem WebAssembly-Code. Keine Datei, kein Bild und keine vertrauliche Information verlässt jemals den Arbeitsspeicher Ihres Endgeräts.'
+                  : 'Assolutamente no. A differenza di quasi tutti gli altri servizi concorrenti, MyPdfTools opera al 100% all\'interno del tuo browser web tramite codice WebAssembly locale. Nessun file, immagine o dato confidenziale lascia mai la memoria RAM del tuo dispositivo.'}
               </p>
             </details>
 
             <details class="bg-white rounded-2xl border border-slate-200/90 p-5 group shadow-xs">
               <summary class="font-bold text-slate-900 cursor-pointer text-sm sm:text-base flex items-center justify-between">
-                <span>Il servizio è completamente gratuito? Ci sono costi nascosti o abbonamenti?</span>
+                <span>${isDe ? 'Ist der Dienst wirklich kostenlos? Gibt es versteckte Kosten oder Abonnements?' : 'Il servizio è completamente gratuito? Ci sono costi nascosti o abbonamenti?'}</span>
                 <span class="text-emerald-600 text-lg group-open:rotate-180 transition-transform">&darr;</span>
               </summary>
               <p class="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal pt-3 border-t border-slate-100">
-                MyPdfTools è gratuito al 100%. Non richiediamo registrazioni, carte di credito, né limitiamo il numero di file o pagine che puoi convertire. La piattaforma è supportata da annunci pubblicitari non invasivi e trasparenti.
+                ${isDe
+                  ? 'MyPdfTools ist zu 100% kostenlos. Wir verlangen weder Registrierungen noch Kreditkarten, noch begrenzen wir die Anzahl der konvertierbaren Seiten oder Dateien. Die Plattform finanziert sich durch dezente, transparente Anzeigen.'
+                  : 'MyPdfTools è gratuito al 100%. Non richiediamo registrazioni, carte di credito, né limitiamo il numero di file o pagine che puoi convertire. La piattaforma è supportata da annunci pubblicitari non invasivi e trasparenti.'}
               </p>
             </details>
 
             <details class="bg-white rounded-2xl border border-slate-200/90 p-5 group shadow-xs">
               <summary class="font-bold text-slate-900 cursor-pointer text-sm sm:text-base flex items-center justify-between">
-                <span>Posso usare MyPdfTools per documenti legali, sanitari o fiscali riservati?</span>
+                <span>${isDe ? 'Kann ich MyPdfTools für vertrauliche Geschäfts- oder Behördendokumente nutzen?' : 'Posso usare MyPdfTools per documenti legali, sanitari o fiscali riservati?'}</span>
                 <span class="text-emerald-600 text-lg group-open:rotate-180 transition-transform">&darr;</span>
               </summary>
               <p class="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal pt-3 border-t border-slate-100">
-                Sì, è proprio per questo scopo che MyPdfTools è stato creato. Poiché nessun file viene inviato sui server, professionisti come commercialisti, medici, avvocati e consulenti possono elaborare documenti contenenti dati sensibili in piena conformità con il GDPR (UE 2016/679).
+                ${isDe
+                  ? 'Ja, genau dafür wurde MyPdfTools entwickelt. Da keine Dateien über das Internet übertragen werden, können Steuerberater, Anwälte, Ärzte und Unternehmen sensible Daten vollkommen DSGVO-konform (EU 2016/679) verarbeiten.'
+                  : 'Sì, è proprio per questo scopo che MyPdfTools è stato creato. Poiché nessun file viene inviato sui server, professionisti come commercialisti, medici, avvocati e consulenti possono elaborare documenti contenenti dati sensibili in piena conformità con il GDPR (UE 2016/679).'}
               </p>
             </details>
 
             <details class="bg-white rounded-2xl border border-slate-200/90 p-5 group shadow-xs">
               <summary class="font-bold text-slate-900 cursor-pointer text-sm sm:text-base flex items-center justify-between">
-                <span>Come posso verificare che la piattaforma funzioni davvero senza connessione?</span>
+                <span>${isDe ? 'Wie kann ich überprüfen, ob die Plattform wirklich offline funktioniert?' : 'Come posso verificare che la piattaforma funzioni davvero senza connessione?'}</span>
                 <span class="text-emerald-600 text-lg group-open:rotate-180 transition-transform">&darr;</span>
               </summary>
               <p class="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal pt-3 border-t border-slate-100">
-                Fai questa semplice prova: apri una pagina qualsiasi (ad esempio <a href="/unire-pdf" class="text-emerald-600 font-bold underline">Unisci PDF</a>), disconnetti il Wi-Fi o stacca il cavo di rete del computer, e trascina i tuoi file. Vedrai che l'operazione verrà completata all'istante anche da offline!
+                ${isDe
+                  ? 'Machen Sie diesen einfachen Test: Öffnen Sie eine beliebige Seite (z.B. <a href="/pdf-zusammenfuegen" class="text-emerald-600 font-bold underline">PDF zusammenfügen</a>), trennen Sie Ihr WLAN oder ziehen Sie das Netzwerkkabel ab und ziehen Sie Ihre Dateien hinein. Sie werden sehen, dass der Vorgang auch komplett offline sofort ausgeführt wird!'
+                  : 'Fai questa semplice prova: apri una pagina qualsiasi (ad esempio <a href="/unire-pdf" class="text-emerald-600 font-bold underline">Unisci PDF</a>), disconnetti il Wi-Fi o stacca il cavo di rete del computer, e trascina i tuoi file. Vedrai che l\'operazione verrà completata all\'istante anche da offline!'}
               </p>
             </details>
 
             <details class="bg-white rounded-2xl border border-slate-200/90 p-5 group shadow-xs">
               <summary class="font-bold text-slate-900 cursor-pointer text-sm sm:text-base flex items-center justify-between">
-                <span>Come unire più file PDF in un unico documento?</span>
+                <span>${isDe ? 'Wie verbinde ich mehrere PDF-Dateien zu einem Dokument?' : 'Come unire più file PDF in un unico documento?'}</span>
                 <span class="text-emerald-600 text-lg group-open:rotate-180 transition-transform">&darr;</span>
               </summary>
               <p class="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal pt-3 border-t border-slate-100">
-                Accedi allo strumento <a href="/unire-pdf" class="text-emerald-600 font-bold underline">Unisci PDF</a>, trascina i tuoi documenti nell'area di rilascio, ordina le pagine trascinando le miniature nella sequenza preferita e fai clic su "Unisci PDF". Il nuovo documento verrà generato e scaricato all'istante.
+                ${isDe
+                  ? 'Öffnen Sie das Tool <a href="/pdf-zusammenfuegen" class="text-emerald-600 font-bold underline">PDF zusammenfügen</a>, ziehen Sie Ihre Dokumente in den Ablagebereich, ordnen Sie die Seiten in der gewünschten Reihenfolge an und klicken Sie auf "PDF zusammenfügen". Das Dokument wird sofort lokal generiert und heruntergeladen.'
+                  : 'Accedi allo strumento <a href="/unire-pdf" class="text-emerald-600 font-bold underline">Unisci PDF</a>, trascina i tuoi documenti nell\'area di rilascio, ordina le pagine trascinando le miniature nella sequenza preferita e fai clic su "Unisci PDF". Il nuovo documento verrà generato e scaricato all\'istante.'}
               </p>
             </details>
 
             <details class="bg-white rounded-2xl border border-slate-200/90 p-5 group shadow-xs">
               <summary class="font-bold text-slate-900 cursor-pointer text-sm sm:text-base flex items-center justify-between">
-                <span>Esiste un limite alla dimensione massima dei file caricabili?</span>
+                <span>${isDe ? 'Gibt es eine Beschränkung der maximalen Dateigröße?' : 'Esiste un limite alla dimensione massima dei file caricabili?'}</span>
                 <span class="text-emerald-600 text-lg group-open:rotate-180 transition-transform">&darr;</span>
               </summary>
               <p class="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal pt-3 border-t border-slate-100">
-                Non c'è alcun limite artificiale imposto da noi. L'unico limite è dato dalla memoria RAM disponibile sul tuo computer o smartphone, il che consente di elaborare anche file di centinaia di megabyte senza blocchi.
+                ${isDe
+                  ? 'Es gibt keinerlei künstliche Beschränkungen unsererseits. Die einzige Grenze ist der verfügbare Arbeitsspeicher (RAM) Ihres Computers oder Smartphones, wodurch auch große Dateien von mehreren hundert Megabyte problemlos verarbeitet werden können.'
+                  : 'Non c\'è alcun limite artificiale imposto da noi. L\'unico limite è dato dalla memoria RAM disponibile sul tuo computer o smartphone, il che consente di elaborare anche file di centinaia di megabyte senza blocchi.'}
               </p>
             </details>
 
             <details class="bg-white rounded-2xl border border-slate-200/90 p-5 group shadow-xs">
               <summary class="font-bold text-slate-900 cursor-pointer text-sm sm:text-base flex items-center justify-between">
-                <span>Chi sviluppa e gestisce la piattaforma MyPdfTools?</span>
+                <span>${isDe ? 'Wer entwickelt und betreibt die Plattform MyPdfTools?' : 'Chi sviluppa e gestisce la piattaforma MyPdfTools?'}</span>
                 <span class="text-emerald-600 text-lg group-open:rotate-180 transition-transform">&darr;</span>
               </summary>
               <p class="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal pt-3 border-t border-slate-100">
-                La piattaforma è fondata e attivamente curata da <strong>Shifat Manjum</strong> (fondatore di Zentixx). Puoi trovare maggiori dettagli nella pagina <a href="/chi-siamo" class="text-emerald-600 font-bold underline">Chi Siamo</a> o scriverci direttamente tramite la pagina <a href="/contatti" class="text-emerald-600 font-bold underline">Contatti</a>.
+                ${isDe
+                  ? 'Die Plattform wird von <strong>Shifat Manjum</strong> (Gründer von Zentixx) betrieben und gepflegt. Weitere Details finden Sie auf der Seite <a href="/ueber-uns" class="text-emerald-600 font-bold underline">Über uns</a> oder kontaktieren Sie uns direkt unter <a href="/kontakt" class="text-emerald-600 font-bold underline">Kontakt</a>.'
+                  : 'La piattaforma è fondata e attivamente curata da <strong>Shifat Manjum</strong> (fondatore di Zentixx). Puoi trovare maggiori dettagli nella pagina <a href="/chi-siamo" class="text-emerald-600 font-bold underline">Chi Siamo</a> o scriverci direttamente tramite la pagina <a href="/contatti" class="text-emerald-600 font-bold underline">Contatti</a>.'}
               </p>
             </details>
 
             <details class="bg-white rounded-2xl border border-slate-200/90 p-5 group shadow-xs">
               <summary class="font-bold text-slate-900 cursor-pointer text-sm sm:text-base flex items-center justify-between">
-                <span>Come vengono trattati i cookie e i dati pubblicitari su questo sito?</span>
+                <span>${isDe ? 'Wie werden Cookies und Werbedaten auf dieser Website verarbeitet?' : 'Come vengono trattati i cookie e i dati pubblicitari su questo sito?'}</span>
                 <span class="text-emerald-600 text-lg group-open:rotate-180 transition-transform">&darr;</span>
               </summary>
               <p class="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal pt-3 border-t border-slate-100">
-                Non utilizziamo cookie di profilazione proprietari. Per sostenere i costi di sviluppo e hosting, ospitiamo annunci pubblicitari tramite Google AdSense, che potrebbe utilizzare cookie tecnici o pubblicitari conformi alle normative europee. Per ogni dettaglio o per gestire le preferenze, consulta la nostra <a href="/cookie-policy" class="text-emerald-600 font-bold underline">Cookie Policy</a> e l'<a href="/privacy-policy" class="text-emerald-600 font-bold underline">Informativa sulla Privacy</a>.
+                ${isDe
+                  ? 'Wir verwenden keine proprietären Profiling-Cookies. Um Entwicklungs- und Hostingkosten zu decken, binden wir Google AdSense ein, das technische oder Werbe-Cookies gemäß europäischen Richtlinien verwenden kann. Konsultieren Sie unsere <a href="/cookie-policy" class="text-emerald-600 font-bold underline">Cookie-Richtlinie</a> und die <a href="/datenschutz" class="text-emerald-600 font-bold underline">Datenschutzerklärung</a>.'
+                  : 'Non utilizziamo cookie di profilazione proprietari. Per sostenere i costi di sviluppo e hosting, ospitiamo annunci pubblicitari tramite Google AdSense, che potrebbe utilizzare cookie tecnici o pubblicitari conformi alle normative europee. Per ogni dettaglio o per gestire le preferenze, consulta la nostra <a href="/cookie-policy" class="text-emerald-600 font-bold underline">Cookie Policy</a> e l\'<a href="/privacy-policy" class="text-emerald-600 font-bold underline">Informativa sulla Privacy</a>.'}
               </p>
             </details>
           </div>
@@ -401,24 +462,40 @@ function generateHomepageHtml({ tools, translations, toolToSlug }) {
               <span>MyPdf<span class="text-emerald-600">Tools</span></span>
             </a>
             <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs font-bold text-slate-700">
+              ${isDe ? `
+              <a href="/pdf-zusammenfuegen" class="hover:text-emerald-600 transition-colors">PDF zusammenfügen</a>
+              <a href="/pdf-teilen" class="hover:text-emerald-600 transition-colors">PDF teilen</a>
+              <a href="/pdf-komprimieren" class="hover:text-emerald-600 transition-colors">PDF komprimieren</a>
+              <a href="/jpg-in-pdf" class="hover:text-emerald-600 transition-colors">JPG in PDF</a>
+              <a href="/word-in-pdf" class="hover:text-emerald-600 transition-colors">Word in PDF</a>
+              ` : `
               <a href="/unire-pdf" class="hover:text-emerald-600 transition-colors">Unisci PDF</a>
               <a href="/dividere-pdf" class="hover:text-emerald-600 transition-colors">Dividi PDF</a>
               <a href="/comprimere-pdf" class="hover:text-emerald-600 transition-colors">Comprimi PDF</a>
               <a href="/da-jpg-a-pdf" class="hover:text-emerald-600 transition-colors">JPG in PDF</a>
               <a href="/da-word-a-pdf" class="hover:text-emerald-600 transition-colors">Word in PDF</a>
+              `}
             </div>
           </div>
 
           <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p class="text-xs text-slate-500 font-medium">
-              &copy; ${new Date().getFullYear()} MyPdfTools (mypdftools.it &bull; mypdftools.de). Piattaforma gratuita per l'elaborazione di documenti PDF 100% in locale.
+              &copy; ${new Date().getFullYear()} MyPdfTools (mypdftools.it &bull; mypdftools.de). ${isDe ? 'Kostenlose Plattform für 100% lokale PDF-Verarbeitung.' : 'Piattaforma gratuita per l\'elaborazione di documenti PDF 100% in locale.'}
             </p>
             <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-semibold text-slate-700">
+              ${isDe ? `
+              <a href="/datenschutz" class="hover:text-emerald-600">Datenschutzerklärung</a>
+              <a href="/nutzungsbedingungen" class="hover:text-emerald-600">Nutzungsbedingungen</a>
+              <a href="/cookie-policy" class="hover:text-emerald-600">Cookie-Richtlinie</a>
+              <a href="/ueber-uns" class="hover:text-emerald-600 font-bold">Über uns</a>
+              <a href="/kontakt" class="hover:text-emerald-600 font-bold">Kontakt</a>
+              ` : `
               <a href="/privacy-policy" class="hover:text-emerald-600">Privacy Policy</a>
               <a href="/terms-of-service" class="hover:text-emerald-600">Termini di Servizio</a>
               <a href="/cookie-policy" class="hover:text-emerald-600">Cookie Policy</a>
               <a href="/chi-siamo" class="hover:text-emerald-600 font-bold">Chi Siamo</a>
               <a href="/contatti" class="hover:text-emerald-600 font-bold">Contatti</a>
+              `}
               <a href="mailto:khshifat@gmail.com" class="hover:text-emerald-600 font-bold">khshifat@gmail.com</a>
             </div>
           </div>
@@ -837,12 +914,13 @@ async function runPrerender() {
     if (fs.existsSync(tempTransPath)) fs.unlinkSync(tempTransPath);
   }
 
-  // 1. Pre-render Homepage into dist/index.html
-  console.log('🏠 Pre-rendering Homepage with rich editorial publisher guides & FAQs...');
+  // 1. Pre-render Italian Homepage into dist/index.html (for mypdftools.it)
+  console.log('🏠 Pre-rendering Italian Homepage with rich editorial publisher guides & FAQs...');
   const homepageContent = generateHomepageHtml({
     tools: TOOLS,
     translations: TRANSLATIONS,
-    toolToSlug: TOOL_TO_PRIMARY_SLUG
+    toolToSlug: TOOL_TO_PRIMARY_SLUG,
+    lang: 'it'
   });
 
   const renderedHomeHtml = baseHtml.replace(
@@ -851,6 +929,36 @@ async function runPrerender() {
   );
   fs.writeFileSync(indexHtmlPath, renderedHomeHtml, 'utf8');
   console.log('✅ dist/index.html updated with rich pre-rendered content!');
+
+  // 1b. Pre-render German Homepage into dist/index-de.html (for mypdftools.de)
+  console.log('🇩🇪 Pre-rendering German Homepage into dist/index-de.html...');
+  const homepageDeContent = generateHomepageHtml({
+    tools: TOOLS,
+    translations: TRANSLATIONS,
+    toolToSlug: TOOL_TO_PRIMARY_SLUG,
+    lang: 'de'
+  });
+
+  let deHomeHtml = baseHtml;
+  deHomeHtml = deHomeHtml.replace(/<html lang="[^"]*"/, '<html lang="de"');
+  const deTitle = 'MyPdfTools — 100% Kostenlose & Private PDF-Tools (Zero Upload)';
+  const deDesc = 'PDF zusammenfügen, teilen, komprimieren und JPG in PDF konvertieren zu 100% lokal in Ihrem Browser. Keine Server-Uploads, DSGVO-konform und sicher.';
+  deHomeHtml = deHomeHtml.replace(/<title>[\s\S]*?<\/title>/, `<title>${deTitle}</title>`);
+  deHomeHtml = deHomeHtml.replace(/<meta name="title" content="[^"]*"/, `<meta name="title" content="${deTitle}"`);
+  deHomeHtml = deHomeHtml.replace(/<meta name="description" content="[^"]*"/, `<meta name="description" content="${deDesc}"`);
+  deHomeHtml = deHomeHtml.replace(/<link rel="canonical" href="[^"]*"[^>]*>/, '<link rel="canonical" href="https://www.mypdftools.de/" />');
+  deHomeHtml = deHomeHtml.replace(/<meta property="og:title" content="[^"]*"/, `<meta property="og:title" content="${escapeHtml(deTitle)}"`);
+  deHomeHtml = deHomeHtml.replace(/<meta property="og:description" content="[^"]*"/, `<meta property="og:description" content="${escapeHtml(deDesc)}"`);
+  deHomeHtml = deHomeHtml.replace(/<meta property="og:url" content="[^"]*"[^>]*>/, '<meta property="og:url" content="https://www.mypdftools.de/" />');
+  deHomeHtml = deHomeHtml.replace(/<meta property="og:locale" content="[^"]*"/, '<meta property="og:locale" content="de_DE"');
+  deHomeHtml = deHomeHtml.replace(/<meta name="twitter:title" content="[^"]*"/, `<meta name="twitter:title" content="${escapeHtml(deTitle)}"`);
+  deHomeHtml = deHomeHtml.replace(/<meta name="twitter:description" content="[^"]*"/, `<meta name="twitter:description" content="${escapeHtml(deDesc)}"`);
+  deHomeHtml = deHomeHtml.replace(/<meta name="twitter:url" content="[^"]*"[^>]*>/, '<meta name="twitter:url" content="https://www.mypdftools.de/" />');
+  deHomeHtml = deHomeHtml.replace('<div id="root"><!-- SSR_INJECT --></div>', `<div id="root">${homepageDeContent}</div>`);
+
+  fs.writeFileSync(path.join(distDir, 'index-de.html'), deHomeHtml, 'utf8');
+  fs.writeFileSync(path.resolve('public/index-de.html'), deHomeHtml, 'utf8');
+  console.log('✅ dist/index-de.html and public/index-de.html created with canonical https://www.mypdftools.de/ !');
 
   // 2. Pre-render Legal & Compliance Pages
   console.log('⚖️ Pre-rendering Legal & Compliance Pages (Privacy, Terms, Cookies, About, Contact)...');
@@ -1224,7 +1332,7 @@ ${enUrls.join('')}
 </urlset>
 `;
 
-  // Write sitemap files
+  // Write sitemap files (omit sitemap.xml so Vercel rewrites to sitemap-it.xml or sitemap-de.xml dynamically based on domain)
   fs.writeFileSync(path.join(distDir, 'sitemap-it.xml'), sitemapItXml, 'utf8');
   fs.writeFileSync(path.resolve('public/sitemap-it.xml'), sitemapItXml, 'utf8');
 
@@ -1234,27 +1342,35 @@ ${enUrls.join('')}
   fs.writeFileSync(path.join(distDir, 'sitemap-en.xml'), sitemapEnXml, 'utf8');
   fs.writeFileSync(path.resolve('public/sitemap-en.xml'), sitemapEnXml, 'utf8');
 
-  fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemapItXml, 'utf8');
-  fs.writeFileSync(path.resolve('public/sitemap.xml'), sitemapItXml, 'utf8');
-
   console.log(`✅ sitemap-it.xml created with ${itUrls.length} URLs!`);
   console.log(`✅ sitemap-de.xml created with ${deUrls.length} URLs!`);
   console.log(`✅ sitemap-en.xml created with ${enUrls.length} URLs!`);
 
-  // 5. Generate / Update robots.txt
+  // 5. Generate / Update robots.txt & robots-de.txt
   const robotsTxt = `User-agent: *
 Allow: /
 
 # Sitemap definitions for Google Search Console & Bing Webmaster
-Sitemap: https://www.mypdftools.it/sitemap.xml
+Sitemap: https://www.mypdftools.it/sitemap-it.xml
 Sitemap: https://www.mypdftools.it/sitemap-en.xml
+Sitemap: https://www.mypdftools.de/sitemap-de.xml
 
 # LLM Crawler Guidance
 # llms.txt: https://www.mypdftools.it/llms.txt
 `;
   fs.writeFileSync(path.join(distDir, 'robots.txt'), robotsTxt, 'utf8');
   fs.writeFileSync(path.resolve('public/robots.txt'), robotsTxt, 'utf8');
-  console.log('✅ robots.txt updated with complete sitemaps.');
+
+  const robotsDeTxt = `User-agent: *
+Allow: /
+
+# Sitemap definitions for Google Search Console & Bing Webmaster (Germany)
+Sitemap: https://www.mypdftools.de/sitemap-de.xml
+`;
+  fs.writeFileSync(path.join(distDir, 'robots-de.txt'), robotsDeTxt, 'utf8');
+  fs.writeFileSync(path.resolve('public/robots-de.txt'), robotsDeTxt, 'utf8');
+
+  console.log('✅ robots.txt and robots-de.txt updated with complete sitemaps.');
 }
 
 runPrerender().catch((err) => {
