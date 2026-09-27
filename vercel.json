@@ -40,11 +40,11 @@
           "value": "(.*)mypdftools\\.de"
         }
       ],
-      "destination": "/index-de.html"
+      "destination": "/index-de"
     },
     {
       "source": "/",
-      "destination": "/index-it.html"
+      "destination": "/index-it"
     },
     {
       "source": "/index.html",
@@ -54,11 +54,11 @@
           "value": "(.*)mypdftools\\.de"
         }
       ],
-      "destination": "/index-de.html"
+      "destination": "/index-de"
     },
     {
       "source": "/index.html",
-      "destination": "/index-it.html"
+      "destination": "/index-it"
     },
     {
       "source": "/((?!assets/|.*\\..*).*)",
@@ -68,11 +68,11 @@
           "value": "(.*)mypdftools\\.de"
         }
       ],
-      "destination": "/index-de.html"
+      "destination": "/index-de"
     },
     {
       "source": "/((?!assets/|.*\\..*).*)",
-      "destination": "/index-it.html"
+      "destination": "/index-it"
     }
   ],
   "headers": [
