@@ -45,41 +45,47 @@ document.addEventListener('DOMContentLoaded', async () => {
   );
 
   const firstImg = loadedImages[0];
-  const dpr = firstImg.width / captureData.totalWidth;
+  const dpr = firstImg.width / (captureData.totalWidth || captureData.viewportWidth);
 
-  // Total canvas height = true document scroll height in physical pixels
+  // Exact total height in physical pixels
+  let totalPixelHeight = firstImg.height;
+  if (captureData.slices.length > 1) {
+    const lastSlice = captureData.slices[captureData.slices.length - 1];
+    totalPixelHeight = Math.round((lastSlice.scrollY + captureData.viewportHeight) * dpr);
+  }
+
   const totalPixelWidth = firstImg.width;
-  const totalPixelHeight = Math.round(captureData.totalHeight * dpr);
-
   hiddenCanvas.width = totalPixelWidth;
   hiddenCanvas.height = totalPixelHeight;
 
   // 3. Precision Stitching with Overlap Trimming
-  // Draw each slice at its true physical scroll position
-  for (let i = 0; i < captureData.slices.length; i++) {
-    const slice = captureData.slices[i];
-    const img = loadedImages[i];
-    const drawY = Math.round(slice.scrollY * dpr);
+  if (captureData.slices.length === 1) {
+    ctx.drawImage(firstImg, 0, 0);
+  } else {
+    for (let i = 0; i < captureData.slices.length; i++) {
+      const slice = captureData.slices[i];
+      const img = loadedImages[i];
+      const drawY = Math.round(slice.scrollY * dpr);
 
-    // If this is the last slice and overlaps the previous slice:
-    if (i > 0 && i === captureData.slices.length - 1) {
-      const prevSlice = captureData.slices[i - 1];
-      const prevBottomY = Math.round((prevSlice.scrollY + captureData.viewportHeight) * dpr);
-      const overlap = prevBottomY - drawY;
+      // If this is the last slice and overlaps the previous slice:
+      if (i > 0 && i === captureData.slices.length - 1) {
+        const prevSlice = captureData.slices[i - 1];
+        const prevBottomY = Math.round((prevSlice.scrollY + captureData.viewportHeight) * dpr);
+        const overlap = prevBottomY - drawY;
 
-      if (overlap > 0 && overlap < img.height) {
-        // Skip the duplicate top portion of this final slice
-        const srcY = overlap;
-        const srcH = img.height - overlap;
-        const destY = prevBottomY;
-        const destH = srcH;
+        if (overlap > 0 && overlap < img.height) {
+          const srcY = overlap;
+          const srcH = img.height - overlap;
+          const destY = prevBottomY;
+          const destH = srcH;
 
-        ctx.drawImage(img, 0, srcY, img.width, srcH, 0, destY, img.width, destH);
-        continue;
+          ctx.drawImage(img, 0, srcY, img.width, srcH, 0, destY, img.width, destH);
+          continue;
+        }
       }
-    }
 
-    ctx.drawImage(img, 0, drawY);
+      ctx.drawImage(img, 0, drawY);
+    }
   }
 
   // 4. Render the Full Document Preview

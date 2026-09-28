@@ -1,4 +1,4 @@
-// content.js - Reliable auto-scroller with exact pixel positioning and smart header handling
+// content.js - Robust GoFullPage-style full page auto-scroller with dynamic container fallback
 
 (() => {
   // Prevent duplicate injection
@@ -67,8 +67,61 @@
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  // Only soften top fixed navigation bars (< 140px) on subsequent scrolls so they don't repeat
-  // NEVER use display: none which breaks page layout!
+  // Find scrollable container if html/body are fixed height (common in SPAs / web apps)
+  function getScrollTarget() {
+    const docHeight = Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight
+    );
+    if (docHeight > window.innerHeight + 50) {
+      return window;
+    }
+
+    // Check inner containers with scroll
+    const candidates = document.querySelectorAll('main, [role="main"], #root, #__next, #app, .app, body > div');
+    for (const el of candidates) {
+      if (el.scrollHeight > window.innerHeight + 50) {
+        const style = window.getComputedStyle(el);
+        if (style.overflowY === 'auto' || style.overflowY === 'scroll') {
+          return el;
+        }
+      }
+    }
+    return window;
+  }
+
+  function getScrollY(target) {
+    if (target === window) {
+      return window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    }
+    return target.scrollTop || 0;
+  }
+
+  function setScrollY(target, y) {
+    if (target === window) {
+      window.scrollTo({ left: 0, top: y, behavior: 'instant' });
+      if (document.documentElement) document.documentElement.scrollTop = y;
+      if (document.body) document.body.scrollTop = y;
+    } else {
+      target.scrollTop = y;
+    }
+  }
+
+  function getDocHeight(target) {
+    if (target === window) {
+      return Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.documentElement.clientHeight,
+        window.innerHeight
+      );
+    }
+    return Math.max(target.scrollHeight, target.clientHeight, window.innerHeight);
+  }
+
+  // Soften top fixed header bars (< 140px) on subsequent scrolls so they don't repeat
   function handleFixedHeaders(hide) {
     const all = document.querySelectorAll('header, nav, [class*="header"], [class*="nav"]');
     for (const el of all) {
@@ -77,7 +130,6 @@
       const style = window.getComputedStyle(el);
       const rect = el.getBoundingClientRect();
 
-      // Only target small top header bars that stick to top: 0
       if ((style.position === 'fixed' || style.position === 'sticky') && rect.top <= 10 && rect.height < 140) {
         if (hide) {
           if (el.__mypdftools_orig_opacity === undefined) {
@@ -94,15 +146,28 @@
     }
   }
 
-  async function executeFullPageCapture(mode) {
+  async function executeCapture(mode) {
+    const scrollTarget = getScrollTarget();
     const origScrollX = window.scrollX;
-    const origScrollY = window.scrollY;
+    const origScrollY = getScrollY(scrollTarget);
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const devicePixelRatio = window.devicePixelRatio || 1;
 
-    // Reset scroll to top smoothly before starting capture
-    window.scrollTo(0, 0);
-    await sleep(250);
-
-    createProgressOverlay();
+    // Inject styles to disable smooth scrolling and hide scrollbars during capture
+    const overrideStyle = document.createElement('style');
+    overrideStyle.id = '__mypdftools_capture_styles';
+    overrideStyle.textContent = `
+      html, body, * {
+        scroll-behavior: auto !important;
+      }
+      ::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+      }
+    `;
+    document.documentElement.appendChild(overrideStyle);
 
     let origBodyStyle = '';
     if (mode === 'mobile') {
@@ -113,45 +178,70 @@
       await sleep(350);
     }
 
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    const scrollHeight = Math.max(
-      document.body.scrollHeight,
-      document.documentElement.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.offsetHeight,
-      document.documentElement.clientHeight
-    );
-    const devicePixelRatio = window.devicePixelRatio || 1;
+    createProgressOverlay();
 
     const slices = [];
-    let currentY = 0;
-    let lastActualY = -1;
 
     try {
-      while (true) {
-        window.scrollTo(0, currentY);
-        await sleep(250); // Allow render and animations to settle
+      // 1. Visible Screen Only Mode
+      if (mode === 'visible') {
+        if (progressOverlay) progressOverlay.style.display = 'none';
+        await sleep(100);
 
-        const actualY = window.scrollY;
+        const response = await new Promise((resolve) => {
+          chrome.runtime.sendMessage({ action: 'CAPTURE_SLICE' }, (res) => resolve(res));
+        });
 
-        // Hide top fixed header bar after the first viewport slice so it only appears at the top
+        if (response && response.dataUrl) {
+          slices.push({
+            dataUrl: response.dataUrl,
+            scrollY: 0,
+            viewportHeight: viewportHeight,
+            viewportWidth: viewportWidth,
+          });
+        }
+
+        chrome.runtime.sendMessage({
+          action: 'CAPTURE_COMPLETED',
+          slices: slices,
+          totalWidth: viewportWidth,
+          totalHeight: viewportHeight,
+          viewportHeight: viewportHeight,
+          devicePixelRatio: devicePixelRatio,
+          pageTitle: document.title || 'Screen Capture',
+          pageUrl: window.location.href,
+          mode: 'visible',
+        });
+        return;
+      }
+
+      // 2. Full Page (Desktop or Mobile) Mode - GoFullPage Scrolling Loop
+      setScrollY(scrollTarget, 0);
+      await sleep(300);
+
+      let currentY = 0;
+      let lastActualY = -1;
+      let maxIterations = 60; // Up to ~60 viewports (~60,000px) safety guard
+
+      while (maxIterations-- > 0) {
+        setScrollY(scrollTarget, currentY);
+        await sleep(250); // Allow DOM rendering and lazy images to settle
+
+        const actualY = getScrollY(scrollTarget);
+        const dynamicDocHeight = getDocHeight(scrollTarget);
+
+        // Hide fixed header after first slice
         if (actualY > 50) {
           handleFixedHeaders(true);
         }
 
-        // Hide progress overlay briefly so it is never captured in the slice screenshot
+        // Hide overlay before snapping slice
         if (progressOverlay) progressOverlay.style.display = 'none';
 
-        // Capture visible slice from background service worker
         const response = await new Promise((resolve) => {
-          chrome.runtime.sendMessage(
-            { action: 'CAPTURE_SLICE' },
-            (res) => resolve(res)
-          );
+          chrome.runtime.sendMessage({ action: 'CAPTURE_SLICE' }, (res) => resolve(res));
         });
 
-        // Restore progress overlay immediately after capture
         if (progressOverlay) progressOverlay.style.display = 'block';
 
         if (response && response.dataUrl) {
@@ -163,45 +253,52 @@
           });
         }
 
-        const progress = Math.min(100, ((actualY + viewportHeight) / scrollHeight) * 100);
+        const progress = Math.min(100, ((actualY + viewportHeight) / dynamicDocHeight) * 100);
         updateProgress(progress);
 
-        // Check if we've reached the very bottom of the webpage
-        if (actualY + viewportHeight >= scrollHeight - 5 || actualY === lastActualY) {
+        // Check if reached bottom or cannot scroll further
+        if (actualY + viewportHeight >= dynamicDocHeight - 5 || actualY === lastActualY) {
           break;
         }
 
         lastActualY = actualY;
         currentY += viewportHeight;
       }
+
+      // Calculate total height accurately from actual slices
+      const lastSlice = slices[slices.length - 1];
+      const finalHeight = lastSlice ? lastSlice.scrollY + viewportHeight : viewportHeight;
+
+      chrome.runtime.sendMessage({
+        action: 'CAPTURE_COMPLETED',
+        slices: slices,
+        totalWidth: viewportWidth,
+        totalHeight: finalHeight,
+        viewportHeight: viewportHeight,
+        devicePixelRatio: devicePixelRatio,
+        pageTitle: document.title || 'Webpage Screenshot',
+        pageUrl: window.location.href,
+        mode: mode,
+      });
     } catch (err) {
       console.error('Capture sequence error:', err);
     } finally {
       handleFixedHeaders(false);
+      if (overrideStyle && overrideStyle.parentNode) {
+        overrideStyle.parentNode.removeChild(overrideStyle);
+      }
       if (mode === 'mobile') {
         document.body.setAttribute('style', origBodyStyle);
       }
+      setScrollY(scrollTarget, origScrollY);
       window.scrollTo(origScrollX, origScrollY);
       removeProgressOverlay();
     }
-
-    // Send the captured slices to the background service worker
-    chrome.runtime.sendMessage({
-      action: 'CAPTURE_COMPLETED',
-      slices: slices,
-      totalWidth: viewportWidth,
-      totalHeight: scrollHeight,
-      viewportHeight: viewportHeight,
-      devicePixelRatio: devicePixelRatio,
-      pageTitle: document.title || 'Webpage Screenshot',
-      pageUrl: window.location.href,
-      mode: mode,
-    });
   }
 
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'EXECUTE_CAPTURE') {
-      executeFullPageCapture(message.mode || 'desktop');
+      executeCapture(message.mode || 'desktop');
       sendResponse({ status: 'started' });
     }
     return true;
