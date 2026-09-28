@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const btnZoomIn = document.getElementById('btn-zoom-in');
   const btnZoomOut = document.getElementById('btn-zoom-out');
+  const btnZoom25 = document.getElementById('btn-zoom-25');
   const btnFitScreen = document.getElementById('btn-fit-screen');
   const btnZoom100 = document.getElementById('btn-zoom-100');
   const btnToolBlur = document.getElementById('btn-tool-blur');
@@ -27,10 +28,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   let isDragging = false;
   let startX = 0, startY = 0;
 
-  // Zoom levels
+  // Zoom levels (default 25% for full overview in one glance)
   const ZOOM_LEVELS = [25, 40, 50, 65, 80, 100, 125, 150, 200];
-  let currentZoomIndex = 5;
-  let isFitMode = true;
+  let currentZoomIndex = 0;
+  let isFitMode = false;
 
   // 1. Fetch capture data from background
   const captureData = await new Promise((resolve) => {
@@ -181,6 +182,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     dimensionBadge.textContent = `${hiddenCanvas.width} × ${hiddenCanvas.height} px (${slicesCount} ${slicesCount === 1 ? 'part' : 'parts'})`;
   }
 
+  // Default zoom to 25% so the entire long page is seen in one glance!
+  applyZoomPercent(25);
+
   loadingSpinner.style.display = 'none';
   previewStage.classList.remove('hidden');
 
@@ -198,8 +202,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     isFitMode = true;
     previewImage.className = 'preview-img fit-mode';
     previewImage.style.width = '';
-    btnFitScreen.classList.add('active');
-    btnZoom100.classList.remove('active');
+    btnFitScreen?.classList.add('active');
+    btnZoom25?.classList.remove('active');
+    btnZoom100?.classList.remove('active');
     zoomLevelText.textContent = 'Fit';
   }
 
@@ -208,10 +213,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     previewImage.className = 'preview-img zoom-100';
     const computedW = Math.round((hiddenCanvas.width * (pct / 100)) / (window.devicePixelRatio || 1));
     previewImage.style.width = `${computedW}px`;
-    btnFitScreen.classList.remove('active');
-    btnZoom100.classList.toggle('active', pct === 100);
+    btnFitScreen?.classList.remove('active');
+    btnZoom25?.classList.toggle('active', pct === 25);
+    btnZoom100?.classList.toggle('active', pct === 100);
     zoomLevelText.textContent = `${pct}%`;
   }
+
+  btnZoom25?.addEventListener('click', () => {
+    currentZoomIndex = 0;
+    applyZoomPercent(25);
+  });
 
   btnFitScreen?.addEventListener('click', () => applyFitMode());
 
@@ -234,8 +245,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   btnZoomOut?.addEventListener('click', () => {
     if (isFitMode) {
-      currentZoomIndex = Math.max(0, ZOOM_LEVELS.indexOf(65));
-      applyZoomPercent(ZOOM_LEVELS[currentZoomIndex]);
+      currentZoomIndex = 0;
+      applyZoomPercent(25);
       return;
     }
     if (currentZoomIndex > 0) {
@@ -244,14 +255,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Click image to toggle Fit <-> 100%
+  // Click image to toggle between 25% overview and 100% full detail
   previewImage?.addEventListener('click', () => {
     if (isBlurActive) return;
-    if (isFitMode) {
+    if (currentZoomIndex === 0) { // Currently at 25% overview
       currentZoomIndex = ZOOM_LEVELS.indexOf(100);
       applyZoomPercent(100);
     } else {
-      applyFitMode();
+      currentZoomIndex = 0;
+      applyZoomPercent(25);
     }
   });
 
