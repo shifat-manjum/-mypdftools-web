@@ -1,7 +1,7 @@
 # Chrome Web Store Listing — MyPdfTools Capture
 
 > Last Updated: 2026-09-29  
-> Target Version: 1.0.0  
+> Target Version: 1.0.1  
 > Package Location: `extension/`  
 > Store Status: Ready for Submission  
 

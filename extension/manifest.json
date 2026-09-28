@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "MyPdfTools Capture — Full Page Screenshot & PDF",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "1-Click Full Page Screenshots in Desktop or Mobile view, Privacy Blur, and direct Web-to-PDF export.",
   "permissions": [
     "activeTab",
