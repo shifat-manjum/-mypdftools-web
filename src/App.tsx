@@ -6,7 +6,7 @@ import { ToolCard } from './components/ToolCard';
 import { AdBanner } from './components/AdBanner';
 
 const ToolPage = React.lazy(() => import('./components/ToolPage').then(m => ({ default: m.ToolPage })));
-const SeoPageLayout = React.lazy(() => import('./components/SeoPageLayout').then(m => ({ default: m.SeoPageLayout })));
+import { SeoPageLayout } from './components/SeoPageLayout';
 const PrivacyModal = React.lazy(() => import('./components/PrivacyModal').then(m => ({ default: m.PrivacyModal })));
 const AboutModal = React.lazy(() => import('./components/AboutModal').then(m => ({ default: m.AboutModal })));
 const ContactModal = React.lazy(() => import('./components/ContactModal').then(m => ({ default: m.ContactModal })));
@@ -18,7 +18,7 @@ import { TOOLS } from './data/tools';
 import { ToolCategory } from './types';
 import { Language, TRANSLATIONS } from './i18n/translations';
 import { TOOL_TO_PRIMARY_SLUG, findToolBySlug } from './data/toolSlugs';
-import type { SeoRouteData } from './data/seoRoutes';
+import { getSeoRoute, SeoRouteData } from './data/seoRoutes';
 import { ShieldCheck, Zap, Lock, WifiOff, ArrowUpRight } from 'lucide-react';
 
 // Automatically detect initial language based on URL query, saved preference, domain, or browser language
@@ -69,21 +69,31 @@ const getInitialLanguage = (): Language => {
   return 'it';
 };
 
+// Helper to extract clean path from pathname or fallback to hash
+const getPathFromLocation = (): string => {
+  if (typeof window === 'undefined') return '';
+  const rawPath = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+  const hash = window.location.hash.replace(/^#\/?/, '');
+  return rawPath || hash;
+};
+
 export const App: React.FC = () => {
+  const initialPath = useMemo(() => getPathFromLocation(), []);
+  const initialSeoRoute = useMemo(() => (initialPath ? getSeoRoute(initialPath) || null : null), [initialPath]);
+  const initialMatch = useMemo(
+    () => (!initialSeoRoute && initialPath ? findToolBySlug(initialPath) : null),
+    [initialSeoRoute, initialPath]
+  );
+  const initialToolId = initialSeoRoute ? initialSeoRoute.toolId : (initialMatch ? initialMatch.toolId : null);
+  const initialLang = initialSeoRoute?.lang || initialMatch?.lang || getInitialLanguage();
+
   // Domain-based default: German on mypdftools.de, Italian on mypdftools.it
-  const [currentLang, setCurrentLang] = useState<Language>(getInitialLanguage);
+  const [currentLang, setCurrentLang] = useState<Language>(initialLang);
   const [activeCategory, setActiveCategory] = useState<ToolCategory>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  // Helper to extract clean path from pathname or fallback to hash
-  const getPathFromLocation = (): string => {
-    if (typeof window === 'undefined') return '';
-    const rawPath = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
-    const hash = window.location.hash.replace(/^#\/?/, '');
-    return rawPath || hash;
-  };
-
-  const [currentPath, setCurrentPath] = useState<string>(getPathFromLocation);
-  const [currentToolId, setCurrentToolId] = useState<string | null>(null);
+  const [currentPath, setCurrentPath] = useState<string>(initialPath);
+  const [currentSeoRoute, setCurrentSeoRoute] = useState<SeoRouteData | null>(initialSeoRoute);
+  const [currentToolId, setCurrentToolId] = useState<string | null>(initialToolId);
   const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
   const [aboutModalOpen, setAboutModalOpen] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
@@ -113,37 +123,33 @@ export const App: React.FC = () => {
     }
   };
 
-  // Resolve current SEO route lazily if matching path exists
-  const [currentSeoRoute, setCurrentSeoRoute] = useState<SeoRouteData | null>(null);
-
+  // Sync SEO route and tool ID synchronously whenever currentPath changes
   useEffect(() => {
     if (!currentPath) {
       setCurrentSeoRoute(null);
       setCurrentToolId(null);
       return;
     }
-    let isMounted = true;
-    import('./data/seoRoutes').then(({ getSeoRoute }) => {
-      if (!isMounted) return;
-      const seo = getSeoRoute(currentPath);
-      setCurrentSeoRoute(seo || null);
-      if (seo) {
-        setCurrentToolId(seo.toolId);
-        if (seo.lang && (seo.lang === 'it' || seo.lang === 'de' || seo.lang === 'en')) {
-          setCurrentLang(seo.lang);
-        }
-      } else {
-        // Fallback: check direct tool slug mapping (Excel, PowerPoint, etc.)
-        const match = findToolBySlug(currentPath);
-        if (match) {
-          setCurrentToolId(match.toolId);
-          if (match.lang) {
-            setCurrentLang(match.lang);
-          }
-        }
+    const seo = getSeoRoute(currentPath);
+    setCurrentSeoRoute(seo || null);
+    if (seo) {
+      setCurrentToolId(seo.toolId);
+      if (seo.lang && (seo.lang === 'it' || seo.lang === 'de' || seo.lang === 'en')) {
+        setCurrentLang(seo.lang);
       }
-    });
-    return () => { isMounted = false; };
+    } else {
+      const match = findToolBySlug(currentPath);
+      if (match) {
+        setCurrentToolId(match.toolId);
+        if (match.lang) {
+          setCurrentLang(match.lang);
+        }
+      } else if (TOOLS.some((tool) => tool.id === currentPath)) {
+        setCurrentToolId(currentPath);
+      } else {
+        setCurrentToolId(null);
+      }
+    }
   }, [currentPath]);
 
   // Dynamic document title & HTML lang update based on active language (when on home)
@@ -304,18 +310,11 @@ export const App: React.FC = () => {
       <main className="flex-1 pb-20 relative z-10">
         <ErrorBoundary>
         {currentSeoRoute ? (
-          <Suspense fallback={
-            <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-10 py-20 flex flex-col items-center justify-center min-h-[450px]">
-              <div className="w-12 h-12 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4 shadow-sm"></div>
-              <p className="text-sm font-black text-slate-700">{t.nav.allTools}...</p>
-            </div>
-          }>
-            <SeoPageLayout
-              routeData={currentSeoRoute}
-              onNavigate={navigateToPath}
-              onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
-            />
-          </Suspense>
+          <SeoPageLayout
+            routeData={currentSeoRoute}
+            onNavigate={navigateToPath}
+            onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
+          />
         ) : activeTool ? (
           <Suspense fallback={
             <div className="max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-10 py-20 flex flex-col items-center justify-center min-h-[450px]">
@@ -331,6 +330,19 @@ export const App: React.FC = () => {
               onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
             />
           </Suspense>
+        ) : currentPath && !['privacy-policy', 'terms-of-service', 'cookie-policy', 'chi-siamo', 'contatti', 'datenschutz', 'nutzungsbedingungen', 'ueber-uns', 'kontakt'].includes(currentPath) ? (
+          <div className="max-w-2xl mx-auto my-20 p-12 bg-white/90 backdrop-blur-md rounded-3xl border border-slate-200 text-center shadow-sm">
+            <h2 className="text-3xl font-black text-slate-900 mb-3">404 — {currentLang === 'it' ? 'Pagina Non Trovata' : currentLang === 'de' ? 'Seite Nicht Gefunden' : 'Page Not Found'}</h2>
+            <p className="text-sm text-slate-600 mb-6 font-medium">
+              {currentLang === 'it' ? 'La pagina richiesta non esiste o è stata spostata.' : 'Die angeforderte Seite existiert nicht oder wurde verschoben.'}
+            </p>
+            <button
+              onClick={navigateHome}
+              className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl text-xs shadow-sm cursor-pointer transition-all"
+            >
+              {currentLang === 'it' ? 'Torna alla Home' : 'Zur Startseite'}
+            </button>
+          </div>
         ) : (
           <div>
             <Hero
