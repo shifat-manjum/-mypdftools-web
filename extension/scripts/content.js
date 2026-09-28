@@ -1,10 +1,6 @@
-// content.js - GoFullPage-grade full page auto-scroller with deep container detection (Gmail, Dashboards, SPAs)
+// content.js - GoFullPage-grade auto-scroller with deep container detection (Gmail, Dashboards, SPAs)
 
 (() => {
-  // Prevent duplicate injection
-  if (window.__mypdftools_capture_injected) return;
-  window.__mypdftools_capture_injected = true;
-
   let progressOverlay = null;
 
   function createProgressOverlay() {
@@ -24,7 +20,7 @@
         -webkit-backdrop-filter: blur(20px);
         border: 1px solid rgba(16, 185, 129, 0.35);
         color: #ffffff;
-        padding: 28px 36px;
+        padding: 26px 36px;
         border-radius: 20px;
         box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), 0 0 30px rgba(16, 185, 129, 0.2);
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -99,50 +95,54 @@
 
   // Deep inspection to identify the real scrolling element (Gmail, Notion, Slack, Google Docs, etc.)
   function findScrollTarget() {
-    // 1. Measure window scrollability
+    // 1. Check if window can actually scroll
     const origWinY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    window.scrollTo({ left: 0, top: origWinY + 50, behavior: 'instant' });
+    const afterWinY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    const winCanScroll = Math.abs(afterWinY - origWinY) > 5;
+    window.scrollTo({ left: 0, top: origWinY, behavior: 'instant' });
+
+    // 2. Scan DOM elements for scrollable containers (like Gmail email tables)
+    const elements = document.querySelectorAll('*');
+    let bestEl = null;
+    let maxScore = 0;
+
+    for (const el of elements) {
+      if (['SCRIPT', 'STYLE', 'LINK', 'META', 'NOSCRIPT', 'SVG', 'PATH', 'IFRAME'].includes(el.tagName)) continue;
+      if (el.id === '__mypdftools_capture_overlay' || el.closest('#__mypdftools_capture_overlay')) continue;
+
+      const scrollH = el.scrollHeight;
+      const clientH = el.clientHeight;
+      const diff = scrollH - clientH;
+
+      if (diff > 50 && clientH > 150 && el.clientWidth > 200) {
+        // Test if scrollTop can actually be changed
+        const curTop = el.scrollTop;
+        const testDelta = (curTop > 10) ? -10 : 10;
+        el.scrollTop = curTop + testDelta;
+        const canScroll = Math.abs(el.scrollTop - curTop) > 2;
+        el.scrollTop = curTop; // restore original position
+
+        if (canScroll) {
+          const area = el.clientWidth * el.clientHeight;
+          const score = diff * 4 + area;
+          if (score > maxScore) {
+            maxScore = score;
+            bestEl = el;
+          }
+        }
+      }
+    }
+
     const winScrollHeight = Math.max(
       document.documentElement.scrollHeight,
       document.body.scrollHeight,
       document.documentElement.offsetHeight,
       window.innerHeight
     );
-    const winClientHeight = window.innerHeight;
-    const winDiff = winScrollHeight - winClientHeight;
 
-    // 2. Scan DOM elements for large inner scroll containers (like Gmail email tables)
-    const all = document.querySelectorAll('*');
-    let bestEl = null;
-    let maxDiff = 0;
-
-    for (const el of all) {
-      if (['SCRIPT', 'STYLE', 'LINK', 'META', 'NOSCRIPT', 'SVG', 'PATH', 'IFRAME'].includes(el.tagName)) continue;
-      if (el.id === '__mypdftools_capture_overlay' || el.closest('#__mypdftools_capture_overlay')) continue;
-
-      const diff = el.scrollHeight - el.clientHeight;
-      if (diff > 40 && el.clientHeight > 180 && el.clientWidth > 250) {
-        const style = window.getComputedStyle(el);
-        const oy = style.overflowY || style.overflow;
-        if (oy === 'auto' || oy === 'scroll' || oy === 'overlay') {
-          // Verify that modifying scrollTop actually changes it
-          const cur = el.scrollTop;
-          const testDelta = (cur > 10) ? -10 : 10;
-          el.scrollTop = cur + testDelta;
-          if (el.scrollTop !== cur) {
-            el.scrollTop = cur; // restore original position
-            const area = el.clientWidth * el.clientHeight;
-            const score = diff * 3 + area;
-            if (score > maxDiff) {
-              maxDiff = score;
-              bestEl = el;
-            }
-          }
-        }
-      }
-    }
-
-    // If an inner container has significant scrollable height and window does not:
-    if (bestEl && (winDiff < 80 || maxDiff > winDiff * 2)) {
+    // If an inner container exists and (window can't scroll OR container has much more content):
+    if (bestEl && (!winCanScroll || (bestEl.scrollHeight - bestEl.clientHeight > 300))) {
       const rect = bestEl.getBoundingClientRect();
       return {
         isWindow: false,
@@ -278,22 +278,24 @@
       // 2. Full Page Mode (Window or Inner Container like Gmail)
       window.scrollTo({ left: 0, top: 0, behavior: 'instant' });
       target.setScrollY(0);
-      await sleep(300);
+      await sleep(350);
 
-      // Use a 50px overlap step buffer to prevent seams or cut-off rows
       const clientH = target.getViewportHeight();
-      const stepSize = Math.max(180, clientH - 50);
+      const scrollHeight = target.getScrollHeight();
+      // Step size with 50px overlap buffer
+      const stepSize = Math.max(160, clientH - 50);
+
       let currentY = 0;
-      let lastActualY = -1;
+      let lastActualY = -99999;
       let maxIterations = 60; // Up to 60 slices safety limit
 
       while (maxIterations-- > 0) {
         target.setScrollY(currentY);
-        await sleep(260); // Allow browser rendering, layout, and images to settle
+        await sleep(300); // Allow browser rendering, layout, and images to settle
 
         const actualY = target.getScrollY();
-        const scrollHeight = target.getScrollHeight();
-        const estTotalSlices = Math.max(1, Math.ceil(scrollHeight / stepSize));
+        const curScrollHeight = target.getScrollHeight();
+        const estTotalSlices = Math.max(1, Math.ceil(curScrollHeight / stepSize));
         const currentSliceNum = slices.length + 1;
 
         if (target.isWindow && actualY > 50) {
@@ -319,12 +321,20 @@
           });
         }
 
-        const pct = Math.min(100, Math.round(((actualY + clientH) / scrollHeight) * 100));
+        const pct = Math.min(100, Math.round(((actualY + clientH) / curScrollHeight) * 100));
         updateProgress(pct, currentSliceNum, estTotalSlices);
 
-        // Check if bottom reached or no more scrolling possible
-        if (actualY + clientH >= scrollHeight - 5 || Math.abs(actualY - lastActualY) < 2) {
+        // Completion check:
+        // Case A: Page content is already shorter than viewport (1 slice needed)
+        if (slices.length === 1 && curScrollHeight <= clientH + 10) {
           break;
+        }
+
+        // Case B: Subsequent slices reached bottom or scrolling stopped
+        if (slices.length > 1) {
+          if (actualY === lastActualY || actualY + clientH >= curScrollHeight - 5) {
+            break;
+          }
         }
 
         lastActualY = actualY;
@@ -365,11 +375,16 @@
     }
   }
 
-  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  // Register or replace the message listener
+  if (window.__mypdftools_listener) {
+    chrome.runtime.onMessage.removeListener(window.__mypdftools_listener);
+  }
+  window.__mypdftools_listener = (message, sender, sendResponse) => {
     if (message.action === 'EXECUTE_CAPTURE') {
       executeCapture(message.mode || 'desktop');
       sendResponse({ status: 'started' });
     }
     return true;
-  });
+  };
+  chrome.runtime.onMessage.addListener(window.__mypdftools_listener);
 })();
