@@ -185,21 +185,113 @@ body {
   font-weight: 700;
 }
 
-.status-banner.hidden {
-  display: none;
+/* Utility hidden */
+.hidden {
+  display: none !important;
 }
 
-.spinner {
-  width: 14px;
-  height: 14px;
-  border: 2px solid rgba(52, 211, 153, 0.2);
-  border-top-color: #34d399;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+/* Restricted Page View */
+.restricted-container {
+  display: flex;
+  flex-direction: column;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.restricted-card {
+  background: #1e293b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 12px;
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.restricted-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.restricted-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.restricted-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.restricted-msg {
+  font-size: 11px;
+  line-height: 1.5;
+  color: #cbd5e1;
+}
+
+.restricted-details {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 10.5px;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+.restricted-details-summary {
+  font-weight: 600;
+  color: #38bdf8;
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s;
+}
+
+.restricted-details-summary:hover {
+  color: #7dd3fc;
+}
+
+.restricted-details-body {
+  margin-top: 6px;
+  color: #94a3b8;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 6px;
+}
+
+.btn-restricted-capture {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+}
+
+.btn-restricted-capture:hover {
+  background: linear-gradient(135deg, #0369a1, #075985);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.4);
+}
+
+.btn-restricted-capture:active {
+  transform: translateY(0);
 }
 
 /* Footer */
