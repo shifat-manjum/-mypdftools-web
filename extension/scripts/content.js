@@ -1,4 +1,4 @@
-// content.js - GoFullPage-grade auto-scroller with deep container detection (Gmail, Dashboards, SPAs)
+// content.js - GoFullPage-grade auto-scroller with top-right cute chomping animation
 
 (() => {
   let progressOverlay = null;
@@ -8,65 +8,97 @@
 
     progressOverlay = document.createElement('div');
     progressOverlay.id = '__mypdftools_capture_overlay';
+    progressOverlay.style.cssText = `
+      position: fixed !important;
+      top: 14px !important;
+      right: 18px !important;
+      z-index: 2147483647 !important;
+      pointer-events: none !important;
+      user-select: none !important;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    `;
+
     progressOverlay.innerHTML = `
+      <style>
+        @keyframes __mypdftools_slide_in {
+          from { transform: translateY(-16px) scale(0.92); opacity: 0; }
+          to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes __mypdftools_chomp_top {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(-36deg); }
+        }
+        @keyframes __mypdftools_chomp_bottom {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(36deg); }
+        }
+        @keyframes __mypdftools_dots_flow {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-10px); }
+        }
+      </style>
       <div style="
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 2147483647;
         background: rgba(15, 23, 42, 0.94);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(16, 185, 129, 0.35);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        border-radius: 14px;
+        padding: 10px 14px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(16, 185, 129, 0.25);
         color: #ffffff;
-        padding: 26px 36px;
-        border-radius: 20px;
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), 0 0 30px rgba(16, 185, 129, 0.2);
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 16px;
-        min-width: 320px;
-        pointer-events: none;
-        animation: __mypdftools_pop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        gap: 8px;
+        min-width: 210px;
+        animation: __mypdftools_slide_in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       ">
-        <style>
-          @keyframes __mypdftools_pop {
-            from { transform: translate(-50%, -46%) scale(0.92); opacity: 0; }
-            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-          }
-          @keyframes __mypdftools_pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-          }
-          @keyframes __mypdftools_shutter {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        </style>
-        
-        <!-- Animated Camera Shutter Icon -->
-        <div style="position: relative; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
-          <div style="position: absolute; inset: 0; border: 3px dashed rgba(16, 185, 129, 0.35); border-radius: 50%; animation: __mypdftools_shutter 8s linear infinite;"></div>
-          <div style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(16, 185, 129, 0.5); animation: __mypdftools_pulse 2s ease-in-out infinite;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-              <circle cx="12" cy="13" r="4"></circle>
-            </svg>
+        <!-- Top Row: Pac-Man & Labels -->
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+          <!-- Funny Chomping Character -->
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <div style="position: relative; width: 22px; height: 22px; flex-shrink: 0;">
+              <!-- Top Jaw -->
+              <div style="
+                position: absolute; top: 0; left: 0; width: 22px; height: 11px;
+                background: #facc15; border-radius: 22px 22px 0 0;
+                transform-origin: bottom center;
+                animation: __mypdftools_chomp_top 0.25s ease-in-out infinite alternate;
+              "></div>
+              <!-- Bottom Jaw -->
+              <div style="
+                position: absolute; bottom: 0; left: 0; width: 22px; height: 11px;
+                background: #facc15; border-radius: 0 0 22px 22px;
+                transform-origin: top center;
+                animation: __mypdftools_chomp_bottom 0.25s ease-in-out infinite alternate;
+              "></div>
+              <!-- Eye -->
+              <div style="
+                position: absolute; top: 3px; left: 9px; width: 3px; height: 3px;
+                background: #0f172a; border-radius: 50%; z-index: 2;
+              "></div>
+            </div>
+
+            <!-- Dots Track -->
+            <div style="width: 30px; height: 10px; overflow: hidden; display: flex; align-items: center;">
+              <div style="display: flex; gap: 5px; animation: __mypdftools_dots_flow 0.45s linear infinite;">
+                <span style="width: 4px; height: 4px; border-radius: 50%; background: #34d399; flex-shrink: 0;"></span>
+                <span style="width: 4px; height: 4px; border-radius: 50%; background: #34d399; flex-shrink: 0;"></span>
+                <span style="width: 4px; height: 4px; border-radius: 50%; background: #34d399; flex-shrink: 0;"></span>
+                <span style="width: 4px; height: 4px; border-radius: 50%; background: #34d399; flex-shrink: 0;"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Status Text -->
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span id="__mypdftools_status" style="font-size: 11px; font-weight: 700; color: #cbd5e1;">Capturing...</span>
+            <span id="__mypdftools_pct_badge" style="font-size: 10px; font-weight: 800; background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 1px 5px; border-radius: 4px;">0%</span>
           </div>
         </div>
 
-        <!-- Text Labels -->
-        <div style="text-align: center;">
-          <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: -0.2px;">Capturing Full Page</h3>
-          <p id="__mypdftools_status" style="margin: 4px 0 0 0; font-size: 13px; color: #94a3b8; font-weight: 600;">Scanning document (0%)...</p>
-        </div>
-
         <!-- Progress Bar -->
-        <div style="width: 100%; height: 7px; background: rgba(255, 255, 255, 0.1); border-radius: 999px; overflow: hidden;">
-          <div id="__mypdftools_bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #10b981, #34d399); transition: width 0.18s ease-out; border-radius: 999px;"></div>
+        <div style="width: 100%; height: 5px; background: rgba(255, 255, 255, 0.1); border-radius: 999px; overflow: hidden;">
+          <div id="__mypdftools_bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #10b981, #34d399); transition: width 0.15s ease-out; border-radius: 999px;"></div>
         </div>
       </div>
     `;
@@ -76,12 +108,19 @@
 
   function updateProgress(percent, current, total) {
     const statusEl = document.getElementById('__mypdftools_status');
+    const badgeEl = document.getElementById('__mypdftools_pct_badge');
     const barEl = document.getElementById('__mypdftools_bar');
     const pct = Math.min(100, Math.max(0, Math.round(percent)));
+
     if (statusEl) {
-      statusEl.textContent = total > 1 ? `Capturing part ${current} of ${total} (${pct}%)` : `Capturing page (${pct}%)...`;
+      statusEl.textContent = total > 1 ? `Part ${current} of ${total}` : `Capturing...`;
     }
-    if (barEl) barEl.style.width = `${pct}%`;
+    if (badgeEl) {
+      badgeEl.textContent = `${pct}%`;
+    }
+    if (barEl) {
+      barEl.style.width = `${pct}%`;
+    }
   }
 
   function removeProgressOverlay() {
@@ -243,8 +282,9 @@
     try {
       // 1. Visible Screen Only Mode
       if (mode === 'visible') {
-        if (progressOverlay) progressOverlay.style.display = 'none';
-        await sleep(100);
+        if (progressOverlay) progressOverlay.style.visibility = 'hidden';
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+        await sleep(50);
 
         const response = await new Promise((resolve) => {
           chrome.runtime.sendMessage({ action: 'CAPTURE_SLICE' }, (res) => resolve(res));
@@ -302,14 +342,21 @@
           handleFixedHeaders(true);
         }
 
-        // Hide overlay before snapping screenshot
-        if (progressOverlay) progressOverlay.style.display = 'none';
+        // Hide overlay and flush compositor before snapping screenshot
+        if (progressOverlay) {
+          progressOverlay.style.visibility = 'hidden';
+        }
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+        await sleep(60);
 
         const response = await new Promise((resolve) => {
           chrome.runtime.sendMessage({ action: 'CAPTURE_SLICE' }, (res) => resolve(res));
         });
 
-        if (progressOverlay) progressOverlay.style.display = 'flex';
+        // Restore overlay
+        if (progressOverlay) {
+          progressOverlay.style.visibility = 'visible';
+        }
 
         if (response && response.dataUrl) {
           slices.push({
