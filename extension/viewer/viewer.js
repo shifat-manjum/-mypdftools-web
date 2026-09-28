@@ -1,4 +1,4 @@
-// viewer.js - Production Stitching Engine, Interactive Light Studio, and Export Center
+// viewer.js - GoFullPage-grade stitching engine with zero-empty-space canvas sizing
 
 document.addEventListener('DOMContentLoaded', async () => {
   const hiddenCanvas = document.getElementById('hidden-canvas');
@@ -27,18 +27,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   let isDragging = false;
   let startX = 0, startY = 0;
 
-  // Zoom management
+  // Zoom levels
   const ZOOM_LEVELS = [25, 40, 50, 65, 80, 100, 125, 150, 200];
-  let currentZoomIndex = 5; // index of 100%
+  let currentZoomIndex = 5;
   let isFitMode = true;
 
-  // 1. Fetch capture data from background service worker
+  // 1. Fetch capture data from background
   const captureData = await new Promise((resolve) => {
     chrome.runtime.sendMessage({ action: 'GET_CAPTURE_DATA' }, (res) => resolve(res));
   });
 
   if (!captureData || !captureData.slices || captureData.slices.length === 0) {
-    loadingSpinner.innerHTML = '<p style="color: #ef4444; font-weight: 700;">No screenshot data found. Please trigger a new capture from the extension.</p>';
+    loadingSpinner.innerHTML = '<p style="color: #ef4444; font-weight: 700;">No screenshot data found. Please trigger a new capture.</p>';
     return;
   }
 
@@ -55,15 +55,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   );
 
   const firstImg = loadedImages[0];
+  const lastImg = loadedImages[loadedImages.length - 1];
   const dpr = firstImg.width / (captureData.totalWidth || captureData.viewportWidth || window.innerWidth);
   const totalPixelWidth = firstImg.width;
-  let totalPixelHeight = firstImg.height;
 
-  // 3. Intelligent Stitching Engine (Deep Inner Container vs Standard Window)
+  // 3. GoFullPage Stitching Architecture
   if (captureData.isContainer && captureData.containerRect && captureData.slices.length > 1) {
-    // -------------------------------------------------------------
-    // Gmail / SPA Inner Container Stitching Pattern
-    // -------------------------------------------------------------
+    // -----------------------------------------------------------------
+    // INNER CONTAINER STITCHING (Gmail / SPAs with locked windows)
+    // -----------------------------------------------------------------
     const cRect = captureData.containerRect;
     const cx = Math.round(cRect.x * dpr);
     const cy = Math.round(cRect.y * dpr);
@@ -74,15 +74,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const totalContainerContentPx = Math.round((lastSlice.scrollY + cRect.height) * dpr);
     const bottomBarHeight = Math.max(0, firstImg.height - (cy + ch));
 
-    totalPixelHeight = cy + totalContainerContentPx + bottomBarHeight;
+    const totalPixelHeight = cy + totalContainerContentPx + bottomBarHeight;
 
     hiddenCanvas.width = totalPixelWidth;
     hiddenCanvas.height = totalPixelHeight;
 
-    // A. Draw base slice 0 (Top Gmail bar, Search, Tabs, Compose button)
+    // Draw base slice 0
     ctx.drawImage(firstImg, 0, 0);
 
-    // B. Extend left sidebar background cleanly down
+    // Extend sidebars down
     if (cx > 0 && totalPixelHeight > firstImg.height) {
       const sampleY = Math.max(0, Math.min(firstImg.height - 10, cy + ch - 10));
       for (let y = firstImg.height; y < totalPixelHeight; y += 10) {
@@ -91,7 +91,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
 
-    // C. Extend right side panel background cleanly down
     const rightX = cx + cw;
     const rightW = totalPixelWidth - rightX;
     if (rightW > 0 && totalPixelHeight > firstImg.height) {
@@ -102,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
 
-    // D. Stitch all email rows / container slices with overlap trimming
+    // Stitch container slices
     for (let i = 0; i < captureData.slices.length; i++) {
       const slice = captureData.slices[i];
       const img = loadedImages[i];
@@ -127,25 +126,28 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
 
-    // E. Draw bottom footer bar at the bottom of the long document
+    // Draw footer
     if (bottomBarHeight > 0) {
-      const lastImg = loadedImages[loadedImages.length - 1];
       const srcBottomY = cy + ch;
       const destBottomY = cy + totalContainerContentPx;
       ctx.drawImage(lastImg, 0, srcBottomY, totalPixelWidth, bottomBarHeight, 0, destBottomY, totalPixelWidth, bottomBarHeight);
     }
   } else if (captureData.slices.length > 1) {
-    // -------------------------------------------------------------
-    // Standard Full Window Vertical Stitching Pattern
-    // -------------------------------------------------------------
+    // -----------------------------------------------------------------
+    // STANDARD FULL PAGE STITCHING (Google, Wikipedia, Blogs, Stores)
+    // -----------------------------------------------------------------
     const lastSlice = captureData.slices[captureData.slices.length - 1];
-    totalPixelHeight = Math.round((lastSlice.scrollY + captureData.viewportHeight) * dpr);
+    
+    // Exact mathematical pixel height of all stitched slices (zero white tail)
+    const exactTotalHeight = Math.round(lastSlice.scrollY * dpr) + lastImg.height;
 
     hiddenCanvas.width = totalPixelWidth;
-    hiddenCanvas.height = totalPixelHeight;
+    hiddenCanvas.height = exactTotalHeight;
 
+    // Draw base slice 0
     ctx.drawImage(firstImg, 0, 0);
 
+    // Draw subsequent slices with overlap trimming
     for (let i = 1; i < captureData.slices.length; i++) {
       const slice = captureData.slices[i];
       const img = loadedImages[i];
@@ -164,9 +166,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
   } else {
-    // Single slice
+    // 1-slice page
     hiddenCanvas.width = totalPixelWidth;
-    hiddenCanvas.height = totalPixelHeight;
+    hiddenCanvas.height = firstImg.height;
     ctx.drawImage(firstImg, 0, 0);
   }
 
@@ -176,7 +178,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (dimensionBadge) {
     const slicesCount = captureData.slices.length;
-    dimensionBadge.textContent = `${totalPixelWidth} × ${totalPixelHeight} px (${slicesCount} ${slicesCount === 1 ? 'part' : 'parts'})`;
+    dimensionBadge.textContent = `${hiddenCanvas.width} × ${hiddenCanvas.height} px (${slicesCount} ${slicesCount === 1 ? 'part' : 'parts'})`;
   }
 
   loadingSpinner.style.display = 'none';
@@ -204,7 +206,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function applyZoomPercent(pct) {
     isFitMode = false;
     previewImage.className = 'preview-img zoom-100';
-    const computedW = Math.round((totalPixelWidth * (pct / 100)) / (window.devicePixelRatio || 1));
+    const computedW = Math.round((hiddenCanvas.width * (pct / 100)) / (window.devicePixelRatio || 1));
     previewImage.style.width = `${computedW}px`;
     btnFitScreen.classList.remove('active');
     btnZoom100.classList.toggle('active', pct === 100);
@@ -243,7 +245,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // Click image to toggle Fit <-> 100%
-  previewImage?.addEventListener('click', (e) => {
+  previewImage?.addEventListener('click', () => {
     if (isBlurActive) return;
     if (isFitMode) {
       currentZoomIndex = ZOOM_LEVELS.indexOf(100);
@@ -260,7 +262,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     documentPaper.style.cursor = isBlurActive ? 'crosshair' : 'default';
     previewImage.style.cursor = isBlurActive ? 'crosshair' : (isFitMode ? 'zoom-in' : 'zoom-out');
     if (isBlurActive) {
-      showToast('✏️ Click and drag over sensitive text to redact');
+      showToast('✏️ Click and drag over sensitive areas to redact');
     }
   });
 
@@ -304,18 +306,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (dispW < 6 || dispH < 6) return;
 
-    // Map screen display coordinates back to canvas pixel coordinates
     const scale = hiddenCanvas.width / rect.width;
     const trueX = Math.round(dispX * scale);
     const trueY = Math.round(dispY * scale);
     const trueW = Math.round(dispW * scale);
     const trueH = Math.round(dispH * scale);
 
-    // Apply clean privacy redact block onto canvas
     ctx.fillStyle = '#0f172a';
     ctx.fillRect(trueX, trueY, trueW, trueH);
 
-    // Refresh preview image
     fullImageDataUrl = hiddenCanvas.toDataURL('image/png');
     previewImage.src = fullImageDataUrl;
     showToast('✓ Redacted area applied');
@@ -328,7 +327,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     blurOverlay.style.height = `${h}px`;
   }
 
-  // 7. Copy Image Directly to Clipboard
+  // 7. Copy Image to Clipboard
   btnCopyClipboard?.addEventListener('click', async () => {
     try {
       hiddenCanvas.toBlob(async (blob) => {
@@ -336,7 +335,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         await navigator.clipboard.write([
           new ClipboardItem({ 'image/png': blob })
         ]);
-        showToast('✓ Screenshot copied to clipboard! Paste anywhere (Ctrl+V)');
+        showToast('✓ Screenshot copied to clipboard! (Ctrl+V)');
       }, 'image/png');
     } catch (err) {
       console.warn('Clipboard write error:', err);
@@ -344,7 +343,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // 8. Download High-Res PNG
+  // 8. Download PNG
   btnDownloadPng?.addEventListener('click', () => {
     const filename = sanitizeFilename(captureMetadata?.pageTitle || 'fullpage_screenshot') + '.png';
     const link = document.createElement('a');
@@ -354,7 +353,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     showToast('✓ PNG downloaded successfully');
   });
 
-  // 9. Export as Clean PDF (Native Print to PDF)
+  // 9. Export PDF
   btnDownloadPdf?.addEventListener('click', () => {
     window.print();
   });
