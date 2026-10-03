@@ -7,6 +7,7 @@ import { AdBanner } from './components/AdBanner';
 
 const ToolPage = React.lazy(() => import('./components/ToolPage').then(m => ({ default: m.ToolPage })));
 import { SeoPageLayout } from './components/SeoPageLayout';
+import { StaticLegalPage, LegalPageType } from './components/StaticLegalPage';
 const PrivacyModal = React.lazy(() => import('./components/PrivacyModal').then(m => ({ default: m.PrivacyModal })));
 const AboutModal = React.lazy(() => import('./components/AboutModal').then(m => ({ default: m.AboutModal })));
 const ContactModal = React.lazy(() => import('./components/ContactModal').then(m => ({ default: m.ContactModal })));
@@ -77,6 +78,26 @@ const getPathFromLocation = (): string => {
   return rawPath || hash;
 };
 
+const LEGAL_ROUTE_MAP: Record<string, LegalPageType> = {
+  'impressum': 'impressum',
+  'note-legali': 'impressum',
+  'datenschutz': 'privacy',
+  'privacy-policy': 'privacy',
+  'privacy': 'privacy',
+  'ueber-uns': 'about',
+  'chi-siamo': 'about',
+  'about': 'about',
+  'kontakt': 'contact',
+  'contatti': 'contact',
+  'contact': 'contact',
+  'nutzungsbedingungen': 'terms',
+  'agb': 'terms',
+  'terms-of-service': 'terms',
+  'terms': 'terms',
+  'cookie-policy': 'cookies',
+  'cookies': 'cookies',
+};
+
 export const App: React.FC = () => {
   const initialPath = useMemo(() => getPathFromLocation(), []);
   const initialSeoRoute = useMemo(() => (initialPath ? getSeoRoute(initialPath) || null : null), [initialPath]);
@@ -102,6 +123,8 @@ export const App: React.FC = () => {
     isOpen: false,
     tab: 'privacy',
   });
+
+  const activeLegalType = currentPath ? LEGAL_ROUTE_MAP[currentPath] || null : null;
 
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.it;
 
@@ -130,6 +153,18 @@ export const App: React.FC = () => {
       setCurrentToolId(null);
       return;
     }
+
+    if (activeLegalType) {
+      setCurrentSeoRoute(null);
+      setCurrentToolId(null);
+      if (['impressum', 'datenschutz', 'nutzungsbedingungen', 'agb', 'ueber-uns', 'kontakt'].includes(currentPath)) {
+        setCurrentLang('de');
+      } else if (['note-legali', 'chi-siamo', 'contatti'].includes(currentPath)) {
+        setCurrentLang('it');
+      }
+      return;
+    }
+
     const seo = getSeoRoute(currentPath);
     setCurrentSeoRoute(seo || null);
     if (seo) {
@@ -150,12 +185,47 @@ export const App: React.FC = () => {
         setCurrentToolId(null);
       }
     }
-  }, [currentPath]);
+  }, [currentPath, activeLegalType]);
 
-  // Dynamic document title & HTML lang update based on active language (when on home)
+  // Dynamic document title & HTML lang update based on active language or legal page
   useEffect(() => {
     document.documentElement.lang = currentLang;
-    if (!currentSeoRoute && !currentToolId) {
+
+    if (activeLegalType) {
+      const titles: Record<LegalPageType, { it: string; de: string; en: string }> = {
+        impressum: {
+          it: 'Note Legali & Impressum — MyPdfTools',
+          de: 'Impressum & Gesetzliche Anbieterkennzeichnung (§ 5 DDG) — MyPdfTools',
+          en: 'Legal Notice & Impressum — MyPdfTools',
+        },
+        privacy: {
+          it: 'Informativa sulla Privacy (GDPR UE 2016/679) — MyPdfTools',
+          de: 'Datenschutzerklärung (EU-DSGVO) — MyPdfTools',
+          en: 'Privacy Policy (EU GDPR) — MyPdfTools',
+        },
+        terms: {
+          it: 'Termini e Condizioni di Utilizzo — MyPdfTools',
+          de: 'Allgemeine Geschäfts- & Nutzungsbedingungen (AGB) — MyPdfTools',
+          en: 'Terms and Conditions of Use — MyPdfTools',
+        },
+        about: {
+          it: 'Chi Siamo & Visione — MyPdfTools',
+          de: 'Über uns & Unsere Philosophie — MyPdfTools',
+          en: 'About Us & Our Mission — MyPdfTools',
+        },
+        contact: {
+          it: 'Contatti & Assistenza Tecnica — MyPdfTools',
+          de: 'Kontakt & Technischer Support — MyPdfTools',
+          en: 'Contact & Support — MyPdfTools',
+        },
+        cookies: {
+          it: 'Informativa sui Cookie — MyPdfTools',
+          de: 'Cookie-Richtlinie & Privatsphäre — MyPdfTools',
+          en: 'Cookie Policy & Privacy — MyPdfTools',
+        },
+      };
+      document.title = titles[activeLegalType]?.[currentLang] || titles[activeLegalType]?.en || 'MyPdfTools';
+    } else if (!currentSeoRoute && !currentToolId) {
       if (currentLang === 'it') {
         document.title = 'MyPdfTools — Strumenti PDF 100% Gratuiti e Privati (Zero Upload)';
       } else if (currentLang === 'de') {
@@ -164,7 +234,7 @@ export const App: React.FC = () => {
         document.title = 'MyPdfTools — 100% Free & Private In-Browser PDF Suite';
       }
     }
-  }, [currentLang, currentSeoRoute, currentToolId]);
+  }, [currentLang, currentSeoRoute, currentToolId, activeLegalType]);
 
   // Google Analytics (GA4) pageview tracking on SPA navigation
   useEffect(() => {
@@ -175,25 +245,12 @@ export const App: React.FC = () => {
         page_path: window.location.pathname + window.location.hash,
       });
     }
-  }, [currentPath, currentToolId, currentLang]);
+  }, [currentPath, currentToolId, currentLang, activeLegalType]);
 
   // Clean pathname + fallback hash routing
   useEffect(() => {
     const syncRouteFromLocation = () => {
       const activeRouteSlug = getPathFromLocation();
-
-      if (['privacy-policy', 'datenschutz', 'privacy'].includes(activeRouteSlug)) {
-        setLegalModalState({ isOpen: true, tab: 'privacy' });
-      } else if (['terms-of-service', 'nutzungsbedingungen', 'terms'].includes(activeRouteSlug)) {
-        setLegalModalState({ isOpen: true, tab: 'terms' });
-      } else if (['cookie-policy', 'cookies'].includes(activeRouteSlug)) {
-        setLegalModalState({ isOpen: true, tab: 'cookies' });
-      } else if (['chi-siamo', 'about', 'ueber-uns'].includes(activeRouteSlug)) {
-        setAboutModalOpen(true);
-      } else if (['contatti', 'contact', 'kontakt'].includes(activeRouteSlug)) {
-        setContactModalOpen(true);
-      }
-
       setCurrentPath(activeRouteSlug);
 
       if (TOOLS.some((tool) => tool.id === activeRouteSlug)) {
@@ -309,7 +366,13 @@ export const App: React.FC = () => {
       {/* Main Content: SEO Landing Page, Tool View, or Catalog */}
       <main className="flex-1 pb-20 relative z-10">
         <ErrorBoundary>
-        {currentSeoRoute ? (
+        {activeLegalType ? (
+          <StaticLegalPage
+            type={activeLegalType}
+            currentLang={currentLang}
+            onGoHome={navigateHome}
+          />
+        ) : currentSeoRoute ? (
           <SeoPageLayout
             routeData={currentSeoRoute}
             onNavigate={navigateToPath}
@@ -330,7 +393,7 @@ export const App: React.FC = () => {
               onOpenPrivacyModal={() => setPrivacyModalOpen(true)}
             />
           </Suspense>
-        ) : currentPath && !['privacy-policy', 'terms-of-service', 'cookie-policy', 'chi-siamo', 'contatti', 'datenschutz', 'nutzungsbedingungen', 'ueber-uns', 'kontakt'].includes(currentPath) ? (
+        ) : currentPath ? (
           <div className="max-w-2xl mx-auto my-20 p-12 bg-white/90 backdrop-blur-md rounded-3xl border border-slate-200 text-center shadow-sm">
             <h2 className="text-3xl font-black text-slate-900 mb-3">404 — {currentLang === 'it' ? 'Pagina Non Trovata' : currentLang === 'de' ? 'Seite Nicht Gefunden' : 'Page Not Found'}</h2>
             <p className="text-sm text-slate-600 mb-6 font-medium">
@@ -498,62 +561,136 @@ export const App: React.FC = () => {
               <button onClick={() => navigateToTool('pdf-to-jpg')} className="px-2.5 py-2 min-h-[44px] inline-flex items-center hover:text-emerald-600 cursor-pointer">{t.tools['pdf-to-jpg']?.title || 'PDF to JPG'}</button>
               <button onClick={() => navigateToTool('merge-pdf')} className="px-2.5 py-2 min-h-[44px] inline-flex items-center hover:text-emerald-600 cursor-pointer">{t.tools['merge-pdf']?.title || 'Merge PDF'}</button>
               <button onClick={() => navigateToTool('split-pdf')} className="px-2.5 py-2 min-h-[44px] inline-flex items-center hover:text-emerald-600 cursor-pointer">{t.tools['split-pdf']?.title || 'Split PDF'}</button>
-              <a
-                href="/privacy-policy"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setLegalModalState({ isOpen: true, tab: 'privacy' });
-                  window.history.pushState({}, '', '/privacy-policy');
-                }}
-                className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold"
-              >
-                {currentLang === 'it' ? 'Privacy Policy' : currentLang === 'de' ? 'Datenschutz' : 'Privacy Policy'}
-              </a>
-              <a
-                href="/terms-of-service"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setLegalModalState({ isOpen: true, tab: 'terms' });
-                  window.history.pushState({}, '', '/terms-of-service');
-                }}
-                className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold"
-              >
-                {currentLang === 'it' ? 'Termini di Servizio' : currentLang === 'de' ? 'AGB' : 'Terms of Service'}
-              </a>
-              <a
-                href="/cookie-policy"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setLegalModalState({ isOpen: true, tab: 'cookies' });
-                  window.history.pushState({}, '', '/cookie-policy');
-                }}
-                className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold"
-              >
-                Cookie Policy
-              </a>
-              <button onClick={() => setPrivacyModalOpen(true)} className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-emerald-600 font-black hover:underline cursor-pointer">{t.footer.privacyGuarantee}</button>
-              <a
-                href="/chi-siamo"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setAboutModalOpen(true);
-                  window.history.pushState({}, '', '/chi-siamo');
-                }}
-                className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 font-black hover:text-emerald-600 cursor-pointer"
-              >
-                {currentLang === 'it' ? 'Chi Siamo' : currentLang === 'de' ? 'Über uns' : 'About Us'}
-              </a>
-              <a
-                href="/contatti"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setContactModalOpen(true);
-                  window.history.pushState({}, '', '/contatti');
-                }}
-                className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 font-black hover:text-emerald-600 cursor-pointer"
-              >
-                {currentLang === 'it' ? 'Contattaci' : currentLang === 'de' ? 'Kontakt' : 'Contact Us'}
-              </a>
+              
+              {currentLang === 'de' ? (
+                <>
+                  <a
+                    href="/impressum"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToPath('impressum');
+                    }}
+                    className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold"
+                  >
+                    Impressum
+                  </a>
+                  <a
+                    href="/datenschutz"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToPath('datenschutz');
+                    }}
+                    className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold"
+                  >
+                    Datenschutz
+                  </a>
+                  <a
+                    href="/nutzungsbedingungen"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToPath('nutzungsbedingungen');
+                    }}
+                    className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold"
+                  >
+                    AGB
+                  </a>
+                  <a
+                    href="/cookie-policy"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToPath('cookie-policy');
+                    }}
+                    className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold"
+                  >
+                    Cookie-Richtlinie
+                  </a>
+                  <button onClick={() => setPrivacyModalOpen(true)} className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-emerald-600 font-black hover:underline cursor-pointer">{t.footer.privacyGuarantee}</button>
+                  <a
+                    href="/ueber-uns"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToPath('ueber-uns');
+                    }}
+                    className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 font-black hover:text-emerald-600 cursor-pointer"
+                  >
+                    Über uns
+                  </a>
+                  <a
+                    href="/kontakt"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToPath('kontakt');
+                    }}
+                    className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 font-black hover:text-emerald-600 cursor-pointer"
+                  >
+                    Kontakt
+                  </a>
+                </>
+              ) : (
+                <>
+                  <a
+                    href="/note-legali"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToPath('note-legali');
+                    }}
+                    className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold"
+                  >
+                    Note Legali
+                  </a>
+                  <a
+                    href="/privacy-policy"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToPath('privacy-policy');
+                    }}
+                    className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold"
+                  >
+                    Privacy Policy
+                  </a>
+                  <a
+                    href="/terms-of-service"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToPath('terms-of-service');
+                    }}
+                    className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold"
+                  >
+                    Termini di Servizio
+                  </a>
+                  <a
+                    href="/cookie-policy"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToPath('cookie-policy');
+                    }}
+                    className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 hover:text-emerald-600 cursor-pointer font-bold"
+                  >
+                    Cookie Policy
+                  </a>
+                  <button onClick={() => setPrivacyModalOpen(true)} className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-emerald-600 font-black hover:underline cursor-pointer">{t.footer.privacyGuarantee}</button>
+                  <a
+                    href="/chi-siamo"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToPath('chi-siamo');
+                    }}
+                    className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 font-black hover:text-emerald-600 cursor-pointer"
+                  >
+                    Chi Siamo
+                  </a>
+                  <a
+                    href="/contatti"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToPath('contatti');
+                    }}
+                    className="px-2.5 py-2 min-h-[44px] inline-flex items-center text-slate-800 font-black hover:text-emerald-600 cursor-pointer"
+                  >
+                    Contattaci
+                  </a>
+                </>
+              )}
             </div>
           </div>
           <p className="text-[11px] text-slate-400 max-w-2xl mx-auto font-medium">

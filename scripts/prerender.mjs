@@ -484,12 +484,14 @@ function generateHomepageHtml({ tools, translations, toolToSlug, lang = 'it' }) 
             </p>
             <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-semibold text-slate-700">
               ${isDe ? `
+              <a href="/impressum" class="hover:text-emerald-600 font-bold">Impressum</a>
               <a href="/datenschutz" class="hover:text-emerald-600">Datenschutzerklärung</a>
               <a href="/nutzungsbedingungen" class="hover:text-emerald-600">Nutzungsbedingungen</a>
               <a href="/cookie-policy" class="hover:text-emerald-600">Cookie-Richtlinie</a>
               <a href="/ueber-uns" class="hover:text-emerald-600 font-bold">Über uns</a>
               <a href="/kontakt" class="hover:text-emerald-600 font-bold">Kontakt</a>
               ` : `
+              <a href="/note-legali" class="hover:text-emerald-600 font-bold">Note Legali</a>
               <a href="/privacy-policy" class="hover:text-emerald-600">Privacy Policy</a>
               <a href="/terms-of-service" class="hover:text-emerald-600">Termini di Servizio</a>
               <a href="/cookie-policy" class="hover:text-emerald-600">Cookie Policy</a>
@@ -514,7 +516,75 @@ function generateCompliancePageHtml({ type, lang, canonical, alternateIt, altern
   let breadcrumbTitle = '';
   let contentHtml = '';
 
-  if (type === 'privacy') {
+  if (type === 'impressum') {
+    title = isIt
+      ? 'Note Legali & Impressum — MyPdfTools'
+      : isDe
+      ? 'Impressum (§ 5 DDG & § 18 MStV) — MyPdfTools'
+      : 'Legal Notice & Impressum — MyPdfTools';
+    metaDesc = isIt
+      ? 'Note legali, identificazione del fornitore e conformità normativa per MyPdfTools. Dati del titolare Shifat Manjum.'
+      : isDe
+      ? 'Impressum und gesetzliche Anbieterkennzeichnung gemäß § 5 DDG und § 18 MStV für MyPdfTools. Angaben zu Shifat Manjum.'
+      : 'Legal notice, provider identification and compliance for MyPdfTools according to European legislation.';
+    h1 = isIt ? 'Note Legali & Impressum' : isDe ? 'Impressum' : 'Legal Notice & Impressum';
+    breadcrumbTitle = h1;
+
+    contentHtml = `
+      <div class="space-y-6 text-sm text-slate-700 leading-relaxed font-normal">
+        <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 text-emerald-950 font-medium">
+          <strong>${isDe ? 'Gesetzliche Anbieterkennzeichnung:' : isIt ? 'Identificazione del Fornitore:' : 'Provider Identification:'}</strong>
+          ${isDe
+            ? 'Dieses Impressum gilt für das Web-Portal <strong>MyPdfTools</strong> erreichbar unter <a href="https://www.mypdftools.de" class="underline font-bold text-emerald-700">www.mypdftools.de</a> sowie <a href="https://www.mypdftools.it" class="underline font-bold text-emerald-700">www.mypdftools.it</a>.'
+            : isIt
+            ? 'La presente informativa legale è valida per il portale <strong>MyPdfTools</strong> raggiungibile su <a href="https://www.mypdftools.it" class="underline font-bold text-emerald-700">www.mypdftools.it</a> e <a href="https://www.mypdftools.de" class="underline font-bold text-emerald-700">www.mypdftools.de</a>.'
+            : 'This legal notice applies to the web portal <strong>MyPdfTools</strong> reachable at <a href="https://www.mypdftools.de" class="underline font-bold text-emerald-700">www.mypdftools.de</a> and <a href="https://www.mypdftools.it" class="underline font-bold text-emerald-700">www.mypdftools.it</a>.'}
+        </div>
+
+        <section class="space-y-3">
+          <h2 class="text-lg font-black text-slate-900">${isDe ? 'Angaben gemäß § 5 DDG (Digitale-Dienste-Gesetz)' : 'Dati del Fornitore'}</h2>
+          <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5">
+            <p class="font-bold text-slate-900 text-base">Shifat Manjum</p>
+            <p class="text-slate-600">Projekt & Plattform: <strong>MyPdfTools</strong> (${isDe ? 'Kostenlose browserbasierte PDF-Dienstprogramme' : 'Strumenti PDF gratuiti nel browser'})</p>
+            <p class="text-slate-600">Standort: <strong>Bolzano (BZ), Trentino-Südtirol, Italien (EU)</strong></p>
+          </div>
+        </section>
+
+        <section class="space-y-3">
+          <h2 class="text-lg font-black text-slate-900">${isDe ? 'Kontakt & Elektronische Kontaktaufnahme' : 'Contatti & Comunicazioni'}</h2>
+          <p>
+            E-Mail: <a href="mailto:khshifat@gmail.com" class="text-emerald-600 font-bold underline">khshifat@gmail.com</a><br />
+            Internet: <a href="https://www.mypdftools.de" class="text-emerald-600 underline">https://www.mypdftools.de</a> &bull; <a href="https://www.mypdftools.it" class="text-emerald-600 underline">https://www.mypdftools.it</a>
+          </p>
+        </section>
+
+        <section class="space-y-3">
+          <h2 class="text-lg font-black text-slate-900">${isDe ? 'Verantwortlich für redaktionelle Inhalte gemäß § 18 Abs. 2 MStV' : 'Responsabile Editoriale'}</h2>
+          <p>
+            Shifat Manjum<br />
+            Bolzano (BZ), Italien
+          </p>
+        </section>
+
+        <section class="space-y-3">
+          <h2 class="text-lg font-black text-slate-900">${isDe ? 'EU-Streitschlichtung' : 'Risoluzione Controversie UE'}</h2>
+          <p>
+            ${isDe
+              ? 'Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit, die Sie unter <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" class="text-emerald-600 font-bold underline">https://ec.europa.eu/consumers/odr</a> finden. Wir sind weder verpflichtet noch bereit, an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.'
+              : 'La Commissione Europea mette a disposizione una piattaforma per la risoluzione delle controversie online (ODR): <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" class="text-emerald-600 font-bold underline">https://ec.europa.eu/consumers/odr</a>.'}
+          </p>
+        </section>
+
+        <section class="space-y-3">
+          <h2 class="text-lg font-black text-slate-900">${isDe ? 'Haftungsausschluss für Inhalte & Links' : 'Esclusione di Responsabilità'}</h2>
+          <p>
+            ${isDe
+              ? 'Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.'
+              : 'Come fornitori del servizio, siamo responsabili dei nostri contenuti in base alle normative generali vigenti. Non assumiamo responsabilità per contenuti di siti terzi collegati.'}
+          </p>
+        </section>
+      </div>`;
+  } else if (type === 'privacy') {
     title = isIt
       ? 'Informativa sulla Privacy (GDPR UE 2016/679) — MyPdfTools'
       : isDe
@@ -796,18 +866,28 @@ function generateCompliancePageHtml({ type, lang, canonical, alternateIt, altern
         <div class="pt-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4 text-xs font-bold text-slate-600">
           <a href="/" class="text-emerald-600 hover:underline">&larr; ${isIt ? 'Torna alla Home Page' : isDe ? 'Zurück zur Startseite' : 'Back to Home'}</a>
           <div class="flex items-center gap-4">
+            ${isDe ? `
+            <a href="/impressum" class="hover:text-emerald-600 font-bold">Impressum</a>
+            <a href="/datenschutz" class="hover:text-emerald-600">Datenschutz</a>
+            <a href="/nutzungsbedingungen" class="hover:text-emerald-600">AGB</a>
+            <a href="/cookie-policy" class="hover:text-emerald-600">Cookie</a>
+            <a href="/ueber-uns" class="hover:text-emerald-600">Über uns</a>
+            <a href="/kontakt" class="hover:text-emerald-600">Kontakt</a>
+            ` : `
+            <a href="/note-legali" class="hover:text-emerald-600 font-bold">Note Legali</a>
             <a href="/privacy-policy" class="hover:text-emerald-600">Privacy</a>
             <a href="/terms-of-service" class="hover:text-emerald-600">Termini</a>
             <a href="/cookie-policy" class="hover:text-emerald-600">Cookie</a>
             <a href="/chi-siamo" class="hover:text-emerald-600">Chi Siamo</a>
             <a href="/contatti" class="hover:text-emerald-600">Contatti</a>
+            `}
           </div>
         </div>
       </main>
 
       <footer class="w-full bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-500">
         <div class="max-w-4xl mx-auto px-4 space-y-3">
-          <p>&copy; ${new Date().getFullYear()} MyPdfTools (mypdftools.it &bull; mypdftools.de). Tutti i diritti riservati.</p>
+          <p>&copy; ${new Date().getFullYear()} MyPdfTools (mypdftools.it &bull; mypdftools.de). ${isDe ? 'Alle Rechte vorbehalten.' : 'Tutti i diritti riservati.'}</p>
           <div class="flex flex-wrap items-center justify-center gap-4 font-semibold text-slate-600">
             <a href="/" class="hover:text-emerald-600">Home</a>
             <a href="mailto:khshifat@gmail.com" class="hover:text-emerald-600 font-bold">khshifat@gmail.com</a>
@@ -965,6 +1045,7 @@ async function runPrerender() {
   console.log('⚖️ Pre-rendering Legal & Compliance Pages (Privacy, Terms, Cookies, About, Contact)...');
   const compliancePages = [
     // Italian Pages
+    { slug: 'note-legali', type: 'impressum', lang: 'it', canonical: 'https://www.mypdftools.it/note-legali', it: 'https://www.mypdftools.it/note-legali', de: 'https://www.mypdftools.de/impressum', en: 'https://www.mypdftools.it/note-legali' },
     { slug: 'privacy-policy', type: 'privacy', lang: 'it', canonical: 'https://www.mypdftools.it/privacy-policy', it: 'https://www.mypdftools.it/privacy-policy', de: 'https://www.mypdftools.de/datenschutz', en: 'https://www.mypdftools.it/privacy-policy' },
     { slug: 'terms-of-service', type: 'terms', lang: 'it', canonical: 'https://www.mypdftools.it/terms-of-service', it: 'https://www.mypdftools.it/terms-of-service', de: 'https://www.mypdftools.de/nutzungsbedingungen', en: 'https://www.mypdftools.it/terms-of-service' },
     { slug: 'cookie-policy', type: 'cookies', lang: 'it', canonical: 'https://www.mypdftools.it/cookie-policy', it: 'https://www.mypdftools.it/cookie-policy', de: 'https://www.mypdftools.de/cookie-policy', en: 'https://www.mypdftools.it/cookie-policy' },
@@ -972,6 +1053,7 @@ async function runPrerender() {
     { slug: 'contatti', type: 'contact', lang: 'it', canonical: 'https://www.mypdftools.it/contatti', it: 'https://www.mypdftools.it/contatti', de: 'https://www.mypdftools.de/kontakt', en: 'https://www.mypdftools.it/contatti' },
 
     // German Pages
+    { slug: 'impressum', type: 'impressum', lang: 'de', canonical: 'https://www.mypdftools.de/impressum', it: 'https://www.mypdftools.it/note-legali', de: 'https://www.mypdftools.de/impressum', en: 'https://www.mypdftools.de/impressum' },
     { slug: 'datenschutz', type: 'privacy', lang: 'de', canonical: 'https://www.mypdftools.de/datenschutz', it: 'https://www.mypdftools.it/privacy-policy', de: 'https://www.mypdftools.de/datenschutz', en: 'https://www.mypdftools.it/privacy-policy' },
     { slug: 'nutzungsbedingungen', type: 'terms', lang: 'de', canonical: 'https://www.mypdftools.de/nutzungsbedingungen', it: 'https://www.mypdftools.it/terms-of-service', de: 'https://www.mypdftools.de/nutzungsbedingungen', en: 'https://www.mypdftools.it/terms-of-service' },
     { slug: 'ueber-uns', type: 'about', lang: 'de', canonical: 'https://www.mypdftools.de/ueber-uns', it: 'https://www.mypdftools.it/chi-siamo', de: 'https://www.mypdftools.de/ueber-uns', en: 'https://www.mypdftools.it/chi-siamo' },
@@ -1006,6 +1088,7 @@ async function runPrerender() {
   for (const slug of routeKeys) {
     const route = SEO_ROUTES[slug];
     const isIt = route.lang === 'it';
+    const isDe = route.lang === 'de';
     const lang = route.lang;
 
     // Structured Data Schemas
@@ -1173,14 +1256,24 @@ async function runPrerender() {
 
         <!-- Static Prerendered Footer -->
         <footer class="w-full bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 space-y-2">
-          <p>© ${new Date().getFullYear()} MyPdfTools (mypdftools.it • mypdftools.de). All rights reserved.</p>
+          <p>© ${new Date().getFullYear()} MyPdfTools (mypdftools.it • mypdftools.de). ${isDe ? 'Alle Rechte vorbehalten.' : 'All rights reserved.'}</p>
           <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-semibold text-slate-600">
             <a href="/" class="hover:text-emerald-600">Home</a>
+            ${isDe ? `
+            <a href="/impressum" class="hover:text-emerald-600 font-bold">Impressum</a>
+            <a href="/datenschutz" class="hover:text-emerald-600">Datenschutz</a>
+            <a href="/nutzungsbedingungen" class="hover:text-emerald-600">AGB</a>
+            <a href="/cookie-policy" class="hover:text-emerald-600">Cookie-Richtlinie</a>
+            <a href="/ueber-uns" class="hover:text-emerald-600">Über uns</a>
+            <a href="/kontakt" class="hover:text-emerald-600">Kontakt</a>
+            ` : `
+            <a href="/note-legali" class="hover:text-emerald-600 font-bold">Note Legali</a>
             <a href="/privacy-policy" class="hover:text-emerald-600">Privacy Policy</a>
             <a href="/terms-of-service" class="hover:text-emerald-600">Termini</a>
             <a href="/cookie-policy" class="hover:text-emerald-600">Cookie</a>
             <a href="/chi-siamo" class="hover:text-emerald-600">Chi Siamo</a>
             <a href="/contatti" class="hover:text-emerald-600">Contatti</a>
+            `}
             <a href="mailto:khshifat@gmail.com" class="hover:text-emerald-600 font-bold">khshifat@gmail.com</a>
           </div>
         </footer>

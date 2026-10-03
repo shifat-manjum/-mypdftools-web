@@ -9,7 +9,7 @@ export interface ToolSeoData {
 
 export const SEO_DATA: Record<string, ToolSeoData> = {
   'jpg-to-pdf': {
-    metaTitle: 'Free JPG to PDF Converter — 100% Private (No Uploads) | FreeConvert',
+    metaTitle: 'Free JPG to PDF Converter — 100% Private (No Uploads) | MyPdfTools',
     metaDescription: 'Convert JPG, PNG, and WebP images to PDF online for free. Adjust orientation, margins, and page sizes. Your images never leave your browser.',
     h1: 'Convert JPG to PDF Online for Free',
     steps: [
@@ -18,15 +18,15 @@ export const SEO_DATA: Record<string, ToolSeoData> = {
       { title: '3. Convert & Download', desc: 'Click "Convert to PDF" and your PDF will compile instantly in your browser without uploading to any server.' },
     ],
     faqs: [
-      { q: 'Is it safe to convert private photos and IDs here?', a: 'Yes! Unlike other converters, FreeConvert uses client-side WebAssembly technology. Your files are converted in your computer memory and are never uploaded to our servers.' },
+      { q: 'Is it safe to convert private photos and IDs here?', a: 'Yes! Unlike other converters, MyPdfTools uses client-side WebAssembly technology. Your files are converted in your computer memory and are never uploaded to our servers.' },
       { q: 'Can I combine multiple JPG files into a single PDF?', a: 'Yes, you can upload as many images as you want and arrange them in any order using the arrow buttons.' },
-      { q: 'What image formats are supported?', a: 'FreeConvert supports JPG, JPEG, PNG, and WebP formats.' },
+      { q: 'What image formats are supported?', a: 'MyPdfTools supports JPG, JPEG, PNG, and WebP formats.' },
     ],
     privacyHighlight: 'Zero bytes uploaded. All image compression and PDF assembly execute locally in your web browser.',
   },
 
   'pdf-to-jpg': {
-    metaTitle: 'Free PDF to JPG Converter — High Resolution & Private | FreeConvert',
+    metaTitle: 'Free PDF to JPG Converter — High Resolution & Private | MyPdfTools',
     metaDescription: 'Convert PDF pages into high-resolution JPG or PNG images for free. Download individual pages or all pages as a ZIP archive without uploading files.',
     h1: 'Convert PDF to JPG Images Online',
     steps: [
@@ -43,7 +43,7 @@ export const SEO_DATA: Record<string, ToolSeoData> = {
   },
 
   'merge-pdf': {
-    metaTitle: 'Merge PDF Files Online for Free — Fast & 100% Secure | FreeConvert',
+    metaTitle: 'Merge PDF Files Online for Free — Fast & 100% Secure | MyPdfTools',
     metaDescription: 'Combine multiple PDF documents into a single file in seconds. Order your pages freely with zero server uploads and zero file size limits.',
     h1: 'Merge PDF Files Online',
     steps: [
@@ -59,7 +59,7 @@ export const SEO_DATA: Record<string, ToolSeoData> = {
   },
 
   'split-pdf': {
-    metaTitle: 'Split PDF Online — Extract Pages for Free | FreeConvert',
+    metaTitle: 'Split PDF Online — Extract Pages for Free | MyPdfTools',
     metaDescription: 'Extract individual pages or custom page ranges from any PDF document. Fast, free, and completely private.',
     h1: 'Split PDF Pages Online',
     steps: [
@@ -75,7 +75,7 @@ export const SEO_DATA: Record<string, ToolSeoData> = {
   },
 
   'sign-pdf': {
-    metaTitle: 'Sign PDF Online for Free — Draw & Stamp Digital Signatures | FreeConvert',
+    metaTitle: 'Sign PDF Online for Free — Draw & Stamp Digital Signatures | MyPdfTools',
     metaDescription: 'Sign contracts, NDAs, and forms online with zero account required. Draw your signature or touchscreen sign and stamp directly on your PDF.',
     h1: 'Sign PDF Documents Online Free',
     steps: [
@@ -84,7 +84,7 @@ export const SEO_DATA: Record<string, ToolSeoData> = {
       { title: '3. Position & Stamp', desc: 'Select the page, click to place your signature exactly where you want it, and save.' },
     ],
     faqs: [
-      { q: 'Do I need to create an account or provide an email?', a: 'No! FreeConvert requires no login, no registration, and no credit card.' },
+      { q: 'Do I need to create an account or provide an email?', a: 'No! MyPdfTools requires no login, no registration, and no credit card.' },
       { q: 'Is my signature saved online?', a: 'No, your signature exists only in your current browser session and is never stored on any server.' },
     ],
     privacyHighlight: 'Your handwritten signature and private documents never leave your local computer.',

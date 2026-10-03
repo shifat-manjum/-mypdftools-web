@@ -1,14 +1,14 @@
 /**
- * FreeConvert AdSense & Monetization Configuration
+ * MyPdfTools AdSense & Monetization Configuration
  *
- * How to activate live Google AdSense:
- * 1. Set `enabled: true`
- * 2. Set `adClient: 'ca-pub-XXXXXXXXXXXXXXXX'` (your AdSense publisher ID from Hostinger domain approval)
- * 3. Fill in your ad slot IDs below
+ * NOTE FOR ADSENSE REVIEW:
+ * Keep in-page ad banners disabled (`enabled: false`) while the site is under review.
+ * This prevents the policy violation "Google-served ads on screens without publisher-content".
+ * The verification script in <head> remains active for Google site ownership and domain verification.
  */
 export const ADS_CONFIG = {
-  // Activated Google AdSense
-  enabled: true,
+  // Disabled during site approval review to comply with publisher-content guidelines
+  enabled: false,
 
   // Your AdSense Publisher ID
   adClient: 'ca-pub-3502815676488440',
