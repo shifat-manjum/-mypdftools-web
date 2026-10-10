@@ -15,17 +15,20 @@ const ABOUT_CONTENT: Record<Language, any> = {
     subtitle: 'La piattaforma PDF progettata per restituire la privacy agli utenti.',
     missionTitle: 'La Nostra Missione',
     missionDesc: 'MyPdfTools è nata per ridefinire gli standard di sicurezza nel mondo dei convertitori PDF online. Rifiutiamo il modello tradizionale che carica documenti confidenziali sui server cloud: con noi ogni conversione avviene al 100% all\'interno del tuo dispositivo.',
-    founderTitle: 'Fondatore & Lead Developer',
+    founderTitle: 'Fondatori & Team di Sviluppo',
     founderName: 'Shifat Manjum',
     founderRole: 'Product Architect & Founder di Zentixx',
+    partnerName: 'Saiful Islam',
+    partnerRole: 'Co-Developer & Project Partner',
+    partnerBadge: 'Partner',
     founderStoryTitle: 'La Storia Dietro MyPdfTools',
-    founderQuote: '«Come molti professionisti, mi sono trovato spesso a dover convertire documenti fiscali, contratti e dati bancari su siti online, con la costante preoccupazione di dove finissero i miei file. Ho creato MyPdfTools per eliminare per sempre questo timore: niente upload, nessun server intermediario, solo elaborazione pura nella memoria del tuo browser.»',
+    founderQuote: '«Come molti professionisti, ci siamo trovati spesso a dover convertire documenti fiscali, contratti e dati bancari su siti online, con la costante preoccupazione di dove finissero i file. Insieme a Saiful Islam, abbiamo ingegnerizzato MyPdfTools per eliminare per sempre questo timore: niente upload, nessun server intermediario, solo pura elaborazione locale nella memoria del tuo browser.»',
     stats: [
       { label: 'File Caricati sui Server', value: '0%' },
       { label: 'Privacy Garantita', value: '100%' },
       { label: 'Costo per l\'Utente', value: 'Gratis' },
     ],
-    contactTitle: 'Connettiti con il Fondatore',
+    contactTitle: 'Team di Sviluppo & Contatti',
     closeBtn: 'Chiudi',
   },
   en: {
@@ -34,17 +37,20 @@ const ABOUT_CONTENT: Record<Language, any> = {
     subtitle: 'The privacy-first PDF platform engineered for absolute data protection.',
     missionTitle: 'Our Mission',
     missionDesc: 'MyPdfTools was created to challenge the risky standard of cloud converters. Instead of uploading your confidential tax returns, IDs, and financial files to remote servers, our client-side architecture keeps your files 100% on your device.',
-    founderTitle: 'Founder & Lead Developer',
+    founderTitle: 'Founders & Core Development Team',
     founderName: 'Shifat Manjum',
     founderRole: 'Product Architect & Founder of Zentixx',
+    partnerName: 'Saiful Islam',
+    partnerRole: 'Co-Developer & Project Partner',
+    partnerBadge: 'Partner',
     founderStoryTitle: 'The Story Behind MyPdfTools',
-    founderQuote: '“Like many users, I constantly converted sensitive legal documents, invoices, and IDs online, always worrying where my files were stored. I engineered MyPdfTools to eliminate this anxiety once and for all: zero uploads, zero server storage, pure private browser computation.”',
+    founderQuote: '“Like many users, we constantly converted sensitive legal documents, invoices, and IDs online, always worrying where files were stored. Together with Saiful Islam, we engineered MyPdfTools to eliminate this anxiety once and for all: zero uploads, zero server storage, pure private browser computation.”',
     stats: [
       { label: 'Server Uploads', value: '0%' },
       { label: 'Privacy Guaranteed', value: '100%' },
       { label: 'User Cost', value: 'Free' },
     ],
-    contactTitle: 'Connect with the Founder',
+    contactTitle: 'Development Team & Connect',
     closeBtn: 'Close',
   },
   de: {
@@ -53,17 +59,20 @@ const ABOUT_CONTENT: Record<Language, any> = {
     subtitle: 'Die datenschutzorientierte PDF-Plattform für kompromisslose Sicherheit.',
     missionTitle: 'Unsere Mission',
     missionDesc: 'MyPdfTools wurde geschaffen, um das Risiko herkömmlicher Cloud-Konverter zu beseitigen. Anstatt sensible Steuerdaten, Ausweise und Verträge auf Server hochzuladen, verarbeitet unsere Technologie alles zu 100% lokal auf Ihrem Gerät.',
-    founderTitle: 'Gründer & Chefentwickler',
+    founderTitle: 'Gründer & Entwicklungsteam',
     founderName: 'Shifat Manjum',
     founderRole: 'Product Architect & Gründer von Zentixx',
+    partnerName: 'Saiful Islam',
+    partnerRole: 'Co-Entwickler & Projektpartner',
+    partnerBadge: 'Partner',
     founderStoryTitle: 'Die Geschichte hinter MyPdfTools',
-    founderQuote: '„Wie viele Nutzer musste auch ich vertrauliche Dokumente online umwandeln und hatte stets Sorge, wer darauf zugreift. Aus diesem Grund habe ich MyPdfTools gebaut: Keine Server-Uploads, keine Speicherung, reine private Ausführung im Browser.“',
+    founderQuote: '„Wie viele Nutzer mussten auch wir vertrauliche Dokumente online umwandeln und hatten stets Sorge, wer darauf zugreift. Gemeinsam mit Saiful Islam haben wir MyPdfTools gebaut: Keine Server-Uploads, keine Speicherung, reine private Ausführung im Browser.“',
     stats: [
       { label: 'Server-Uploads', value: '0%' },
       { label: 'Datenschutz', value: '100%' },
       { label: 'Kosten für Nutzer', value: 'Kostenlos' },
     ],
-    contactTitle: 'Kontakt zum Gründer',
+    contactTitle: 'Entwicklungsteam & Kontakt',
     closeBtn: 'Schließen',
   },
 };
@@ -131,26 +140,47 @@ export const AboutModal: React.FC<AboutModalProps> = ({
             ))}
           </div>
 
-          {/* Founder Profile Spotlight Card with Zentixx Box Shadow */}
+          {/* Founders & Development Partners Spotlight */}
           <div className="bg-gradient-to-br from-white to-emerald-50/30 rounded-3xl p-6 border border-emerald-200/80 shadow-[0_15px_35px_-10px_rgba(16,185,129,0.18)] relative overflow-hidden">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4">
-              {/* Avatar Initial Badge */}
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-600 to-indigo-600 flex items-center justify-center text-white font-black text-xl shadow-md shadow-emerald-500/30 flex-shrink-0 ring-4 ring-white">
-                SM
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-4">
+              {/* Shifat Manjum */}
+              <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-white/90 border border-slate-200/80 shadow-2xs">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-600 to-indigo-600 flex items-center justify-center text-white font-black text-lg shadow-md shadow-emerald-500/20 flex-shrink-0">
+                  SM
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <h4 className="text-sm font-black text-slate-900 tracking-tight">
+                      {content.founderName}
+                    </h4>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                      Founder
+                    </span>
+                  </div>
+                  <p className="text-[11px] font-bold text-slate-500 mt-0.5 truncate">
+                    {content.founderRole}
+                  </p>
+                </div>
               </div>
 
-              <div>
-                <div className="flex items-center gap-2">
-                  <h4 className="text-lg font-black text-slate-900 tracking-tight">
-                    {content.founderName}
-                  </h4>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
-                    Founder
-                  </span>
+              {/* Saiful Islam */}
+              <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-white/90 border border-slate-200/80 shadow-2xs">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 via-emerald-600 to-cyan-600 flex items-center justify-center text-white font-black text-lg shadow-md shadow-teal-500/20 flex-shrink-0">
+                  SI
                 </div>
-                <p className="text-xs font-bold text-slate-500 mt-0.5">
-                  {content.founderRole}
-                </p>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <h4 className="text-sm font-black text-slate-900 tracking-tight">
+                      {content.partnerName}
+                    </h4>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-teal-100 text-teal-800 border border-teal-300">
+                      {content.partnerBadge}
+                    </span>
+                  </div>
+                  <p className="text-[11px] font-bold text-slate-500 mt-0.5 truncate">
+                    {content.partnerRole}
+                  </p>
+                </div>
               </div>
             </div>
 

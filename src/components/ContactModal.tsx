@@ -193,7 +193,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                 {content.founderTitle}
               </span>
               <h4 className="text-xs font-bold text-slate-800 mt-0.5">
-                Shifat Manjum &bull; Lead Developer
+                Shifat Manjum &bull; Lead Architect &nbsp;|&nbsp; Saiful Islam &bull; Co-Developer &amp; Partner
               </h4>
               <p className="text-[11px] text-slate-400 font-medium">
                 {content.founderDesc}

@@ -433,8 +433,8 @@ function generateHomepageHtml({ tools, translations, toolToSlug, lang = 'it' }) 
               </summary>
               <p class="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal pt-3 border-t border-slate-100">
                 ${isDe
-                  ? 'Die Plattform wird von <strong>Shifat Manjum</strong> (Gründer von Zentixx) betrieben und gepflegt. Weitere Details finden Sie auf der Seite <a href="/ueber-uns" class="text-emerald-600 font-bold underline">Über uns</a> oder kontaktieren Sie uns direkt unter <a href="/kontakt" class="text-emerald-600 font-bold underline">Kontakt</a>.'
-                  : 'La piattaforma è fondata e attivamente curata da <strong>Shifat Manjum</strong> (fondatore di Zentixx). Puoi trovare maggiori dettagli nella pagina <a href="/chi-siamo" class="text-emerald-600 font-bold underline">Chi Siamo</a> o scriverci direttamente tramite la pagina <a href="/contatti" class="text-emerald-600 font-bold underline">Contatti</a>.'}
+                  ? 'Die Plattform wird von <strong>Shifat Manjum</strong> & <strong>Saiful Islam</strong> (Zentixx) betrieben und gepflegt. Weitere Details finden Sie auf der Seite <a href="/ueber-uns" class="text-emerald-600 font-bold underline">Über uns</a> oder kontaktieren Sie uns direkt unter <a href="/kontakt" class="text-emerald-600 font-bold underline">Kontakt</a>.'
+                  : 'La piattaforma è fondata e attivamente curata da <strong>Shifat Manjum</strong> & <strong>Saiful Islam</strong> (Zentixx). Puoi trovare maggiori dettagli nella pagina <a href="/chi-siamo" class="text-emerald-600 font-bold underline">Chi Siamo</a> o scriverci direttamente tramite la pagina <a href="/contatti" class="text-emerald-600 font-bold underline">Contatti</a>.'}
               </p>
             </details>
 
@@ -775,14 +775,15 @@ function generateCompliancePageHtml({ type, lang, canonical, alternateIt, altern
         </section>
 
         <section class="p-6 bg-slate-900 text-white rounded-3xl space-y-3">
-          <h3 class="text-base font-black text-white">${isIt ? 'Fondatore & Team di Sviluppo' : isDe ? 'Gründer & Entwickler' : 'Founder & Lead Developer'}</h3>
+          <h3 class="text-base font-black text-white">${isIt ? 'Fondatori & Team di Sviluppo' : isDe ? 'Gründer & Entwicklungsteam' : 'Founders & Core Development Team'}</h3>
           <p class="text-xs sm:text-sm text-slate-300">
-            <strong>Shifat Manjum</strong> &bull; Product Architect & Founder di Zentixx.<br>
+            <strong>Shifat Manjum</strong> &bull; Product Architect &amp; Founder di Zentixx<br>
+            <strong>Saiful Islam</strong> &bull; Co-Developer &amp; Project Partner<br><br>
             ${isIt
-              ? '«Come molti professionisti, mi sono trovato spesso a dover convertire documenti fiscali e contratti su siti online, con la costante preoccupazione di dove finissero i miei file. Ho creato MyPdfTools per eliminare per sempre questo timore: niente upload, nessun server intermediario, solo pura elaborazione locale.»'
+              ? '«Come molti professionisti, ci siamo trovati spesso a dover convertire documenti fiscali e contratti su siti online, con la costante preoccupazione di dove finissero i file. Abbiamo ingegnerizzato MyPdfTools per eliminare per sempre questo timore: niente upload, nessun server intermediario, solo pura elaborazione locale nel browser.»'
               : isDe
-              ? '„Ich habe MyPdfTools entwickelt, um vertrauliche Dokumente ohne Risiko und ohne Server-Uploads direkt im Browser zu bearbeiten.“'
-              : '“I built MyPdfTools to eliminate the anxiety of uploading sensitive contracts and tax documents to remote servers: zero uploads, pure local browser computation.”'}
+              ? '„Gemeinsam haben wir MyPdfTools entwickelt, um vertrauliche Dokumente ohne Risiko und ohne Server-Uploads direkt im Browser zu bearbeiten.“'
+              : '“Together, we built MyPdfTools to eliminate the anxiety of uploading sensitive contracts and tax documents to remote servers: zero uploads, pure local browser computation.”'}
           </p>
           <div class="pt-2 text-xs text-emerald-400 font-bold">
             Email: <a href="mailto:khshifat@gmail.com" class="underline hover:text-white">khshifat@gmail.com</a> &bull; GitHub: <a href="https://github.com/shifat-manjum" target="_blank" rel="noopener noreferrer" class="underline hover:text-white">github.com/shifat-manjum</a>
