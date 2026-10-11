@@ -1,7 +1,7 @@
 # Chrome Web Store Listing — MyPdfTools Capture
 
-> Last Updated: 2026-09-29  
-> Target Version: 1.0.0  
+> Last Updated: 2026-10-11  
+> Target Version: 1.0.2 (Fixed modal popup and sticky element duplication)  
 > Package Location: `extension/`  
 > Store Status: Ready for Submission  
 
