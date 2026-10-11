@@ -133,45 +133,23 @@
     <meta name="google-site-verification" content="xksXU2Sb5QgK7JRfXBThrc5l-pTPExSf1CYPbWLcDIs" />
     <meta name="google-adsense-account" content="ca-pub-3502815676488440" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3502815676488440" crossorigin="anonymous"></script>
-  </head>
-  <body class="bg-[#f8fafc] text-slate-900 font-sans antialiased min-h-screen selection:bg-emerald-500 selection:text-white">
-    <div id="root"><!-- SSR_INJECT --></div>
-    <script type="module" src="/src/main.tsx"></script>
 
-    <!-- Optimized 3rd-Party Scripts (GA4 & AdSense) -->
-    <!-- Queues events synchronously so zero data is lost, but loads heavy network scripts on first user interaction -->
+    <!-- Google tag (gtag.js) — Multi-Domain Analytics for mypdftools.it & mypdftools.de -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5GSW854S0X"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       window.gtag = gtag;
       gtag('js', new Date());
-      gtag('config', 'G-5GSW854S0X');
-
-      (function() {
-        var thirdPartyLoaded = false;
-        function loadThirdParty() {
-          if (thirdPartyLoaded) return;
-          thirdPartyLoaded = true;
-
-          // 1. Google Analytics (GA4)
-          var ga = document.createElement('script');
-          ga.async = true;
-          ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-5GSW854S0X';
-          document.body.appendChild(ga);
+      gtag('config', 'G-5GSW854S0X', {
+        linker: {
+          domains: ['mypdftools.it', 'www.mypdftools.it', 'mypdftools.de', 'www.mypdftools.de']
         }
-
-        // Load immediately upon user interaction (touch, scroll, click, keydown, mousemove)
-        ['scroll', 'keydown', 'touchstart', 'click', 'mousemove', 'wheel'].forEach(function(evt) {
-          window.addEventListener(evt, loadThirdParty, { once: true, passive: true });
-        });
-
-        // Or idle fallback after 8 seconds (well outside Lighthouse measurement window)
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(function() { setTimeout(loadThirdParty, 8000); });
-        } else {
-          setTimeout(loadThirdParty, 8000);
-        }
-      })();
+      });
     </script>
+  </head>
+  <body class="bg-[#f8fafc] text-slate-900 font-sans antialiased min-h-screen selection:bg-emerald-500 selection:text-white">
+    <div id="root"><!-- SSR_INJECT --></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
