@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 *.zip
+mypdftools-capture-v*
 screenshot-*.png
 
 # Editor directories and files

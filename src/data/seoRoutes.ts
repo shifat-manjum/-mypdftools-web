@@ -80,7 +80,7 @@ export const SEO_ROUTES: Record<string, SeoRouteData> = {
     ],
     relatedSlugs: ['comprimere-pdf', 'unire-pdf', 'firmare-pdf', 'ridurre-pdf-concorso-pubblico'],
     canonical: 'https://www.mypdftools.it/comprimere-pdf-per-pec',
-    hreflang: { it: 'https://www.mypdftools.it/comprimere-pdf-per-pec', de: 'https://www.mypdftools.de/pdf-komprimieren' },
+    hreflang: { it: 'https://www.mypdftools.it/comprimere-pdf-per-pec', de: 'https://www.mypdftools.de/elster-pdf-verkleinern-finanzamt' },
   },
 
   'ridurre-pdf-concorso-pubblico': {
@@ -105,7 +105,7 @@ export const SEO_ROUTES: Record<string, SeoRouteData> = {
     ],
     relatedSlugs: ['comprimere-pdf', 'comprimere-pdf-per-pec', 'unire-documenti-identita-pdf', 'unire-pdf'],
     canonical: 'https://www.mypdftools.it/ridurre-pdf-concorso-pubblico',
-    hreflang: { it: 'https://www.mypdftools.it/ridurre-pdf-concorso-pubblico', de: 'https://www.mypdftools.de/pdf-komprimieren' },
+    hreflang: { it: 'https://www.mypdftools.it/ridurre-pdf-concorso-pubblico', de: 'https://www.mypdftools.de/pdf-fuer-bewerbung-verkleinern' },
   },
 
   'unire-documenti-identita-pdf': {
@@ -130,7 +130,103 @@ export const SEO_ROUTES: Record<string, SeoRouteData> = {
     ],
     relatedSlugs: ['unire-pdf', 'da-jpg-a-pdf', 'comprimere-pdf-per-pec', 'ridurre-pdf-concorso-pubblico'],
     canonical: 'https://www.mypdftools.it/unire-documenti-identita-pdf',
-    hreflang: { it: 'https://www.mypdftools.it/unire-documenti-identita-pdf', de: 'https://www.mypdftools.de/pdf-zusammenfuegen' },
+    hreflang: { it: 'https://www.mypdftools.it/unire-documenti-identita-pdf', de: 'https://www.mypdftools.de/ausweis-vorder-und-rueckseite-zusammenfuegen-pdf' },
+  },
+
+  'unire-pdf-senza-upload': {
+    slug: 'unire-pdf-senza-upload',
+    toolId: 'merge-pdf',
+    lang: 'it',
+    domain: 'mypdftools.it',
+    h1: 'Unire PDF Senza Upload su Server (100% Locale)',
+    metaTitle: 'Unire PDF Senza Upload — Combina PDF Offline nel Browser (GDPR)',
+    metaDescription: 'Unisci documenti PDF riservati senza caricarli su server esterni. Elaborazione 100% locale tramite WebAssembly conforme al GDPR per avvocati, commercialisti e aziende.',
+    badge: 'Zero Upload GDPR',
+    intro: 'Quando lavori con atti giudiziari, contratti societari, cartelle cliniche o dichiarazioni dei redditi, caricare i file su convertitori cloud esterni comporta rischi di violazione del GDPR e del segreto professionale. MyPdfTools esegue l\'unione dei PDF interamente nella memoria locale del tuo browser: nessun byte lascia mai il tuo computer.',
+    steps: [
+      { title: '1. Scegli i File Riservati', desc: 'Seleziona i PDF dal tuo dispositivo: rimangono esclusivamente nella RAM locale.' },
+      { title: '2. Elaborazione Client-Side', desc: 'Il motore WebAssembly assembla i documenti direttamente sul tuo processore.' },
+      { title: '3. Salvataggio Immediato', desc: 'Scarica il PDF unificato senza alcun transito su rete o cloud.' },
+    ],
+    faqs: [
+      { q: 'Funziona anche senza connessione internet?', a: 'Sì! Una volta aperta la pagina, puoi anche disconnettere il Wi-Fi: lo strumento continuerà a unire i tuoi PDF dimostrando che nessun dato viene inviato online.' },
+      { q: 'È conforme al GDPR per studi legali e commercialisti?', a: 'Assolutamente sì. Non essendoci alcun trasferimento di dati verso terze parti, non è nemmeno necessario sottoscrivere accordi DPA con responsabili esterni.' },
+    ],
+    relatedSlugs: ['unire-pdf', 'comprimere-pdf-per-pec', 'unire-documenti-identita-pdf', 'proteggere-pdf'],
+    canonical: 'https://www.mypdftools.it/unire-pdf-senza-upload',
+    hreflang: { it: 'https://www.mypdftools.it/unire-pdf-senza-upload', de: 'https://www.mypdftools.de/pdf-zusammenfuegen-ohne-upload' },
+  },
+
+  'pdf-zusammenfuegen-ohne-upload': {
+    slug: 'pdf-zusammenfuegen-ohne-upload',
+    toolId: 'merge-pdf',
+    lang: 'de',
+    domain: 'mypdftools.de',
+    h1: 'PDF zusammenfügen ohne Upload (100% Lokal & DSGVO-konform)',
+    metaTitle: 'PDF zusammenfügen ohne Server-Upload — 100% Lokal im Browser (DSGVO)',
+    metaDescription: 'Sensible PDF-Dokumente sicher zusammenfügen ohne Hochladen auf fremde Server. 100% lokale Verarbeitung im Browser für Kanzleien, Steuerberater und Unternehmen.',
+    badge: 'Zero-Upload DSGVO',
+    intro: 'Bei Verträgen, Mandantendaten, Patientenakten oder Steuerunterlagen verbietet die DSGVO das unkontrollierte Hochladen auf ausländische Cloud-Server. Mit MyPdfTools fügen Sie PDF-Dateien zu 100 % lokal im Arbeitsspeicher Ihres Browsers zusammen — keine Datei verlässt jemals Ihren Computer.',
+    steps: [
+      { title: 'Schritt 1: Vertrauliche PDFs wählen', desc: 'Wählen Sie Ihre PDF-Dokumente aus. Die Dateien bleiben lokal auf Ihrem Gerät.' },
+      { title: 'Schritt 2: Lokale WebAssembly-Fusion', desc: 'Ihr Browser kombiniert die Seiten direkt ohne Internet-Übertragung.' },
+      { title: 'Schritt 3: Sicher speichern', desc: 'Laden Sie das zusammengefügte PDF sofort herunter.' },
+    ],
+    faqs: [
+      { q: 'Werden meine Dateien wirklich nicht hochgeladen?', a: 'Nein. Sie können nach dem Laden der Webseite sogar Ihre Internetverbindung trennen — das Tool funktioniert komplett offline weiter.' },
+      { q: 'Ist das Tool für Kanzleien, Ärzte und Behörden geeignet?', a: 'Ja, durch die reine Client-Side-Architektur findet keine Datenübermittlung an Dritte statt, wodurch höchste Datenschutzstandards nach DSGVO erfüllt werden.' },
+    ],
+    relatedSlugs: ['pdf-zusammenfuegen', 'ausweis-vorder-und-rueckseite-zusammenfuegen-pdf', 'elster-pdf-verkleinern-finanzamt', 'pdf-schuetzen'],
+    canonical: 'https://www.mypdftools.de/pdf-zusammenfuegen-ohne-upload',
+    hreflang: { it: 'https://www.mypdftools.it/unire-pdf-senza-upload', de: 'https://www.mypdftools.de/pdf-zusammenfuegen-ohne-upload' },
+  },
+
+  'ausweis-vorder-und-rueckseite-zusammenfuegen-pdf': {
+    slug: 'ausweis-vorder-und-rueckseite-zusammenfuegen-pdf',
+    toolId: 'merge-pdf',
+    lang: 'de',
+    domain: 'mypdftools.de',
+    h1: 'Ausweis Vorder- und Rückseite in ein PDF zusammenfügen',
+    metaTitle: 'Ausweis Vorder- & Rückseite zusammenfügen PDF — 100% Privat im Browser',
+    metaDescription: 'Personalausweis, Reisepass oder Führerschein Vorder- und Rückseite in einer einzigen PDF-Datei kombinieren. Ohne Server-Upload, 100% sicher im Browser.',
+    badge: 'Ausweis & KYC',
+    intro: 'Banken, Arbeitgeber, Vermieter und Behörden verlangen häufig die Vorder- und Rückseite Ihres Personalausweises, Aufenthaltstitels oder Führerscheins in einem einzigen PDF-Dokument. Mit MyPdfTools kombinieren Sie beide Seiten sekundenschnell, ohne Ihre sensiblen Ausweisdaten ins Internet hochzuladen.',
+    steps: [
+      { title: 'Schritt 1: Vorder- & Rückseite laden', desc: 'Wählen Sie die Scans oder PDFs Ihrer Ausweisdokumente aus.' },
+      { title: 'Schritt 2: Reihenfolge prüfen', desc: 'Ordnen Sie Vorderseite und Rückseite in der richtigen Abfolge an.' },
+      { title: 'Schritt 3: Als ein PDF speichern', desc: 'Erstellen Sie sofort Ihr kombiniertes Ausweis-PDF.' },
+    ],
+    faqs: [
+      { q: 'Ist es sicher, meinen Personalausweis hier zusammenzufügen?', a: 'Absolut. Im Gegensatz zu herkömmlichen Online-Tools werden Ihre Ausweiskopien niemals auf einen Server hochgeladen. Alles passiert lokal auf Ihrem Gerät.' },
+      { q: 'Kann ich auch Handyfotos (JPG) vom Ausweis in ein PDF umwandeln?', a: 'Ja, nutzen Sie dafür einfach unser Tool JPG in PDF, um Fotos von Vorder- und Rückseite direkt in ein gemeinsames PDF zu verwandeln.' },
+    ],
+    relatedSlugs: ['pdf-zusammenfuegen', 'jpg-in-pdf', 'pdf-zusammenfuegen-ohne-upload', 'pdf-fuer-bewerbung-verkleinern'],
+    canonical: 'https://www.mypdftools.de/ausweis-vorder-und-rueckseite-zusammenfuegen-pdf',
+    hreflang: { it: 'https://www.mypdftools.it/unire-documenti-identita-pdf', de: 'https://www.mypdftools.de/ausweis-vorder-und-rueckseite-zusammenfuegen-pdf' },
+  },
+
+  'elster-pdf-verkleinern-finanzamt': {
+    slug: 'elster-pdf-verkleinern-finanzamt',
+    toolId: 'compress-pdf',
+    lang: 'de',
+    domain: 'mypdftools.de',
+    h1: 'PDF für ELSTER & Finanzamt verkleinern (100% Lokal)',
+    metaTitle: 'PDF für ELSTER verkleinern — Belege für Finanzamt komprimieren (DSGVO)',
+    metaDescription: 'Komprimieren Sie PDF-Belege und Steuerunterlagen für Mein ELSTER und das Finanzamt. Maximale Dateigröße einhalten ohne Qualitätsverlust und ohne Server-Upload.',
+    badge: 'Steuer & ELSTER',
+    intro: 'Bei der Belegnachreichung über Mein ELSTER gelten strenge Größenlimits pro Anhang und pro Übertragung. Mit MyPdfTools reduzieren Sie die Dateigröße Ihrer gescannten Rechnungen, Handwerkerbelege und Bescheinigungen lokal im Browser — Ihre vertraulichen Steuerdaten bleiben zu 100 % auf Ihrem PC.',
+    steps: [
+      { title: 'Schritt 1: Steuerbeleg auswählen', desc: 'Laden Sie Ihr PDF-Dokument für das Finanzamt in den Browser.' },
+      { title: 'Schritt 2: Intelligente Komprimierung', desc: 'Die Dateigröße wird drastisch reduziert, während Zahlen und Texte scharf bleiben.' },
+      { title: 'Schritt 3: Für ELSTER speichern', desc: 'Laden Sie das verkleinerte PDF herunter und hängen Sie es in Mein ELSTER an.' },
+    ],
+    faqs: [
+      { q: 'Bleiben Zahlen und Rechnungsbeträge für das Finanzamt gut lesbar?', a: 'Ja, unsere Komprimierung erhält die Schärfe von Texten und Ziffern optimal, sodass das Finanzamt alle Angaben problemlos prüfen kann.' },
+      { q: 'Bleibt das Steuergeheimnis gewahrt?', a: 'Ja, da keinerlei Upload auf externe Server stattfindet, bleiben Ihre Einkommens- und Steuerbelege vollkommen privat auf Ihrem Endgerät.' },
+    ],
+    relatedSlugs: ['pdf-komprimieren', 'rechnungen-pdf-zusammenfuegen', 'belege-in-pdf-umwandeln', 'pdf-zusammenfuegen-ohne-upload'],
+    canonical: 'https://www.mypdftools.de/elster-pdf-verkleinern-finanzamt',
+    hreflang: { it: 'https://www.mypdftools.it/comprimere-pdf-per-pec', de: 'https://www.mypdftools.de/elster-pdf-verkleinern-finanzamt' },
   },
 
   'dividere-pdf': {
