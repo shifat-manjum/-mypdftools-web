@@ -233,32 +233,101 @@
     };
   }
 
-  // Soften top fixed header bars (< 140px) on subsequent scrolls so they don't repeat
-  function handleFixedHeaders(hide) {
-    const all = document.querySelectorAll('header, nav, [class*="header"], [class*="nav"]');
-    for (const el of all) {
+  // Track all elements whose styles were modified during multi-slice capture
+  let modifiedFixedElements = [];
+
+  // Hide fixed and sticky elements on subsequent scroll slices so they never repeat
+  function handleFixedElements(hide) {
+    if (!hide) {
+      for (const item of modifiedFixedElements) {
+        if (item.el) {
+          if (item.origOpacity !== undefined) item.el.style.opacity = item.origOpacity;
+          if (item.origVisibility !== undefined) item.el.style.visibility = item.origVisibility;
+        }
+      }
+      modifiedFixedElements = [];
+      return;
+    }
+
+    // Query all elements on page to find any fixed/sticky elements (headers, modals, floating buttons, sticky bars)
+    const elements = document.querySelectorAll('*');
+    for (const el of elements) {
       if (el.id === '__mypdftools_capture_overlay' || el.closest('#__mypdftools_capture_overlay')) continue;
+      if (['SCRIPT', 'STYLE', 'LINK', 'META', 'NOSCRIPT', 'HEAD'].includes(el.tagName)) continue;
 
       const style = window.getComputedStyle(el);
-      const rect = el.getBoundingClientRect();
-
-      if ((style.position === 'fixed' || style.position === 'sticky') && rect.top <= 10 && rect.height < 140) {
-        if (hide) {
-          if (el.__mypdftools_orig_opacity === undefined) {
-            el.__mypdftools_orig_opacity = el.style.opacity || '1';
-          }
+      if (style.position === 'fixed' || style.position === 'sticky') {
+        const rect = el.getBoundingClientRect();
+        // If element is actually visible on screen
+        if (rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden' && parseFloat(style.opacity || '1') > 0.05) {
+          modifiedFixedElements.push({
+            el: el,
+            origOpacity: el.style.opacity,
+            origVisibility: el.style.visibility,
+          });
           el.style.opacity = '0';
-        } else {
-          if (el.__mypdftools_orig_opacity !== undefined) {
-            el.style.opacity = el.__mypdftools_orig_opacity;
-            delete el.__mypdftools_orig_opacity;
-          }
+          el.style.visibility = 'hidden';
         }
       }
     }
   }
 
+  // Detect if an open modal dialog, popup, or active overlay is currently displayed on screen
+  function detectActiveModal() {
+    // 1. Check for standard dialog/modal roles and elements
+    const modalCandidates = document.querySelectorAll(
+      '[role="dialog"], [role="alertdialog"], dialog[open], [aria-modal="true"], ' +
+      '.modal.show, .modal.in, .modal[style*="display: block"], [class*="modal-dialog"], ' +
+      '[class*="popup"][style*="display: block"], [class*="overlay"][style*="display: block"]'
+    );
+
+    for (const el of modalCandidates) {
+      if (el.id === '__mypdftools_capture_overlay' || el.closest('#__mypdftools_capture_overlay')) continue;
+      const rect = el.getBoundingClientRect();
+      const style = window.getComputedStyle(el);
+      if (rect.width >= 180 && rect.height >= 80 && style.display !== 'none' && style.visibility !== 'hidden' && parseFloat(style.opacity || '1') > 0.1) {
+        return el;
+      }
+    }
+
+    // 2. Check for high z-index fixed overlays with substantial dimensions
+    const all = document.querySelectorAll('*');
+    for (const el of all) {
+      if (el.id === '__mypdftools_capture_overlay' || el.closest('#__mypdftools_capture_overlay')) continue;
+      if (['SCRIPT', 'STYLE', 'HTML', 'BODY'].includes(el.tagName)) continue;
+
+      const style = window.getComputedStyle(el);
+      if (style.position === 'fixed' || style.position === 'absolute') {
+        const z = parseInt(style.zIndex, 10);
+        if (!isNaN(z) && z >= 50) {
+          const rect = el.getBoundingClientRect();
+          if (rect.width >= 260 && rect.height >= 140 && rect.top >= 0 && rect.top < window.innerHeight && style.display !== 'none' && style.visibility !== 'hidden') {
+            const bodyOverflow = window.getComputedStyle(document.body).overflow;
+            const docOverflow = window.getComputedStyle(document.documentElement).overflow;
+            if (bodyOverflow === 'hidden' || docOverflow === 'hidden' || el.getAttribute('aria-modal') === 'true' || el.querySelector('[role="dialog"]')) {
+              return el;
+            }
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
   async function executeCapture(mode) {
+    // Check if an active modal / dialog popup is open on the screen
+    const activeModal = detectActiveModal();
+    if (activeModal && mode !== 'mobile') {
+      // If a modal dialog is active on screen and fits within or near the viewport,
+      // capture the visible screen directly. This captures the popup crisp, intact & centered
+      // without scrolling the locked background underneath it and duplicating the modal.
+      const diff = activeModal.scrollHeight - activeModal.clientHeight;
+      if (diff < 100) {
+        mode = 'visible';
+      }
+    }
+
     const target = findScrollTarget();
     const origWinX = window.scrollX;
     const origWinY = window.scrollY;
@@ -367,8 +436,8 @@
 
         const actualY = target.getScrollY();
 
-        if (target.isWindow && actualY > 50) {
-          handleFixedHeaders(true);
+        if (target.isWindow && (actualY > 30 || i > 0)) {
+          handleFixedElements(true);
         }
 
         // Hide overlay and flush compositor paint before snapping screenshot
@@ -421,7 +490,7 @@
     } catch (err) {
       console.error('Capture sequence error:', err);
     } finally {
-      handleFixedHeaders(false);
+      handleFixedElements(false);
       if (overrideStyle && overrideStyle.parentNode) {
         overrideStyle.parentNode.removeChild(overrideStyle);
       }
