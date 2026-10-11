@@ -4,10 +4,143 @@ import { ToolItem, UploadedFile } from '../types';
 import { extractTextFromPdf } from '../utils/pdfRenderUtils';
 import { toPdfBlob } from '../utils/pdfUtils';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import confetti from 'canvas-confetti';
 import { Language } from '../i18n/translations';
 import { Sparkles, Download, Loader2, CheckCircle2, FileText, ArrowRight, ShieldCheck } from 'lucide-react';
+
+function sanitizeWinAnsi(str: string): string {
+  // Replace non-WinAnsi characters so StandardFonts.Helvetica never throws encoding errors
+  return str
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201C\u201D]/g, '"')
+    .replace(/[\u2013\u2014]/g, '-')
+    .replace(/[^\x20-\x7E\xA0-\xFF]/g, ' ')
+    .trim();
+}
+
+async function parseXlsxToRows(file: File): Promise<string[][]> {
+  if (file.name.toLowerCase().endsWith('.csv') || file.type === 'text/csv') {
+    const text = await file.text();
+    return text
+      .split(/\r?\n/)
+      .filter((l) => l.trim().length > 0)
+      .map((l) => l.split(/[,;\t]/).map((c) => c.replace(/^"|"$/g, '').trim()));
+  }
+
+  try {
+    const zip = await JSZip.loadAsync(file);
+    const sharedStrings: string[] = [];
+
+    const sharedStringsFile = zip.file('xl/sharedStrings.xml');
+    if (sharedStringsFile) {
+      const sharedXml = await sharedStringsFile.async('string');
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(sharedXml, 'application/xml');
+      const siNodes = doc.getElementsByTagName('si');
+      for (let i = 0; i < siNodes.length; i++) {
+        const tNodes = siNodes[i].getElementsByTagName('t');
+        let val = '';
+        for (let j = 0; j < tNodes.length; j++) {
+          val += tNodes[j].textContent || '';
+        }
+        sharedStrings.push(val);
+      }
+    }
+
+    const rows: string[][] = [];
+    const sheetFiles = Object.keys(zip.files)
+      .filter((name) => /^xl\/worksheets\/sheet\d+\.xml$/i.test(name))
+      .sort();
+
+    for (const sheetPath of sheetFiles) {
+      const sheetFile = zip.file(sheetPath);
+      if (!sheetFile) continue;
+      const sheetXml = await sheetFile.async('string');
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(sheetXml, 'application/xml');
+      const rowNodes = doc.getElementsByTagName('row');
+
+      for (let r = 0; r < rowNodes.length; r++) {
+        const cellNodes = rowNodes[r].getElementsByTagName('c');
+        const rowValues: string[] = [];
+        for (let c = 0; c < cellNodes.length; c++) {
+          const cell = cellNodes[c];
+          const type = cell.getAttribute('t');
+          const vNode = cell.getElementsByTagName('v')[0];
+          const isNode = cell.getElementsByTagName('is')[0];
+          let cellText = '';
+
+          if (type === 's' && vNode?.textContent) {
+            const idx = parseInt(vNode.textContent, 10);
+            cellText = sharedStrings[idx] ?? vNode.textContent;
+          } else if (type === 'inlineStr' && isNode) {
+            cellText = isNode.textContent || '';
+          } else if (vNode?.textContent) {
+            cellText = vNode.textContent;
+          }
+
+          if (cellText.trim()) {
+            rowValues.push(cellText.trim());
+          }
+        }
+        if (rowValues.length > 0) {
+          rows.push(rowValues);
+        }
+      }
+    }
+
+    if (rows.length > 0) return rows;
+  } catch (e) {
+    console.warn('Fallback from XLSX zip parser:', e);
+  }
+
+  const rawText = await file.text().catch(() => '');
+  return rawText
+    .split(/\r?\n/)
+    .map((l) => [sanitizeWinAnsi(l)])
+    .filter((r) => r[0].length > 0);
+}
+
+async function parsePptxToSlides(file: File): Promise<string[][]> {
+  try {
+    const zip = await JSZip.loadAsync(file);
+    const slideFiles = Object.keys(zip.files)
+      .filter((name) => /^ppt\/slides\/slide\d+\.xml$/i.test(name))
+      .sort((a, b) => {
+        const numA = parseInt(a.match(/\d+/)?.[0] || '0', 10);
+        const numB = parseInt(b.match(/\d+/)?.[0] || '0', 10);
+        return numA - numB;
+      });
+
+    const slides: string[][] = [];
+    for (const slidePath of slideFiles) {
+      const slideFile = zip.file(slidePath);
+      if (!slideFile) continue;
+      const slideXml = await slideFile.async('string');
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(slideXml, 'application/xml');
+      const pNodes = doc.getElementsByTagName('a:p');
+      const lines: string[] = [];
+
+      for (let i = 0; i < pNodes.length; i++) {
+        const tNodes = pNodes[i].getElementsByTagName('a:t');
+        let line = '';
+        for (let j = 0; j < tNodes.length; j++) {
+          line += tNodes[j].textContent || '';
+        }
+        if (line.trim()) lines.push(line.trim());
+      }
+      slides.push(lines.length > 0 ? lines : [`Slide ${slides.length + 1}`]);
+    }
+
+    if (slides.length > 0) return slides;
+  } catch (e) {
+    console.warn('Fallback from PPTX zip parser:', e);
+  }
+  return [[file.name.replace(/\.[^/.]+$/, '')]];
+}
 
 interface GenericPdfToolProps {
   tool: ToolItem;
@@ -122,31 +255,45 @@ export const GenericPdfTool: React.FC<GenericPdfToolProps> = ({ tool, currentLan
         });
         confetti({ particleCount: 70, spread: 60 });
       } else if (tool.id === 'excel-to-pdf') {
-        // Convert Excel / CSV text into formatted PDF
-        const text = await file.text().catch(() => 'Spreadsheet data');
-        const lines = text.split(/\r?\n/).slice(0, 100);
+        // Parse .xlsx or .csv into structured rows and render formatted PDF table
+        const rows = await parseXlsxToRows(file);
 
         const pdfDoc = await PDFDocument.create();
         const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
         const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
         
         let page = pdfDoc.addPage([595.28, 841.89]); // A4 portrait
-        let y = 800;
+        let y = 795;
 
         // Header
-        page.drawText(file.name, { x: 50, y, size: 16, font: fontBold, color: rgb(0.1, 0.1, 0.15) });
-        y -= 25;
-        page.drawLine({ start: { x: 50, y }, end: { x: 545, y }, thickness: 1, color: rgb(0.8, 0.8, 0.8) });
-        y -= 20;
+        page.drawText(sanitizeWinAnsi(file.name) || 'Spreadsheet', {
+          x: 40,
+          y,
+          size: 14,
+          font: fontBold,
+          color: rgb(0.06, 0.1, 0.16),
+        });
+        y -= 18;
+        page.drawLine({ start: { x: 40, y }, end: { x: 555, y }, thickness: 1, color: rgb(0.82, 0.85, 0.88) });
+        y -= 18;
 
-        for (const line of lines) {
+        for (let rIdx = 0; rIdx < rows.length; rIdx++) {
           if (y < 50) {
             page = pdfDoc.addPage([595.28, 841.89]);
-            y = 800;
+            y = 795;
           }
-          const cleanLine = line.slice(0, 90);
-          page.drawText(cleanLine, { x: 50, y, size: 9, font, color: rgb(0.2, 0.2, 0.2) });
-          y -= 14;
+          const row = rows[rIdx];
+          const formattedRow = sanitizeWinAnsi(row.join('   |   ')).slice(0, 95);
+          if (formattedRow) {
+            page.drawText(formattedRow, {
+              x: 40,
+              y,
+              size: rIdx === 0 ? 10 : 9,
+              font: rIdx === 0 ? fontBold : font,
+              color: rIdx === 0 ? rgb(0.05, 0.35, 0.25) : rgb(0.2, 0.22, 0.25),
+            });
+            y -= 15;
+          }
         }
 
         const pdfBytes = await pdfDoc.save();
@@ -159,26 +306,39 @@ export const GenericPdfTool: React.FC<GenericPdfToolProps> = ({ tool, currentLan
         });
         confetti({ particleCount: 70, spread: 60 });
       } else if (tool.id === 'powerpoint-to-pdf') {
-        // Create presentation-formatted landscape PDF
+        // Extract slides from .pptx and render landscape PDF pages
+        const slides = await parsePptxToSlides(file);
         const pdfDoc = await PDFDocument.create();
         const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
         const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
-        const page = pdfDoc.addPage([841.89, 595.28]); // A4 landscape
-        page.drawText(file.name.replace(/\.[^/.]+$/, ''), {
-          x: 60,
-          y: 350,
-          size: 28,
-          font: fontBold,
-          color: rgb(0.1, 0.1, 0.2),
-        });
-        page.drawText('Converted with MyPdfTools (100% Client-Side)', {
-          x: 60,
-          y: 310,
-          size: 14,
-          font,
-          color: rgb(0.4, 0.4, 0.5),
-        });
+        for (let sIdx = 0; sIdx < slides.length; sIdx++) {
+          const slideLines = slides[sIdx];
+          const page = pdfDoc.addPage([841.89, 595.28]); // A4 landscape
+          let y = 520;
+
+          page.drawText(`Slide ${sIdx + 1}`, {
+            x: 50,
+            y: 555,
+            size: 10,
+            font: fontBold,
+            color: rgb(0.06, 0.58, 0.41),
+          });
+
+          for (let lIdx = 0; lIdx < slideLines.length; lIdx++) {
+            if (y < 60) break;
+            const clean = sanitizeWinAnsi(slideLines[lIdx]).slice(0, 95);
+            if (!clean) continue;
+            page.drawText(clean, {
+              x: 50,
+              y,
+              size: lIdx === 0 ? 22 : 13,
+              font: lIdx === 0 ? fontBold : font,
+              color: lIdx === 0 ? rgb(0.1, 0.12, 0.18) : rgb(0.25, 0.28, 0.32),
+            });
+            y -= lIdx === 0 ? 34 : 20;
+          }
+        }
 
         const pdfBytes = await pdfDoc.save();
         const blob = toPdfBlob(pdfBytes);
@@ -190,7 +350,7 @@ export const GenericPdfTool: React.FC<GenericPdfToolProps> = ({ tool, currentLan
         });
         confetti({ particleCount: 70, spread: 60 });
       } else if (tool.id === 'pdf-to-powerpoint') {
-        // Extract text and build structured presentation text / slide package
+        // Extract text and build structured presentation slide deck
         const { plainText } = await extractTextFromPdf(file);
         const textBlob = new Blob([plainText], { type: 'text/plain;charset=utf-8' });
 
