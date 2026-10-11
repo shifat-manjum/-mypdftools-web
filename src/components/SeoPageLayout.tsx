@@ -35,7 +35,7 @@ export const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
   onNavigate,
   onOpenPrivacyModal,
 }) => {
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const toolItem: ToolItem = TOOLS.find((t) => t.id === routeData.toolId) || TOOLS[0];
   const lang: Language = routeData.lang;
   const t = TRANSLATIONS[lang] || TRANSLATIONS.it;
@@ -239,7 +239,77 @@ export const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
         </div>
       </div>
 
-      {/* Accordion FAQ Section with FAQPage Schema */}
+      {/* In-Depth Technical & GDPR Compliance Guide for Publisher Value */}
+      <article className="bg-white/90 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-8 space-y-5 shadow-[0_10px_30px_-5px_rgba(0,0,0,0.05)]">
+        <div className="space-y-1.5">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider border border-emerald-200/60">
+            {lang === 'it'
+              ? 'Approfondimento Tecnico & Conformità GDPR'
+              : lang === 'de'
+              ? 'Technischer Leitfaden & DSGVO-Sicherheit'
+              : 'Technical Architecture & GDPR Security'}
+          </span>
+          <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
+            {lang === 'it'
+              ? `Perché scegliere ${routeData.h1} con elaborazione locale Client-Side?`
+              : lang === 'de'
+              ? `Warum ${routeData.h1} mit lokaler Client-Side-Verarbeitung nutzen?`
+              : `Why choose ${routeData.h1} with local Client-Side processing?`}
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm text-slate-600 leading-relaxed">
+          <div className="space-y-3">
+            <h3 className="text-sm font-bold text-slate-900">
+              {lang === 'it'
+                ? 'Architettura Zero-Upload e Protezione dei Dati (Art. 25 e 32 GDPR)'
+                : lang === 'de'
+                ? 'Zero-Upload-Architektur & Datenschutz (Art. 25 & 32 DSGVO)'
+                : 'Zero-Upload Architecture & Data Protection (Art. 25 & 32 GDPR)'}
+            </h3>
+            <p>
+              {lang === 'it'
+                ? `Quando utilizzi lo strumento "${routeData.h1}" su MyPdfTools, i tuoi documenti non vengono mai trasmessi via rete a server cloud esterni. A differenza dei convertitori online tradizionali che caricano i tuoi file su infrastrutture remote, il nostro motore sfrutta WebAssembly (Wasm) e le API HTML5 FileReader per elaborare ogni singolo byte direttamente nella memoria RAM del tuo dispositivo.`
+                : lang === 'de'
+                ? `Wenn Sie das Werkzeug „${routeData.h1}“ auf MyPdfTools verwenden, werden Ihre Dokumente niemals über das Internet an externe Cloud-Server übertragen. Im Gegensatz zu herkömmlichen Online-Konvertern nutzt unsere Engine WebAssembly (Wasm) und moderne HTML5-APIs, um jedes Byte direkt im lokalen Arbeitsspeicher (RAM) Ihres Geräts zu verarbeiten.`
+                : `When you use the "${routeData.h1}" tool on MyPdfTools, your documents are never transmitted over the network to external cloud servers. Unlike traditional online converters, our engine leverages WebAssembly (Wasm) and HTML5 FileReader APIs to process every byte directly inside your device's local RAM.`}
+            </p>
+            <p>
+              {lang === 'it'
+                ? 'Questo approccio «Privacy by Design» garantisce la conformità immediata al Regolamento Europeo UE 2016/679 (GDPR), rendendo lo strumento sicuro per studi legali, commercialisti, pubbliche amministrazioni, medici e privati che gestiscono documenti d’identità, contratti, buste paga o allegati PEC.'
+                : lang === 'de'
+                ? 'Dieser „Privacy by Design“-Ansatz gewährleistet die vollständige Einhaltung der Datenschutz-Grundverordnung (EU-DSGVO 2016/679) und eignet sich ideal für Kanzleien, Steuerberater, Behörden, Arztpraxen und Privatpersonen, die Personalausweise, Verträge oder ELSTER-Steuerbelege bearbeiten.'
+                : 'This "Privacy by Design" architecture ensures full compliance with EU Regulation 2016/679 (GDPR), making the utility safe for law firms, accountants, healthcare professionals, and individuals handling ID cards, contracts, or tax filings.'}
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-sm font-bold text-slate-900">
+              {lang === 'it'
+                ? 'Standard ISO 32000-1, Velocità Istantanea e Funzionamento Offline'
+                : lang === 'de'
+                ? 'ISO 32000-1 Standard, Echtzeit-Geschwindigkeit & Offline-Betrieb'
+                : 'ISO 32000-1 Standard, Instant Speed & Offline Capability'}
+            </h3>
+            <p>
+              {lang === 'it'
+                ? 'Eliminando i tempi di caricamento (upload) e scaricamento (download) verso server remoti, le operazioni su file PDF di grandi dimensioni vengono completate in pochi millisecondi. Il motore ricostruisce le tabelle dei riferimenti incrociati (xref) e ottimizza gli stream vettoriali mantenendo intatta la nitidezza tipografica e la conformità allo standard internazionale ISO 32000-1.'
+                : lang === 'de'
+                ? 'Durch den Wegfall von Upload- und Download-Wartezeiten werden selbst große PDF-Dateien in wenigen Millisekunden verarbeitet. Unsere Engine rekonstruiert Querverweistabellen (xref) und optimiert Vektor-Streams unter strikter Einhaltung des internationalen PDF-Standards ISO 32000-1.'
+                : 'By eliminating upload and download bottlenecks to remote servers, operations on large multi-page PDF files complete in milliseconds. Our engine rebuilds cross-reference (xref) tables and optimizes vector streams while preserving typographic sharpness and ISO 32000-1 compliance.'}
+            </p>
+            <p>
+              {lang === 'it'
+                ? 'Una volta aperta questa pagina, puoi persino disattivare il Wi-Fi o attivare la modalità aereo: il flusso di lavoro continuerà a funzionare al 100% offline sul tuo computer (Windows, macOS, Linux) o smartphone (iOS, Android), senza alcun limite giornaliero di utilizzo e senza filigrane pubblicitarie sui documenti generati.'
+                : lang === 'de'
+                ? 'Sobald diese Seite geladen ist, können Sie sogar Ihr WLAN trennen oder den Flugmodus aktivieren: Das Tool arbeitet zu 100% offline auf Ihrem Computer (Windows, macOS, Linux) oder Smartphone (iOS, Android) weiter – ohne tägliche Dateilimits und garantiert ohne Wasserzeichen.'
+                : 'Once this page is loaded, you can even disconnect from Wi-Fi or enable Airplane Mode: the workflow continues to operate 100% offline on your desktop (Windows, macOS, Linux) or mobile device (iOS, Android), with zero daily limits and zero watermarks.'}
+            </p>
+          </div>
+        </div>
+      </article>
+
+      {/* Accordion FAQ Section with FAQPage Schema (All answers mounted in DOM for crawlers & users) */}
       <div className="bg-white/90 backdrop-blur-md rounded-3xl border border-slate-200/80 p-6 sm:p-8 space-y-5 shadow-[0_10px_30px_-5px_rgba(0,0,0,0.05)]">
         <div className="flex items-center gap-2.5">
           <HelpCircle className="w-5 h-5 text-emerald-600" />
@@ -249,7 +319,7 @@ export const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
         </div>
         <div className="space-y-3 pt-2">
           {routeData.faqs.map((faq, idx) => {
-            const isOpen = openFaqIndex === idx;
+            const isOpen = openFaqIndex === null || openFaqIndex === idx;
             return (
               <div
                 key={idx}
@@ -257,7 +327,7 @@ export const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
               >
                 <button
                   type="button"
-                  onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                  onClick={() => setOpenFaqIndex(openFaqIndex === idx ? -1 : idx)}
                   className="w-full px-5 py-4 text-left flex items-center justify-between gap-3 text-xs sm:text-sm font-bold text-slate-900 hover:text-emerald-700 hover:bg-slate-50/70 transition-colors cursor-pointer"
                 >
                   <span>{faq.q}</span>
@@ -267,11 +337,13 @@ export const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
                     <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />
                   )}
                 </button>
-                {isOpen && (
-                  <div className="px-5 pb-4 pt-1 text-xs text-slate-600 leading-relaxed font-medium border-t border-slate-100 bg-slate-50/40">
-                    {faq.a}
-                  </div>
-                )}
+                <div
+                  className={`px-5 pb-4 pt-1 text-xs text-slate-600 leading-relaxed font-medium border-t border-slate-100 bg-slate-50/40 ${
+                    isOpen ? 'block' : 'hidden'
+                  }`}
+                >
+                  {faq.a}
+                </div>
               </div>
             );
           })}

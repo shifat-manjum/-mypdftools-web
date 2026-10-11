@@ -228,62 +228,180 @@ export const StaticLegalPage: React.FC<StaticLegalPageProps> = ({
         {type === 'privacy' && (
           <div className="space-y-6 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
             <h2 className="text-base font-black text-slate-900 uppercase tracking-wider">
-              {isDe ? 'Datenschutzerklärung nach EU-DSGVO' : isIt ? 'Informativa sulla Privacy (GDPR UE 2016/679)' : 'Privacy Policy (EU GDPR)'}
+              {isDe ? 'Datenschutzerklärung (EU-DSGVO 2016/679)' : isIt ? 'Informativa sulla Privacy (GDPR UE 2016/679)' : 'Privacy Policy (EU GDPR 2016/679)'}
             </h2>
-            <p>
-              <strong>1. Zero-Upload Architektur:</strong> MyPdfTools verarbeitet alle Dateien lokal im Browser des Nutzers via WebAssembly und Canvas API. Es werden zu keinem Zeitpunkt Dokumente auf externe Server hochgeladen oder gespeichert.
-            </p>
-            <p>
-              <strong>2. Verantwortlicher:</strong> Shifat Manjum &amp; Saiful Islam, Zentixx. Kontakt:{' '}
-              <a href="mailto:khshifat@gmail.com" className="text-emerald-600 font-bold underline">
-                khshifat@gmail.com
-              </a>.
-            </p>
-            <p>
-              <strong>3. Google AdSense &amp; Cookies:</strong> Diese Webseite nutzt Werbedienste von Google LLC. Google verwendet Cookies zur Auslieferung von Anzeigen basierend auf vorherigen Besuchen.
-            </p>
+            <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 text-emerald-950 font-medium">
+              {isDe
+                ? 'Kurzfassung: MyPdfTools verarbeitet alle PDF- und Bilddateien zu 100% lokal im Arbeitsspeicher Ihres Browsers (Client-Side via WebAssembly). Es erfolgt keinerlei Datei-Upload auf unsere Server.'
+                : isIt
+                ? 'In sintesi: MyPdfTools elabora tutti i file PDF e le immagini al 100% localmente nella memoria del tuo browser (Client-Side tramite WebAssembly). Nessun documento viene mai caricato sui nostri server.'
+                : 'Summary: MyPdfTools processes all PDF and image files 100% locally inside your browser memory (Client-Side via WebAssembly). No files are ever uploaded to our servers.'}
+            </div>
+            <section className="space-y-2">
+              <h3 className="font-black text-slate-900">
+                {isDe ? '1. Verantwortlicher für die Datenverarbeitung' : isIt ? '1. Titolare del Trattamento dei Dati' : '1. Data Controller'}
+              </h3>
+              <p>
+                {isDe
+                  ? 'Verantwortlich im Sinne der Datenschutz-Grundverordnung (DSGVO): Shifat Manjum & Saiful Islam (Zentixx). Offizielle Kontakt-E-Mail: '
+                  : isIt
+                  ? 'Titolare del trattamento ai sensi del Regolamento UE 2016/679 (GDPR): Shifat Manjum & Saiful Islam (Zentixx). Email ufficiale di contatto: '
+                  : 'Data Controller under EU GDPR: Shifat Manjum & Saiful Islam (Zentixx). Official contact email: '}
+                <a href="mailto:khshifat@gmail.com" className="text-emerald-600 font-bold underline">khshifat@gmail.com</a>.
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-black text-slate-900">
+                {isDe ? '2. 100% Lokale Dokumentenverarbeitung (Zero-Upload)' : isIt ? '2. Elaborazione Documentale 100% Locale (Zero-Upload)' : '2. 100% Local Document Processing (Zero-Upload)'}
+              </h3>
+              <p>
+                {isDe
+                  ? 'Wenn Sie Werkzeuge auf MyPdfTools nutzen (z. B. PDF zusammenfügen, teilen, komprimieren oder konvertieren), werden Ihre Dateien ausschließlich im lokalen Arbeitsspeicher (RAM) Ihres Endgeräts verarbeitet. Es findet zu keinem Zeitpunkt eine Übertragung Ihrer Dokumente über das Internet an unsere Server oder Dritte statt (Art. 25 DSGVO — Privacy by Design).'
+                  : isIt
+                  ? 'Quando utilizzi gli strumenti di MyPdfTools (es. unire, dividere, comprimere o convertire PDF), i tuoi file vengono elaborati esclusivamente nella memoria RAM locale del tuo dispositivo. Non avviene alcun trasferimento dei tuoi documenti via internet verso i nostri server o verso terze parti (Art. 25 GDPR — Privacy by Design).'
+                  : 'When you use tools on MyPdfTools (merging, splitting, compressing, or converting PDFs), your files are processed exclusively inside your device’s local RAM. Your documents are never transmitted over the internet to our servers or third parties (Art. 25 GDPR — Privacy by Design).'}
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-black text-slate-900">
+                {isDe ? '3. Google AdSense & Werbe-Cookies' : isIt ? '3. Google AdSense e Cookie Pubblicitari' : '3. Google AdSense & Advertising Cookies'}
+              </h3>
+              <p>
+                {isDe
+                  ? 'Diese Website nutzt Google AdSense, einen Dienst zum Einbinden von Werbeanzeigen der Google Ireland Limited (Gordon House, Barrow Street, Dublin 4, Irland). Drittanbieter, einschließlich Google, verwenden Cookies, um Anzeigen auf Grundlage vorheriger Besuche eines Nutzers auf dieser oder anderen Websites zu schalten. Nutzer können personalisierte Werbung in den Google-Anzeigeneinstellungen (https://adssettings.google.com) deaktivieren.'
+                  : isIt
+                  ? 'Questo sito utilizza Google AdSense, un servizio di annunci pubblicitari fornito da Google Ireland Limited (Gordon House, Barrow Street, Dublino 4, Irlanda). I fornitori di terze parti, tra cui Google, utilizzano cookie per pubblicare annunci basati sulle precedenti visite dell\'utente a questo o ad altri siti web. Gli utenti possono disattivare la pubblicità personalizzata visitando le Impostazioni annunci di Google (https://adssettings.google.com).'
+                  : 'This website uses Google AdSense, an advertising service provided by Google Ireland Limited (Gordon House, Barrow Street, Dublin 4, Ireland). Third-party vendors, including Google, use cookies to serve ads based on a user’s prior visits to this website or other websites. Users may opt out of personalized advertising by visiting Google Ads Settings (https://adssettings.google.com).'}
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-black text-slate-900">
+                {isDe ? '4. Google Analytics (GA4) & Server-Logfiles' : isIt ? '4. Google Analytics (GA4) e Log di Navigazione' : '4. Google Analytics (GA4) & Server Logs'}
+              </h3>
+              <p>
+                {isDe
+                  ? 'Zur statistischen Auswertung der Webseitennutzung setzen wir Google Analytics 4 mit aktivierter IP-Anonymisierung ein. Es werden niemals Dateiinhalte oder Dokumentnamen erfasst. Ihre Rechte nach DSGVO (Auskunft, Löschung, Widerspruch nach Art. 15–21 DSGVO) können Sie jederzeit per E-Mail an khshifat@gmail.com geltend machen.'
+                  : isIt
+                  ? 'Per l\'analisi statistica aggregata del traffico utilizziamo Google Analytics 4 con anonimizzazione dell\'indirizzo IP attiva. Non vengono mai tracciati i nomi o i contenuti dei file elaborati. Puoi esercitare in qualsiasi momento i tuoi diritti (accesso, cancellazione, opposizione ai sensi degli Artt. 15-21 GDPR) scrivendo a khshifat@gmail.com.'
+                  : 'For aggregated traffic analysis we use Google Analytics 4 with IP anonymization enabled. File names and document contents are never tracked. You may exercise your GDPR rights (access, erasure, objection under Arts. 15–21 GDPR) at any time by emailing khshifat@gmail.com.'}
+              </p>
+            </section>
           </div>
         )}
 
         {type === 'impressum' && (
           <div className="space-y-6 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
             <h2 className="text-base font-black text-slate-900 uppercase tracking-wider">
-              {isDe ? 'Impressum (§ 5 DDG & § 18 MStV)' : isIt ? 'Note Legali e Dati Societari' : 'Legal Notice & Impressum'}
+              {isDe ? 'Impressum (§ 5 DDG & § 18 MStV)' : isIt ? 'Note Legali e Informazioni Societarie' : 'Legal Notice & Impressum'}
             </h2>
-            <p>
-              <strong>Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG):</strong><br />
-              Betreiber: Shifat Manjum &amp; Saiful Islam (Zentixx)<br />
-              Kontakt: <a href="mailto:khshifat@gmail.com" className="text-emerald-600 underline">khshifat@gmail.com</a><br />
-              Plattformen: www.mypdftools.de &bull; www.mypdftools.it
-            </p>
+            <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+              <p>
+                <strong>{isDe ? 'Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG):' : isIt ? 'Informazioni sul Fornitore del Servizio Web:' : 'Service Provider Information:'}</strong><br />
+                <strong>{isDe ? 'Betreiber & Entwicklung:' : isIt ? 'Fondatori e Sviluppatori:' : 'Founders & Developers:'}</strong> Shifat Manjum &amp; Saiful Islam (Zentixx)<br />
+                <strong>Email:</strong> <a href="mailto:khshifat@gmail.com" className="text-emerald-600 font-bold underline">khshifat@gmail.com</a><br />
+                <strong>Web:</strong> www.mypdftools.it &bull; www.mypdftools.de
+              </p>
+            </div>
+            <section className="space-y-2">
+              <h3 className="font-black text-slate-900">
+                {isDe ? 'Haftung für Inhalte und Werkzeuge' : isIt ? 'Responsabilità sui Contenuti e sugli Strumenti' : 'Liability for Content & Tools'}
+              </h3>
+              <p>
+                {isDe
+                  ? 'Die Inhalte und lokalen PDF-Werkzeuge unserer Seiten wurden mit größter Sorgfalt erstellt. Da sämtliche Dateiverarbeitungen direkt auf dem Endgerät des Nutzers stattfinden, übernimmt der Betreiber keine Haftung für Datenverluste auf dem Endgerät des Nutzers.'
+                  : isIt
+                  ? 'I contenuti editoriali e gli strumenti di elaborazione PDF sono realizzati con la massima cura tecnica. Poiché tutte le operazioni sui file avvengono localmente sul dispositivo dell\'utente, i gestori non assumono responsabilità per eventuali perdite di dati locali.'
+                  : 'The editorial content and local PDF tools on our pages were created with the utmost technical care. Since all file processing takes place directly on the user’s device, the operators assume no liability for local data loss.'}
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-black text-slate-900">
+                {isDe ? 'EU-Streitschlichtung' : isIt ? 'Risoluzione delle Controversie Online (ODR UE)' : 'EU Online Dispute Resolution'}
+              </h3>
+              <p>
+                {isDe
+                  ? 'Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: https://ec.europa.eu/consumers/odr/.'
+                  : isIt
+                  ? 'La Commissione Europea mette a disposizione una piattaforma per la risoluzione delle controversie online (ODR): https://ec.europa.eu/consumers/odr/.'
+                  : 'The European Commission provides a platform for online dispute resolution (ODR): https://ec.europa.eu/consumers/odr/.'}
+              </p>
+            </section>
           </div>
         )}
 
         {type === 'terms' && (
           <div className="space-y-6 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
             <h2 className="text-base font-black text-slate-900 uppercase tracking-wider">
-              {isDe ? 'Allgemeine Nutzungsbedingungen (AGB)' : isIt ? 'Termini di Servizio' : 'Terms of Service'}
+              {isDe ? 'Allgemeine Nutzungsbedingungen (AGB)' : isIt ? 'Termini e Condizioni di Servizio' : 'Terms of Service'}
             </h2>
-            <p>
-              <strong>1. Kostenlose Nutzung:</strong> MyPdfTools stellt alle Werkzeuge kostenlos zur Verfügung. Die Nutzung erfolgt auf eigenes Risiko ohne Gewährleistung.
-            </p>
-            <p>
-              <strong>2. Urheberrecht an Dokumenten:</strong> Alle Rechte an den bearbeiteten Dokumenten verbleiben vollständig beim Nutzer.
-            </p>
+            <section className="space-y-2">
+              <h3 className="font-black text-slate-900">
+                {isDe ? '1. Leistungsumfang & Kostenlose Nutzung' : isIt ? '1. Oggetto del Servizio e Gratuità' : '1. Scope of Service & Free Use'}
+              </h3>
+              <p>
+                {isDe
+                  ? 'MyPdfTools stellt webbasierte PDF-Werkzeuge kostenlos zur Verfügung. Alle Berechnungen laufen lokal im Webbrowser des Nutzers über WebAssembly ab. Es ist keine Registrierung oder Kontoerstellung erforderlich.'
+                  : isIt
+                  ? 'MyPdfTools mette a disposizione gratuitamente strumenti web per la gestione, conversione e ottimizzazione di file PDF. Tutte le elaborazioni vengono eseguite localmente nel browser dell\'utente tramite tecnologia WebAssembly senza obbligo di registrazione.'
+                  : 'MyPdfTools provides web-based PDF utilities free of charge. All calculations run locally inside the user’s browser via WebAssembly with no registration required.'}
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-black text-slate-900">
+                {isDe ? '2. Urheberrecht & Eigentum an Dokumenten' : isIt ? '2. Proprietà Intellettuale dei Documenti' : '2. Document Ownership & Copyright'}
+              </h3>
+              <p>
+                {isDe
+                  ? 'Alle Urheber- und Eigentumsrechte an den bearbeiteten Dateien verbleiben zu 100 % beim jeweiligen Nutzer. MyPdfTools erhebt keinerlei Ansprüche auf Ihre Dokumente und speichert diese zu keinem Zeitpunkt.'
+                  : isIt
+                  ? 'Tutti i diritti d\'autore e di proprietà sui documenti elaborati rimangono al 100% in capo all\'utente. MyPdfTools non acquisisce alcun diritto sui tuoi file né li memorizza in alcun modo.'
+                  : 'All copyright and ownership rights to processed files remain 100% with the user. MyPdfTools claims no rights over your documents and never stores them.'}
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-black text-slate-900">
+                {isDe ? '3. Gewährleistungsausschluss' : isIt ? '3. Limitazione di Responsabilità' : '3. Disclaimer of Warranties'}
+              </h3>
+              <p>
+                {isDe
+                  ? 'Die Werkzeuge werden „wie besehen“ (as-is) bereitgestellt. Wir empfehlen Nutzern, vor der Bearbeitung wichtiger Originaldokumente stets eine lokale Sicherheitskopie aufzubewahren.'
+                  : isIt
+                  ? 'Gli strumenti sono forniti "così come sono" (as-is). Si consiglia agli utenti di conservare sempre una copia di backup locale dei documenti originali prima di procedere a modifiche o compressioni.'
+                  : 'The tools are provided "as-is". We recommend keeping a local backup copy of important original documents before modifying or compressing them.'}
+              </p>
+            </section>
           </div>
         )}
 
         {type === 'cookies' && (
           <div className="space-y-6 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
             <h2 className="text-base font-black text-slate-900 uppercase tracking-wider">
-              {isDe ? 'Cookie-Richtlinie' : isIt ? 'Cookie Policy' : 'Cookie Policy'}
+              {isDe ? 'Cookie-Richtlinie (EU-ePrivacy & DSGVO)' : isIt ? 'Informativa sui Cookie (Cookie Policy UE)' : 'Cookie Policy'}
             </h2>
-            <p>
-              <strong>1. Technische Cookies &amp; LocalStorage:</strong> Wir nutzen den Browserspeicher ausschließlich zur Speicherung der Spracheinstellung (IT, DE, EN).
-            </p>
-            <p>
-              <strong>2. Werbe-Cookies:</strong> Drittanbieter wie Google können Cookies für personalisierte Anzeigen verwenden.
-            </p>
+            <section className="space-y-2">
+              <h3 className="font-black text-slate-900">
+                {isDe ? '1. Technischer Lokaler Speicher (LocalStorage)' : isIt ? '1. Archiviazione Tecnica Locale (LocalStorage)' : '1. Technical LocalStorage'}
+              </h3>
+              <p>
+                {isDe
+                  ? 'MyPdfTools nutzt den lokalen Browserspeicher (LocalStorage unter dem Schlüssel mypdftools_lang) ausschließlich dazu, Ihre bevorzugte Spracheinstellung (Deutsch, Italienisch oder Englisch) zu speichern.'
+                  : isIt
+                  ? 'MyPdfTools utilizza lo spazio di archiviazione locale del browser (LocalStorage con chiave mypdftools_lang) esclusivamente per memorizzare la tua preferenza di lingua (Italiano, Tedesco o Inglese).'
+                  : 'MyPdfTools uses local browser storage (LocalStorage key mypdftools_lang) strictly to remember your language preference (Italian, German, or English).'}
+              </p>
+            </section>
+            <section className="space-y-2">
+              <h3 className="font-black text-slate-900">
+                {isDe ? '2. Google AdSense & Analyse-Cookies von Drittanbietern' : isIt ? '2. Cookie di Terze Parti (Google AdSense & Analytics)' : '2. Third-Party Cookies (Google AdSense & Analytics)'}
+              </h3>
+              <p>
+                {isDe
+                  ? 'Zur Finanzierung unseres kostenlosen Angebots binden wir Google AdSense sowie Google Analytics ein. Google kann Cookies (wie das DoubleClick DART-Cookie) setzen, um relevante Anzeigen zu schalten und die Nutzung der Website auszuwerten. Sie können Cookies jederzeit in Ihren Browsereinstellungen löschen oder blockieren.'
+                  : isIt
+                  ? 'Per sostenere i costi del servizio gratuito, utilizziamo Google AdSense e Google Analytics. Google può impostare cookie tecnici e pubblicitari (incluso il cookie DoubleClick DART) per mostrare annunci pertinenti e analizzare il traffico in forma aggregata. Puoi gestire o bloccare i cookie in qualsiasi momento dalle impostazioni del tuo browser.'
+                  : 'To support our free tools, we use Google AdSense and Google Analytics. Google may set advertising and analytics cookies (including the DoubleClick DART cookie) to serve relevant ads and measure site traffic. You can manage or block cookies anytime in your browser settings.'}
+              </p>
+            </section>
           </div>
         )}
       </article>

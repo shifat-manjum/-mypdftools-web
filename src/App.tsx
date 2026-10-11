@@ -544,6 +544,318 @@ export const App: React.FC = () => {
                 </div>
               </div>
             </section>
+
+            {/* In-Depth Editorial Articles & Publisher Content */}
+            <section className="max-w-[1500px] mx-auto mt-20 px-4 sm:px-6 lg:px-10 space-y-14">
+              <div className="text-center max-w-3xl mx-auto space-y-3">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-black uppercase tracking-wider">
+                  {currentLang === 'de'
+                    ? 'Redaktionelle Ratgeber & Branchenstandards'
+                    : currentLang === 'en'
+                    ? 'Editorial Guides & Industry Standards'
+                    : 'Guide Editoriali & Standard di Settore'}
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                  {currentLang === 'de'
+                    ? 'Alles, was Sie über die sichere Verwaltung von PDF-Dokumenten wissen müssen'
+                    : currentLang === 'en'
+                    ? 'Everything You Need to Know About Secure PDF Document Management'
+                    : 'Tutto Quello che Devi Sapere sulla Gestione Sicura dei Documenti PDF'}
+                </h2>
+                <p className="text-sm text-slate-600 font-medium">
+                  {currentLang === 'de'
+                    ? 'Technische Einblicke des MyPdfTools-Teams zur DSGVO-Konformität, clientseitigen WebAssembly-Architektur und bewährten Methoden der Dokumentenoptimierung.'
+                    : currentLang === 'en'
+                    ? 'Technical insights from the MyPdfTools engineering team on GDPR compliance, client-side WebAssembly architecture, and document optimization best practices.'
+                    : "Approfondimenti tecnici curati dal team di MyPdfTools sulla conformità normativa GDPR, l'architettura WebAssembly client-side e le migliori pratiche di ottimizzazione documentale."}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Article 1 */}
+                <article className="bg-white/95 rounded-3xl p-8 border border-slate-200/90 shadow-sm hover:shadow-md transition-shadow space-y-4 text-left">
+                  <div className="flex items-center gap-2 text-xs font-black text-emerald-600 uppercase tracking-wide">
+                    <span>{currentLang === 'de' ? 'Recht & Datenschutz' : currentLang === 'en' ? 'Regulations & Privacy' : 'Normativa & Privacy'}</span>
+                    <span>&bull;</span>
+                    <span>{currentLang === 'de' ? 'Lesezeit: 4 Min.' : currentLang === 'en' ? '4 min read' : 'Tempo di lettura: 4 min'}</span>
+                  </div>
+                  <h3 className="text-xl font-black text-slate-900 leading-snug">
+                    {currentLang === 'de'
+                      ? 'Sicherheit bei PDF-Dokumenten: Datenschutz und DSGVO-Konformität für Unternehmen und Freiberufler'
+                      : currentLang === 'en'
+                      ? 'PDF Document Security: Data Confidentiality and GDPR Compliance for Businesses and Professionals'
+                      : 'La Sicurezza nei Documenti PDF: Riservatezza dei Dati e Conformità GDPR per Imprese e Professionisti'}
+                  </h3>
+                  <div className="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-3 font-normal">
+                    <p>
+                      {currentLang === 'de'
+                        ? 'Im modernen Arbeitsalltag sind PDF-Dateien das universelle Format für Geschäftsverträge, Steuererklärungen, Gehaltsabrechnungen, medizinische Berichte und Ausweisdokumente. Vielen Nutzern ist jedoch nicht bewusst, dass herkömmliche kostenlose Online-PDF-Konverter diese vertraulichen Dateien auf entfernte Cloud-Server hochladen, die sich oft außerhalb der Europäischen Union befinden.'
+                        : currentLang === 'en'
+                        ? 'In modern workflows, PDF files serve as the universal standard for commercial contracts, tax returns, payslips, medical records, and identity documents. However, most users are unaware that traditional free online PDF converters upload these sensitive files to remote cloud servers often located outside the European Union.'
+                        : "Nel contesto lavorativo moderno, i file PDF rappresentano il formato universale per contratti commerciali, dichiarazioni fiscali (come il Modello 730 o Redditi), buste paga, cartelle cliniche e documenti d'identità. Tuttavia, la maggior parte degli utenti ignora che utilizzare i tradizionali convertitori PDF gratuiti online comporta il caricamento di questi file altamente riservati su server cloud remoti, spesso situati al di fuori dell'Unione Europea."}
+                    </p>
+                    <p>
+                      {currentLang === 'de'
+                        ? 'Gemäß Artikel 32 der Datenschutz-Grundverordnung (DSGVO EU 2016/679) ist der Verantwortliche verpflichtet, geeignete technische und organisatorische Maßnahmen zu treffen, um ein dem Risiko angemessenes Schutzniveau zu gewährleisten. Die unbefugte Übermittlung von Unternehmens- oder Personaldokumenten an unbekannte Server Dritter stellt eine potenzielle Datenpanne (Data Breach) mit empfindlichen Bußgeldern dar.'
+                        : currentLang === 'en'
+                        ? 'Under Article 32 of the General Data Protection Regulation (GDPR EU 2016/679), data controllers must implement appropriate technical and organizational measures to ensure security commensurate with risk. Transmitting corporate or personal documents to unknown third-party servers constitutes a potential data breach.'
+                        : "Secondo l'Articolo 32 del Regolamento Generale sulla Protezione dei Dati (GDPR UE 2016/679), il titolare del trattamento è obbligato a mettere in atto misure tecniche e organizzative adeguate per garantire un livello di sicurezza commisurato al rischio. L'invio non autorizzato di documenti aziendali o personali a server terzi sconosciuti costituisce una potenziale violazione dei dati (data breach) con sanzioni rilevanti."}
+                    </p>
+                    <p className="font-semibold text-slate-800">
+                      {currentLang === 'de'
+                        ? 'MyPdfTools setzt auf das Prinzip «Privacy by Design» (Art. 25 DSGVO): Dateien werden niemals an einen Server gesendet. Die Verarbeitung findet vollständig auf dem lokalen Endgerät des Nutzers statt, wodurch jedes Risiko von Abfangen, unbefugter Speicherung oder unrechtmäßigem Zugriff durch Dritte ausgeschlossen wird.'
+                        : currentLang === 'en'
+                        ? 'MyPdfTools adopts the "Privacy by Design" principle (Art. 25 GDPR): files are never transmitted to any server. Processing takes place entirely on the user’s local device, eliminating any risk of interception, unauthorized storage, or third-party access.'
+                        : "MyPdfTools adotta il principio del «Privacy by Design» (Art. 25 GDPR): i file non vengono mai inviati a nessun server. L'elaborazione avviene interamente sul dispositivo locale dell'utente, eliminando alla radice ogni rischio di intercettazione, archiviazione non autorizzata o accesso illecito da parte di terzi."}
+                    </p>
+                  </div>
+                </article>
+
+                {/* Article 2 */}
+                <article className="bg-white/95 rounded-3xl p-8 border border-slate-200/90 shadow-sm hover:shadow-md transition-shadow space-y-4 text-left">
+                  <div className="flex items-center gap-2 text-xs font-black text-emerald-600 uppercase tracking-wide">
+                    <span>{currentLang === 'de' ? 'Webarchitektur' : currentLang === 'en' ? 'Web Architecture' : 'Architettura Web'}</span>
+                    <span>&bull;</span>
+                    <span>{currentLang === 'de' ? 'Lesezeit: 3 Min.' : currentLang === 'en' ? '3 min read' : 'Tempo di lettura: 3 min'}</span>
+                  </div>
+                  <h3 className="text-xl font-black text-slate-900 leading-snug">
+                    {currentLang === 'de'
+                      ? '100% Client-Side Webarchitektur: Wie WebAssembly und HTML5 Ihre Dokumente schützen'
+                      : currentLang === 'en'
+                      ? '100% Client-Side Browser Architecture: How WebAssembly and HTML5 Protect Your Files'
+                      : 'Architettura 100% Client-Side nel Browser: Come WebAssembly e HTML5 Proteggono i Tuoi File'}
+                  </h3>
+                  <div className="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-3 font-normal">
+                    <p>
+                      {currentLang === 'de'
+                        ? 'Jahrelang erforderten komplexe Operationen an PDF-Dateien (wie das Zusammenfügen mehrseitiger Dokumente oder das Rasterisieren hochauflösender Bilder) serverseitige Bibliotheken (wie Ghostscript oder Poppler). Dies zwang Nutzer zu zeitraubenden Uploads und Downloads.'
+                        : currentLang === 'en'
+                        ? 'For years, advanced PDF operations—such as merging multi-page documents, compressing object streams, or rasterizing high-resolution images—required server-side software libraries like Ghostscript or Poppler, forcing users to endure slow upload and download queues.'
+                        : "Per anni, le operazioni avanzate su file PDF (come l'unione di documenti multipagina, la compressione degli stream di oggetti o la rasterizzazione di immagini ad alta risoluzione) hanno richiesto potenti librerie software eseguite su server dedicati (ad esempio basati su Ghostscript o Poppler). Questo modello tradizionale imponeva agli utenti di attendere lenti tempi di upload e download."}
+                    </p>
+                    <p>
+                      {currentLang === 'de'
+                        ? 'Mit WebAssembly (Wasm) und modernen HTML5 Canvas APIs können moderne Browser (Chrome, Safari, Firefox, Edge) nun kompilierte Hochleistungsprogramme direkt in der geschützten Sandbox des Clients ausführen.'
+                        : currentLang === 'en'
+                        ? 'With WebAssembly (Wasm) and modern HTML5 Canvas APIs, browsers (Chrome, Safari, Firefox, Edge) can now execute compiled, high-performance binary engines directly inside the client’s isolated security sandbox.'
+                        : "Con l'avvento di WebAssembly (Wasm) e delle moderne API HTML5 Canvas, i browser moderni (Chrome, Safari, Firefox, Edge) sono ora in grado di eseguire codice compilato ad altissime prestazioni direttamente all'interno della sandbox protetta del client."}
+                    </p>
+                    <p>
+                      {currentLang === 'de'
+                        ? 'Wenn Sie ein Tool auf MyPdfTools auswählen, liest die Verarbeitungs-Engine die Datei direkt aus dem Arbeitsspeicher Ihres Endgeräts. Mathematische Berechnungen und Optimierungen erfolgen lokal in Echtzeit. Sie können sogar das WLAN deaktivieren – MyPdfTools arbeitet nahtlos offline weiter.'
+                        : currentLang === 'en'
+                        ? 'When you select a tool on MyPdfTools, the processing engine reads the document bytes directly from your device RAM. Cross-reference (xref) table rebuilding and Flate compression occur instantaneously on your machine—even if you disconnect from Wi-Fi.'
+                        : 'Quando selezioni uno strumento su MyPdfTools, il motore di elaborazione legge i byte del documento direttamente dalla memoria RAM del tuo dispositivo. I calcoli matematici, la ricomposizione delle tabelle dei riferimenti incrociati (xref) e la compressione Flate avvengono istantaneamente a livello locale. Puoi persino disattivare la connessione Wi-Fi: MyPdfTools continuerà a elaborare i tuoi documenti senza alcuna interruzione.'}
+                    </p>
+                  </div>
+                </article>
+
+                {/* Article 3 */}
+                <article className="bg-white/95 rounded-3xl p-8 border border-slate-200/90 shadow-sm hover:shadow-md transition-shadow space-y-4 text-left">
+                  <div className="flex items-center gap-2 text-xs font-black text-emerald-600 uppercase tracking-wide">
+                    <span>{currentLang === 'de' ? 'Optimierung & E-Mail' : currentLang === 'en' ? 'Optimization & Email' : 'Ottimizzazione & PEC'}</span>
+                    <span>&bull;</span>
+                    <span>{currentLang === 'de' ? 'Lesezeit: 4 Min.' : currentLang === 'en' ? '4 min read' : 'Tempo di lettura: 4 min'}</span>
+                  </div>
+                  <h3 className="text-xl font-black text-slate-900 leading-snug">
+                    {currentLang === 'de'
+                      ? 'Leitfaden zur intelligenten Komprimierung: PDF-Dateigröße ohne Qualitätsverlust verringern'
+                      : currentLang === 'en'
+                      ? 'Guide to Smart PDF Compression: Reducing File Size Without Losing Visual Quality'
+                      : 'Guida alla Compressione Intelligente: Ridurre le Dimensioni dei PDF Senza Perdere Qualità'}
+                  </h3>
+                  <div className="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-3 font-normal">
+                    <p>
+                      {currentLang === 'de'
+                        ? 'In Deutschland und Europa erfordert der digitale Versand von Rechnungen, ELSTER-Steuerbelegen, Behördenunterlagen oder Bewerbungen oft strenge Dateigrößen-Limits (häufig 5 MB bis 20 MB). Zu hoch aufgelöste Scans blockieren oft den E-Mail-Postausgang.'
+                        : currentLang === 'en'
+                        ? 'Submitting public administration forms, legal filings, tax attachments, or job applications frequently imposes strict attachment size limits (often 5 MB to 30 MB). High-resolution scanner outputs with redundant metadata can easily block submission.'
+                        : "In Italia e in Europa, l'invio telematico di atti giudiziari (Processo Civile Telematico - PCT), fatture elettroniche, bandi di concorso pubblico o allegati via Posta Elettronica Certificata (PEC) impone rigidi limiti di peso (spesso compresi tra 5 MB e 30 MB per allegato). Documenti scansionati con risoluzioni eccessive o contenenti metadati ridondanti rischiano di bloccare la trasmissione."}
+                    </p>
+                    <p>
+                      {currentLang === 'de'
+                        ? 'Eine effektive PDF-Komprimierung kombiniert zwei komplementäre Verfahren: Verlustfreie Struktur-Optimierung (Entfernung redundanter Metadaten bei 100% gestochen scharfem Vektortext) sowie intelligente Bild-Neuberechnung auf 150–200 DPI für optimale Lesbarkeit.'
+                        : currentLang === 'en'
+                        ? 'Effective PDF compression balances two techniques: lossless stream optimization (stripping obsolete metadata while keeping vector text 100% sharp) and intelligent image downsampling to 150–200 DPI for crisp screen and print legibility.'
+                        : "Una compressione PDF efficace combina due tecniche complementari: l'ottimizzazione lossless dei flussi (rimozione di metadati inutilizzati, anteprime obsolete e flussi XML duplicati mantenendo il testo vettoriale nitido al 100%) e il ricampionamento intelligente delle immagini raster incorporate a 150-200 DPI, ideale per la lettura su schermo e la stampa da ufficio."}
+                    </p>
+                    <p>
+                      {currentLang === 'de'
+                        ? 'Mit dem lokalen Komprimierungs-Tool von MyPdfTools reduzieren Sie die Dateigröße drastisch unter Einhaltung aller technischen Behördenstandards.'
+                        : currentLang === 'en'
+                        ? 'Using MyPdfTools’ local compression engine, you can drastically reduce PDF file weights while meeting technical requirements for public portals and certified email.'
+                        : 'Utilizzando lo strumento di compressione locale di MyPdfTools, puoi ridurre drasticamente le dimensioni dei tuoi PDF nel rispetto dei requisiti di conformità tecnica degli enti pubblici, dei portali ministeriali e dei gestori PEC.'}
+                    </p>
+                  </div>
+                </article>
+
+                {/* Article 4 */}
+                <article className="bg-white/95 rounded-3xl p-8 border border-slate-200/90 shadow-sm hover:shadow-md transition-shadow space-y-4 text-left">
+                  <div className="flex items-center gap-2 text-xs font-black text-emerald-600 uppercase tracking-wide">
+                    <span>{currentLang === 'de' ? 'Dokumentenstandards' : currentLang === 'en' ? 'Document Standards' : 'Standard Documentali'}</span>
+                    <span>&bull;</span>
+                    <span>{currentLang === 'de' ? 'Lesezeit: 3 Min.' : currentLang === 'en' ? '3 min read' : 'Tempo di lettura: 3 min'}</span>
+                  </div>
+                  <h3 className="text-xl font-black text-slate-900 leading-snug">
+                    {currentLang === 'de'
+                      ? 'Hochwertige Dokumentenkonvertierung: Von Bildern (JPG, PNG) und Office zu Standard-PDF'
+                      : currentLang === 'en'
+                      ? 'High-Fidelity Document Conversion: From Images (JPG, PNG) and Office to Standard PDF'
+                      : 'Conversione Documentale ad Alta Fedeltà: Da Immagini (JPG, PNG) e Office a PDF Standard'}
+                  </h3>
+                  <div className="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-3 font-normal">
+                    <p>
+                      {currentLang === 'de'
+                        ? 'Die langfristige Archivierung von Dokumenten erfordert stabile, ISO-konforme Formate. Das Konvertieren von Smartphone-Fotos oder gescannten Ausweisen und Belegen in PDF darf weder Proportionen verzerren noch die Lesbarkeit beeinträchtigen.'
+                        : currentLang === 'en'
+                        ? 'Long-term document archiving requires stable, ISO-compliant formats. Converting smartphone photos, ID cards, or scanned receipts into PDF must preserve aspect ratios and typographic clarity without distortion.'
+                        : 'La conservazione documentale a lungo termine richiede formati stabili, conformi alle specifiche internazionali ISO. Convertire fotografie scattate da smartphone, documenti di riconoscimento (fronte/retro) o ricevute scannerizzate in formato PDF non deve comportare distorsioni delle proporzioni né perdita di leggibilità dei caratteri tipografici.'}
+                    </p>
+                    <p>
+                      {currentLang === 'de'
+                        ? 'Der JPG-in-PDF-Konverter von MyPdfTools berechnet automatisch das Seitenverhältnis jedes Bildes und ermöglicht die Anpassung an DIN-A4-Standards mit sauberen Rändern oder den Erhalt der Originalauflösung.'
+                        : currentLang === 'en'
+                        ? 'The MyPdfTools JPG-to-PDF converter automatically calculates native aspect ratios for each image, allowing you to standardize pages onto international DIN A4 sheets with clean margins.'
+                        : "Il convertitore da JPG a PDF di MyPdfTools calcola automaticamente le proporzioni native di ciascuna immagine, consentendo all'utente di scegliere tra l'adattamento ai formati standard (come l'A4 internazionale con margini di sicurezza) o il mantenimento della risoluzione originale."}
+                    </p>
+                    <p>
+                      {currentLang === 'de'
+                        ? 'Darüber hinaus stellt die Office-Konvertierung sicher, dass Schriftarten, Layout und Zeilenabstände originalgetreu erhalten bleiben – bereit für behördliche Einreichungen oder digitale Signaturen.'
+                        : currentLang === 'en'
+                        ? 'Furthermore, our Office conversion tools preserve fonts, pagination, and line spacing faithfully, producing documents ready for institutional sharing or digital signing.'
+                        : "Inoltre, la conversione da formati Office garantisce che font, impaginazione e interlinea vengano preservati fedelmente, producendo documenti pronti per la condivisione istituzionale, la firma con Carta d'Identità Elettronica (CIE/SPID) o l'archiviazione notarile."}
+                    </p>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            {/* Comprehensive Homepage FAQ Section */}
+            <section className="max-w-[1500px] mx-auto mt-20 px-4 sm:px-6 lg:px-10 space-y-8">
+              <div className="text-center max-w-2xl mx-auto space-y-2">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black uppercase">
+                  {currentLang === 'de' ? 'Schnelle Antworten' : currentLang === 'en' ? 'Quick Answers' : 'Risposte Immediate'}
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                  {currentLang === 'de'
+                    ? 'Häufig gestellte Fragen zu MyPdfTools'
+                    : currentLang === 'en'
+                    ? 'Frequently Asked Questions About MyPdfTools'
+                    : 'Domande Frequenti su MyPdfTools'}
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-500 font-medium">
+                  {currentLang === 'de'
+                    ? 'Alles, was Sie über Sicherheit, Kosten und die Funktionsweise unserer Plattform wissen müssen.'
+                    : currentLang === 'en'
+                    ? 'Everything you need to know about security, pricing, and how our local browser platform operates.'
+                    : "Tutto quello che c'è da sapere sulla sicurezza, i costi e il funzionamento della nostra piattaforma."}
+                </p>
+              </div>
+
+              <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                <div className="bg-white/95 rounded-2xl border border-slate-200/90 p-6 shadow-xs space-y-2">
+                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                    {currentLang === 'de'
+                      ? 'Werden meine PDF-Dateien oder persönliche Daten ins Internet hochgeladen?'
+                      : currentLang === 'en'
+                      ? 'Are my PDF files or personal information uploaded to the internet?'
+                      : 'I miei file PDF o le mie informazioni personali vengono caricati su Internet?'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {currentLang === 'de'
+                      ? 'Absolut nicht. Im Gegensatz zu fast allen konkurrierenden Diensten operiert MyPdfTools zu 100% in Ihrem Webbrowser mittels lokalem WebAssembly-Code. Keine Datei, kein Bild und keine vertrauliche Information verlässt jemals den Arbeitsspeicher Ihres Endgeräts.'
+                      : currentLang === 'en'
+                      ? 'Absolutely not. Unlike traditional online services, MyPdfTools operates 100% inside your web browser using local WebAssembly code. No file, image, or confidential information ever leaves your device RAM.'
+                      : "Assolutamente no. A differenza di quasi tutti gli altri servizi concorrenti, MyPdfTools opera al 100% all'interno del tuo browser web tramite codice WebAssembly locale. Nessun file, immagine o dato confidenziale lascia mai la memoria RAM del tuo dispositivo."}
+                  </p>
+                </div>
+
+                <div className="bg-white/95 rounded-2xl border border-slate-200/90 p-6 shadow-xs space-y-2">
+                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                    {currentLang === 'de'
+                      ? 'Ist der Dienst wirklich kostenlos? Gibt es versteckte Kosten oder Abonnements?'
+                      : currentLang === 'en'
+                      ? 'Is the service completely free? Are there hidden fees or subscriptions?'
+                      : 'Il servizio è completamente gratuito? Ci sono costi nascosti o abbonamenti?'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {currentLang === 'de'
+                      ? 'MyPdfTools ist zu 100% kostenlos. Wir verlangen weder Registrierungen noch Kreditkarten, noch begrenzen wir die Anzahl der konvertierbaren Seiten oder Dateien. Die Plattform finanziert sich durch dezente, transparente Anzeigen.'
+                      : currentLang === 'en'
+                      ? 'MyPdfTools is 100% free. We do not require registrations, credit cards, or watermarks, nor do we limit the number of pages or files you can process.'
+                      : 'MyPdfTools è gratuito al 100%. Non richiediamo registrazioni, carte di credito, né limitiamo il numero di file o pagine che puoi convertire. La piattaforma è supportata da annunci pubblicitari non invasivi e trasparenti.'}
+                  </p>
+                </div>
+
+                <div className="bg-white/95 rounded-2xl border border-slate-200/90 p-6 shadow-xs space-y-2">
+                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                    {currentLang === 'de'
+                      ? 'Kann ich MyPdfTools für vertrauliche Geschäfts- oder Behördendokumente nutzen?'
+                      : currentLang === 'en'
+                      ? 'Can I use MyPdfTools for confidential legal, medical, or tax documents?'
+                      : 'Posso usare MyPdfTools per documenti legali, sanitari o fiscali riservati?'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {currentLang === 'de'
+                      ? 'Ja, genau dafür wurde MyPdfTools entwickelt. Da keine Dateien über das Internet übertragen werden, können Steuerberater, Anwälte, Ärzte und Unternehmen sensible Daten vollkommen DSGVO-konform (EU 2016/679) verarbeiten.'
+                      : currentLang === 'en'
+                      ? 'Yes, that is exactly why MyPdfTools was built. Because zero bytes are transmitted to external servers, accountants, doctors, lawyers, and businesses can process sensitive files in full compliance with GDPR (EU 2016/679).'
+                      : 'Sì, è proprio per questo scopo che MyPdfTools è stato creato. Poiché nessun file viene inviato sui server, professionisti come commercialisti, medici, avvocati e consulenti possono elaborare documenti contenenti dati sensibili in piena conformità con il GDPR (UE 2016/679).'}
+                  </p>
+                </div>
+
+                <div className="bg-white/95 rounded-2xl border border-slate-200/90 p-6 shadow-xs space-y-2">
+                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                    {currentLang === 'de'
+                      ? 'Wie kann ich überprüfen, ob die Plattform wirklich offline funktioniert?'
+                      : currentLang === 'en'
+                      ? 'How can I verify that the platform truly works offline?'
+                      : 'Come posso verificare che la piattaforma funzioni davvero senza connessione?'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {currentLang === 'de'
+                      ? 'Machen Sie diesen einfachen Test: Öffnen Sie ein beliebiges Tool (z.B. PDF zusammenfügen), trennen Sie Ihr WLAN oder aktivieren Sie den Flugmodus und ziehen Sie Ihre Dateien hinein. Der Vorgang wird sofort komplett offline ausgeführt!'
+                      : currentLang === 'en'
+                      ? 'Try this simple test: open any tool (such as Merge PDF), disconnect your Wi-Fi or turn on Airplane Mode, and drop your files in. The operation will complete instantaneously offline!'
+                      : "Fai questa semplice prova: apri uno strumento qualsiasi (ad esempio Unisci PDF), disconnetti il Wi-Fi o attiva la modalità aereo, e trascina i tuoi file. Vedrai che l'operazione verrà completata all'istante anche da offline!"}
+                  </p>
+                </div>
+
+                <div className="bg-white/95 rounded-2xl border border-slate-200/90 p-6 shadow-xs space-y-2">
+                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                    {currentLang === 'de'
+                      ? 'Gibt es eine Beschränkung der maximalen Dateigröße?'
+                      : currentLang === 'en'
+                      ? 'Is there a limit on the maximum file size I can process?'
+                      : 'Esiste un limite alla dimensione massima dei file caricabili?'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {currentLang === 'de'
+                      ? 'Es gibt keinerlei künstliche Beschränkungen unsererseits. Die einzige Grenze ist der verfügbare Arbeitsspeicher (RAM) Ihres Computers oder Smartphones, wodurch auch große Dateien problemlos verarbeitet werden können.'
+                      : currentLang === 'en'
+                      ? 'There are no artificial file size limits imposed by us. The only limit is the available RAM on your computer or smartphone, allowing large multi-megabyte documents to be processed smoothly.'
+                      : "Non c'è alcun limite artificiale imposto da noi. L'unico limite è dato dalla memoria RAM disponibile sul tuo computer o smartphone, il che consente di elaborare anche file di centinaia di megabyte senza blocchi."}
+                  </p>
+                </div>
+
+                <div className="bg-white/95 rounded-2xl border border-slate-200/90 p-6 shadow-xs space-y-2">
+                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                    {currentLang === 'de'
+                      ? 'Wer entwickelt und betreibt die Plattform MyPdfTools?'
+                      : currentLang === 'en'
+                      ? 'Who develops and maintains the MyPdfTools platform?'
+                      : 'Chi sviluppa e gestisce la piattaforma MyPdfTools?'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {currentLang === 'de'
+                      ? 'Die Plattform wird von Shifat Manjum & Saiful Islam (Zentixx) betrieben und gepflegt. Weitere Informationen finden Sie auf den Seiten Über uns, Impressum und Datenschutz im Fußbereich.'
+                      : currentLang === 'en'
+                      ? 'The platform is founded and actively maintained by Shifat Manjum & Saiful Islam (Zentixx). Full legal details are available in our About Us, Legal Notice, and Privacy Policy pages in the footer.'
+                      : 'La piattaforma è fondata e attivamente curata da Shifat Manjum & Saiful Islam (Zentixx). Puoi trovare maggiori dettagli nelle pagine Chi Siamo, Note Legali e Informativa sulla Privacy nel piè di pagina.'}
+                  </p>
+                </div>
+              </div>
+            </section>
           </div>
         )}
         </ErrorBoundary>
