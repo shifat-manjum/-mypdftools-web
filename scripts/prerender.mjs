@@ -899,6 +899,9 @@ function generateCompliancePageHtml({ type, lang, canonical, alternateIt, altern
     </div>`;
 
   let pageHtml = baseHtml;
+  if (isDe) {
+    pageHtml = pageHtml.replace(/G-5GSW854S0X/g, 'G-X0PR9JX9K2');
+  }
   pageHtml = pageHtml.replace(/<html lang="[^"]*"/, `<html lang="${lang}"`);
   pageHtml = pageHtml.replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(title)}</title>`);
   pageHtml = pageHtml.replace(/<meta name="title" content="[^"]*"/, `<meta name="title" content="${escapeHtml(title)}"`);
@@ -1022,6 +1025,7 @@ async function runPrerender() {
   });
 
   let deHomeHtml = baseHtml;
+  deHomeHtml = deHomeHtml.replace(/G-5GSW854S0X/g, 'G-X0PR9JX9K2');
   deHomeHtml = deHomeHtml.replace(/<html lang="[^"]*"/, '<html lang="de"');
   const deTitle = 'MyPdfTools — 100% Kostenlose & Private PDF-Tools (Zero Upload)';
   const deDesc = 'PDF zusammenfügen, teilen, komprimieren und JPG in PDF konvertieren zu 100% lokal in Ihrem Browser. Keine Server-Uploads, DSGVO-konform und sicher.';
@@ -1283,6 +1287,9 @@ async function runPrerender() {
 
     // Assemble complete pre-rendered page
     let pageHtml = baseHtml;
+    if (isDe || route.domain === 'mypdftools.de') {
+      pageHtml = pageHtml.replace(/G-5GSW854S0X/g, 'G-X0PR9JX9K2');
+    }
     pageHtml = pageHtml.replace(/<html lang="[^"]*"/, `<html lang="${lang}"`);
     pageHtml = pageHtml.replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(route.metaTitle)}</title>`);
     pageHtml = pageHtml.replace(/<meta name="title" content="[^"]*"/, `<meta name="title" content="${escapeHtml(route.metaTitle)}"`);
