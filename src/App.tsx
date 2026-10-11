@@ -187,7 +187,7 @@ export const App: React.FC = () => {
     }
   }, [currentPath, activeLegalType]);
 
-  // Dynamic document title & HTML lang update based on active language or legal page
+  // Dynamic document title, HTML lang update & GA4 SPA page_view tracking
   useEffect(() => {
     document.documentElement.lang = currentLang;
 
@@ -225,7 +225,14 @@ export const App: React.FC = () => {
         },
       };
       document.title = titles[activeLegalType]?.[currentLang] || titles[activeLegalType]?.en || 'MyPdfTools';
-    } else if (!currentSeoRoute && !currentToolId) {
+    } else if (currentSeoRoute) {
+      document.title = currentSeoRoute.metaTitle;
+    } else if (currentToolId) {
+      const localizedTool = t.tools[currentToolId];
+      const fallbackTool = TOOLS.find((item) => item.id === currentToolId);
+      const toolTitle = localizedTool?.title || fallbackTool?.title || currentToolId;
+      document.title = `${toolTitle} — MyPdfTools`;
+    } else {
       if (currentLang === 'it') {
         document.title = 'MyPdfTools — Strumenti PDF 100% Gratuiti e Privati (Zero Upload)';
       } else if (currentLang === 'de') {
@@ -234,10 +241,7 @@ export const App: React.FC = () => {
         document.title = 'MyPdfTools — 100% Free & Private In-Browser PDF Suite';
       }
     }
-  }, [currentLang, currentSeoRoute, currentToolId, activeLegalType]);
 
-  // Google Analytics (GA4) pageview tracking on SPA navigation
-  useEffect(() => {
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', 'page_view', {
         page_title: document.title,
@@ -245,7 +249,7 @@ export const App: React.FC = () => {
         page_path: window.location.pathname + window.location.hash,
       });
     }
-  }, [currentPath, currentToolId, currentLang, activeLegalType]);
+  }, [currentPath, currentSeoRoute, currentToolId, currentLang, activeLegalType, t]);
 
   // Clean pathname + fallback hash routing
   useEffect(() => {
