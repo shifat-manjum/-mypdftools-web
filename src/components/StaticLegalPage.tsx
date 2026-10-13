@@ -54,6 +54,38 @@ export const StaticLegalPage: React.FC<StaticLegalPageProps> = ({
 
   const pageTitle = titles[type]?.[currentLang] || titles[type]?.en || 'MyPdfTools';
 
+  // Dynamic Canonical and Meta Update for Legal/Policy pages (fixes Google Search Console canonical mismatch)
+  React.useEffect(() => {
+    document.title = pageTitle;
+
+    const host = window.location.hostname.toLowerCase();
+    const isDeDomain = host.endsWith('.de') || host.includes('mypdftools.de');
+    const domain = isDeDomain ? 'https://www.mypdftools.de' : 'https://www.mypdftools.it';
+    const slug = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '') || (
+      type === 'privacy' ? (isDeDomain ? 'datenschutz' : 'privacy-policy') :
+      type === 'cookies' ? 'cookie-policy' :
+      type === 'impressum' ? (isDeDomain ? 'impressum' : 'note-legali') :
+      type === 'terms' ? (isDeDomain ? 'nutzungsbedingungen' : 'terms-of-service') :
+      type === 'about' ? (isDeDomain ? 'ueber-uns' : 'chi-siamo') : 'contatti'
+    );
+    const selfCanonical = `${domain}/${slug}`;
+
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', selfCanonical);
+
+    return () => {
+      // Revert to root canonical when leaving legal page
+      if (canonical) {
+        canonical.setAttribute('href', `${domain}/`);
+      }
+    };
+  }, [type, currentLang, pageTitle]);
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 text-slate-800">
       {/* Back button & Breadcrumb */}
